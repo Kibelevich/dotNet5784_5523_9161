@@ -7,7 +7,7 @@ namespace DO;
 /// <param name="ID">Personal unique ID of engineer (as in national id card)</param>
 /// <param name="name">Private name of the engineer</param>
 /// <param name="email">Email of the engineer</param>
-/// <param name="level">LEvel of the engineer</param>
+/// <param name="level">Level of the engineer</param>
 /// <param name="cost">salary of the engineer</param>
 public record Engineer(
     int ID,
