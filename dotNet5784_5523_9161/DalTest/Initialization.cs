@@ -61,6 +61,10 @@ public static class Initialization
             do
                 _id = s_rand.Next(100000000, 999999999);
             while (s_dalEngineer!.Read(_id) != null);
+            string _email= $"{engineer.Split(' ')[0]}{_id%1000}@gmail.com";
+            int _level = _id % 3;
+            Engineer newEngineer = new(_id, engineer, _email, (DO.EngineerExperiece)_level, 0);
+
 
         }
     }
