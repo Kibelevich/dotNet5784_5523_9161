@@ -54,7 +54,7 @@ public static class Initialization
             "Riki Mozes",
             "Hadas Dayan",
             "Avigail Safra"
-    };
+        };
         foreach (var engineer in engineerName)
         {
             int _id;
@@ -64,8 +64,27 @@ public static class Initialization
             string _email= $"{engineer.Split(' ')[0]}{_id%1000}@gmail.com";
             int _level = _id % 3;
             Engineer newEngineer = new(_id, engineer, _email, (DO.EngineerExperiece)_level, 0);
-
-
+            s_dalEngineer.Create(newEngineer);
         }
     }
+    public static void createTask()
+    {
+        for (int i = 0; i < 100; i++) {
+            bool _milestone = s_rand.NextInt64()%2 == 0;
+            DateTime _createdAt = DateTime.Today.AddDays(s_rand.Next(-365));
+            //DateTime _start = _createdAt.AddDays(s_rand.Next(100));
+            //DateTime _forecastDate = _start.AddDays(s_rand.Next(365));
+            DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
+            int _complexityLevel = s_rand.Next(0, 2);
+            Task newTask = new(0, null, null, _milestone, _createdAt, null, null,
+                _deadline, null, null, null, null, (DO.EngineerExperiece)_complexityLevel);
+            s_dalTask.Create(newTask);
+        }
+    }
+    public static void createDependency()
+    {
+        int _
+    }
 }
+
+

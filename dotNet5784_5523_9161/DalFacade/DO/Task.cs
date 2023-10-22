@@ -16,19 +16,19 @@ namespace DO;
 /// <param name="deliverable">A string describing the product</param>
 /// <param name="remarks">Remarks of the task</param>
 /// <param name="engineerId">The engineer ID assigned to the task</param>
-/// <param name="comlexityLevel">Difficulty level of a task</param>
+/// <param name="complexityLevel">Difficulty level of a task</param>
 public record Task (
-    int ID,/////////////////////////
-    string desciption, 
-    string alias, 
+    int ID,
+    string? desciption, 
+    string? alias, 
     bool milestone,
     DateTime createdAt,
-    DateTime start,
-    DateTime forecastDate,
-    DateTime deadline,
-    DateTime complete,
-    string deliverable,
-    string remarks,
-    int engineerId,
-    EngineerExperiece comlexityLevel
+    DateTime? start,
+    DateTime? forecastDate,
+    DateTime? deadline,
+    DateTime? complete,
+    string? deliverable,
+    string? remarks,
+    int? engineerId,
+    EngineerExperiece complexityLevel
     );

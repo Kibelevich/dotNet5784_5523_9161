@@ -6,9 +6,12 @@ using System.Collections.Generic;
 
 public class DependencyImplementation : IDependency
 {
-    public int Create(Task item)
+    public int Create(Dependency item)
     {
-        throw new NotImplementedException();
+        int id = DataSource.Config.NextId;
+        Dependency dependency = item with { ID = id };
+        DataSource.Dependencies.Add(dependency);
+        return id;
     }
 
     public void Delete(int id)
@@ -29,5 +32,16 @@ public class DependencyImplementation : IDependency
     public void Update(Task item)
     {
         throw new NotImplementedException();
+    }
+
+    public bool isDepend(int _dependentTask, int _dependsOnTask)
+    {
+        bool flag = false;
+        DataSource.Dependencies.ForEach(dependency =>
+        {
+            if (dependency.dependentTask == _dependentTask && dependency.dependsOnTask == _dependsOnTask)
+                flag = true;
+        });
+        return flag;
     }
 }
