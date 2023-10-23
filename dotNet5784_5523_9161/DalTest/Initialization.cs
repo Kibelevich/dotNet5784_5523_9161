@@ -83,7 +83,26 @@ public static class Initialization
     }
     public static void createDependency()
     {
-        int _
+        int _dependentTask, _dependsOnTask;
+        for (int i = 0;i < 250;i++) {
+            do
+            {
+                _dependentTask = s_rand.Next(100);
+                _dependsOnTask = s_rand.Next(_dependentTask);
+            }
+            while (s_dalDependency.isDepend(_dependentTask, _dependsOnTask));
+            Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
+            s_dalDependency.Create(newDependency);
+        }
+    }
+
+    public static void Do(IEngineer? dalEngineer, ITask? dalTask, IDependency? dalDependency)
+    {
+        s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
+        s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
+        s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
+
+        //////////////////////////////////////////////////////מתודות פרטיות לצורך אתחול כל הרשימות 
     }
 }
 

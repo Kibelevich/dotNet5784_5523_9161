@@ -18,7 +18,6 @@ public class EngineerImplementation : IEngineer
     }
     public void Delete(int id)
     {
-
         DataSource.Engineers.ForEach(engineer =>
         {
             if (engineer.ID == id)
@@ -28,7 +27,6 @@ public class EngineerImplementation : IEngineer
             }
         });
         throw new Exception($"Engineer with ID={id} not exists");
-
     }
 
     public Engineer? Read(int id)

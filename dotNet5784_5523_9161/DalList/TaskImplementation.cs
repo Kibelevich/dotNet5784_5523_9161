@@ -16,8 +16,10 @@ public class TaskImplementation : ITask
 
     public void Delete(int id)
     {
-
-        throw new NotImplementedException();
+        Task? task = DataSource.Tasks.Find(ele => ele.ID == id);
+        if (task == null)
+            throw new Exception($"Task with ID={id} not exists");
+        DataSource.Tasks.Remove(task);
     }
 
     public Task? Read(int id)

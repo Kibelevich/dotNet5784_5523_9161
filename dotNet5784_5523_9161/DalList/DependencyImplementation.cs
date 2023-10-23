@@ -8,7 +8,7 @@ public class DependencyImplementation : IDependency
 {
     public int Create(Dependency item)
     {
-        int id = DataSource.Config.NextId;
+        int id = DataSource.Config.NextIdD;
         Dependency dependency = item with { ID = id };
         DataSource.Dependencies.Add(dependency);
         return id;
@@ -16,22 +16,32 @@ public class DependencyImplementation : IDependency
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        Dependency? dependency = DataSource.Dependencies.Find(ele => ele.ID == id);
+        if (dependency == null) 
+            throw new Exception($"Dependency with ID={id} not exists");
+        DataSource.Dependencies.Remove(dependency);
     }
 
-    public Task? Read(int id)
+    public Dependency? Read(int id)
     {
-        throw new NotImplementedException();
+        Dependency? dependency = DataSource.Dependencies.Find(ele => ele.ID == id);
+        if (dependency == null)
+            throw new Exception($"Dependency with ID={id} not exists");
+        return dependency;
     }
 
-    public List<Task> ReadAll()
+    public List<Dependency> ReadAll()
     {
-        throw new NotImplementedException();
+        return DataSource.Dependencies;
     }
 
-    public void Update(Task item)
+    public void Update(Dependency item)
     {
-        throw new NotImplementedException();
+        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == item.ID);
+        if(dependency == null)
+            throw new Exception($"Dependency with ID={item.ID} not exists");
+        DataSource.Dependencies.Remove(dependency);
+        DataSource.Dependencies.Add(item);
     }
 
     public bool isDepend(int _dependentTask, int _dependsOnTask)
