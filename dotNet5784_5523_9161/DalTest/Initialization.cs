@@ -62,7 +62,7 @@ public static class Initialization
                 _id = s_rand.Next(100000000, 999999999);
             while (s_dalEngineer!.Read(_id) != null);
             string _email= $"{engineer.Split(' ')[0]}{_id%1000}@gmail.com";
-            int _level = _id % 3;
+            int _level = _id % 5;
             Engineer newEngineer = new(_id, engineer, _email, (DO.EngineerExperiece)_level, 0);
             s_dalEngineer.Create(newEngineer);
         }
@@ -75,7 +75,7 @@ public static class Initialization
             //DateTime _start = _createdAt.AddDays(s_rand.Next(100));
             //DateTime _forecastDate = _start.AddDays(s_rand.Next(365));
             DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
-            int _complexityLevel = s_rand.Next(0, 2);
+            int _complexityLevel = s_rand.Next(0, 4);//////////////////////////////
             Task newTask = new(0, null, null, _milestone, _createdAt, null, null,
                 _deadline, null, null, null, null, (DO.EngineerExperiece)_complexityLevel);
             s_dalTask.Create(newTask);

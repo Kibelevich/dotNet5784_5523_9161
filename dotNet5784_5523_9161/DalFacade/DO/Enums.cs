@@ -3,4 +3,10 @@ namespace DO;
 
 
 
-public enum EngineerExperiece {  master, junior, tiron}
+public enum EngineerExperiece {
+  Novice,
+  Beginner,
+  Competent,
+  Proficient,
+  Expert
+}
