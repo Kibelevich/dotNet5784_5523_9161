@@ -25,7 +25,7 @@ public record Task (
     DateTime createdAt,
     DateTime? start,
     DateTime? forecastDate,
-    DateTime? deadline,
+    DateTime deadline,
     DateTime? complete,
     string? deliverable,
     string? remarks,

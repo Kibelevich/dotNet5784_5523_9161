@@ -32,7 +32,7 @@ public class DependencyImplementation : IDependency
 
     public List<Dependency> ReadAll()
     {
-        return DataSource.Dependencies;
+        return new List<Dependency>(DataSource.Dependencies);
     }
 
     public void Update(Dependency item)
@@ -44,6 +44,8 @@ public class DependencyImplementation : IDependency
         DataSource.Dependencies.Add(item);
     }
 
+
+    // לא בטוח שצריך אולי קשור לשכבה אחרת
     public bool isDepend(int _dependentTask, int _dependsOnTask)
     {
         bool flag = false;
