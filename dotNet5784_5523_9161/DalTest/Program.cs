@@ -32,6 +32,7 @@ namespace DalTest//  ;????????
                     case 2:
                     {
                         crudMenu("task");
+                        crudTask();
                         break;
                     }
                     case 3:
@@ -47,7 +48,6 @@ namespace DalTest//  ;????????
 
         private static void createEngineer()
         {
-            // ??????????האם צריך לעשות כזאת מתודה לכל ישות ולכל מתודה
             int _id, _level;
             string _name, _email;
             double _cost;
@@ -129,6 +129,93 @@ namespace DalTest//  ;????????
                 }
             } while (choice > 0);
             
+        }
+        private static int createTask()
+        {
+            int _complexityLevel;
+            int? _engineerId;
+            string? _desciption, _alias, _remarks, _deliverable;
+            //bool _milestone;
+            DateTime _deadline, _createdAt;
+            Console.WriteLine("Enter description, alias, dead line, deliverable, remarks, engineer ID, complexity level");
+            _desciption = Console.ReadLine();
+            _alias = Console.ReadLine();
+            //_milestone = Console.ReadLine();
+            _createdAt = DateTime.Now;
+           _deadline = DateTime.Parse(Console.ReadLine());
+            _deliverable = Console.ReadLine();
+            _remarks = Console.ReadLine();
+            _engineerId = Console.Read();
+            _complexityLevel = Console.Read();
+            DO.Task newTask = new(0, _desciption, _alias,false, _createdAt, null, null, _deadline, null, _deliverable, _remarks, _engineerId, (DO.EngineerExperiece)_complexityLevel);
+            return s_dalTask.Create(newTask);
+        }
+        private static void readTask()
+        {
+            Console.WriteLine("Enter task's ID");
+            int _id = Console.Read();
+            Console.WriteLine(s_dalTask.Read(_id));
+        }
+
+        private static void readAllTask()
+        {
+            Console.WriteLine(s_dalTask.ReadAll());
+        }
+
+        private static void updateTask()
+        {
+            Console.WriteLine("Enter id, name, email, level, cost");
+            _id = Console.Read();
+            _name = Console.ReadLine();
+            _email = Console.ReadLine();
+            _level = Console.Read();
+            _cost = Console.Read();
+            Engineer newEngineer = new(_id, _name, _email, (DO.EngineerExperiece)_level, _cost);
+            s_dalEngineer.Update(newEngineer);
+        }
+
+        private static void deleteTask()
+        {
+            Console.WriteLine("Enter engineer's ID");
+            int _id = Console.Read();
+            s_dalEngineer.Delete(_id);
+        }
+        private static void crudTask()
+        {
+            int choice;
+            do
+            {
+                choice = Console.Read();
+                switch (choice)
+                {
+                    case 1:
+                        {
+                            createTask();
+                            break;
+                        }
+                    case 2:
+                        {
+                            readTask();
+                            break;
+                        }
+                    case 3:
+                        {
+                            readAllTask();
+                            break;
+                        }
+                    case 4:
+                        {
+                            updateTask();
+                            break;
+                        }
+                    case 5:
+                        {
+                            deleteTask();
+                            break;
+                        }
+                }
+            } while (choice > 0);
+
         }
         private static void crudMenu(string entity)
         {    
