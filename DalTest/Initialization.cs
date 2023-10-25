@@ -69,13 +69,15 @@ public static class Initialization
     }
     public static void createTask()
     {
+        List<Engineer> engineers = s_dalEngineer!.ReadAll();
         for (int i = 0; i < 100; i++) {
             bool _milestone = s_rand.NextInt64()%2 == 0;
             DateTime _createdAt = DateTime.Today.AddDays(s_rand.Next(365));
             DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
+            int _engineerId = engineers[s_rand.Next(40)].ID;
             int _complexityLevel = s_rand.Next(1, 5);
             Task newTask = new(0, null, null, _milestone, _createdAt, null, null,
-                _deadline, null, null, null, null, (DO.EngineerExperiece)_complexityLevel);
+                _deadline, null, null, null, _engineerId, (DO.EngineerExperiece)_complexityLevel);
             s_dalTask!.Create(newTask);
         }
     }
