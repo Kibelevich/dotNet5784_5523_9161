@@ -18,15 +18,10 @@ public class EngineerImplementation : IEngineer
     }
     public void Delete(int id)
     {
-        DataSource.Engineers.ForEach(engineer =>
-        {
-            if (engineer.ID == id)
-            {
-                DataSource.Engineers.Remove(engineer);
-                return;
-            }
-        });
-        throw new Exception($"Engineer with ID={id} not exists");
+        Engineer engineer = DataSource.Engineers.Find(ele => ele.ID == id)!;
+        if (engineer == null)
+            throw new Exception($"Engineer with ID={id} not exists");
+        DataSource.Engineers.Remove(engineer);
     }
 
     public Engineer? Read(int id)
@@ -42,21 +37,15 @@ public class EngineerImplementation : IEngineer
 
     public List<Engineer> ReadAll()
     {
-        //////////////////////////////////////////////////////////////////// אם זה נקרא עותק
         return new List<Engineer>(DataSource.Engineers);
     }
 
     public void Update(Engineer item)
     {
-        DataSource.Engineers.ForEach(engineer =>
-        {
-            if (engineer.ID == item.ID)
-            {
-                DataSource.Engineers.Remove(engineer);
-                DataSource.Engineers.Add(item);
-                return;
-            }
-        });
-        throw new Exception($"Engineer with ID={item.ID} not exists");
+        Engineer engineer = DataSource.Engineers.Find(ele => ele.ID == item.ID)!;
+        if (engineer == null)
+            throw new Exception($"Engineer with ID={item.ID} not exists");
+        DataSource.Engineers.Remove(engineer);
+        DataSource.Engineers.Add(item);
     }
 }

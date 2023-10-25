@@ -37,7 +37,7 @@ public class DependencyImplementation : IDependency
 
     public void Update(Dependency item)
     {
-        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == item.ID);
+        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == item.ID)!;
         if(dependency == null)
             throw new Exception($"Dependency with ID={item.ID} not exists");
         DataSource.Dependencies.Remove(dependency);

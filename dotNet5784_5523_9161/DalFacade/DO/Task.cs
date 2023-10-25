@@ -31,4 +31,13 @@ public record Task (
     string? remarks,
     int? engineerId,
     EngineerExperiece complexityLevel
-    );
+    )
+{
+    public override string ToString()
+    {
+        return "Task: " + "ID: " + ID + " desciption: " + desciption + " alias: " + alias + " milestone: " + milestone
+            + " created at: " + createdAt + " start: " + start + " forecast date: " + forecastDate + " dead line: "
+            + deadline + " complete: " + complete + " deliverable: " + deliverable + " remarks: " + remarks
+            + " engineer id: " + engineerId + " complexity level: " + complexityLevel;
+    }
+}

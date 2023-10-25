@@ -8,7 +8,7 @@ public static class Initialization
     private static IEngineer? s_dalEngineer;
     private static ITask? s_dalTask;
     private static IDependency? s_dalDependency;
-    private static readonly Random s_rand = new();
+    private static readonly Random s_rand = new Random();
 
     private static void createEngineer()
     {
@@ -59,28 +59,24 @@ public static class Initialization
         {
             int _id;
             do
-                _id = s_rand.Next(100000000, 999999999);
+                _id = s_rand.Next(100000000, 1000000000);
             while (s_dalEngineer!.Read(_id) != null);
             string _email= $"{engineer.Split(' ')[0]}{_id%1000}@gmail.com";
             int _level = _id % 5;
             Engineer newEngineer = new(_id, engineer, _email, (DO.EngineerExperiece)_level, 0);
-            s_dalEngineer.Create(newEngineer);
+            s_dalEngineer!.Create(newEngineer);
         }
     }
     public static void createTask()
     {
-        //      מה צריך להיות נל ומה לא
-        //       לפי מה מחליטים איך לחשב את הזמנים
         for (int i = 0; i < 100; i++) {
             bool _milestone = s_rand.NextInt64()%2 == 0;
-            DateTime _createdAt = DateTime.Today.AddDays(s_rand.Next(-365));
-            //DateTime _start = _createdAt.AddDays(s_rand.Next(100));
-            //DateTime _forecastDate = _start.AddDays(s_rand.Next(365));
+            DateTime _createdAt = DateTime.Today.AddDays(s_rand.Next(365));
             DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
-            int _complexityLevel = s_rand.Next(0, 4);////////////////////////////// כולל???
+            int _complexityLevel = s_rand.Next(1, 5);
             Task newTask = new(0, null, null, _milestone, _createdAt, null, null,
                 _deadline, null, null, null, null, (DO.EngineerExperiece)_complexityLevel);
-            s_dalTask.Create(newTask);
+            s_dalTask!.Create(newTask);
         }
     }
     public static void createDependency()
@@ -92,9 +88,9 @@ public static class Initialization
                 _dependentTask = s_rand.Next(100);
                 _dependsOnTask = s_rand.Next(_dependentTask);
             }
-            while (s_dalDependency.isDepend(_dependentTask, _dependsOnTask));
+            while (s_dalDependency!.isDepend(_dependentTask, _dependsOnTask));
             Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
-            s_dalDependency.Create(newDependency);
+            s_dalDependency!.Create(newDependency);
         }
     }
 

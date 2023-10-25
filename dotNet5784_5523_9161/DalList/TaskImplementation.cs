@@ -3,6 +3,7 @@ namespace Dal;
 using DO;
 using DalApi;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 public class TaskImplementation : ITask
 {
@@ -40,15 +41,10 @@ public class TaskImplementation : ITask
 
     public void Update(Task item)
     {
-        DataSource.Tasks.ForEach(element =>
-        {
-            if (element.ID == item.ID)
-            {
-                DataSource.Tasks.Remove(element);
-                DataSource.Tasks.Add(item);
-                return;
-            }
-        });
-        throw new Exception($"Task with ID={item.ID} not exists");
+        Task task = DataSource.Tasks.Find(ele => ele.ID == item.ID)!;
+        if (task == null)
+            throw new Exception($"Task with ID={item.ID} not exists");
+        DataSource.Tasks.Remove(task);
+        DataSource.Tasks.Add(item);
     }
 }

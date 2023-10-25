@@ -1,4 +1,7 @@
 ﻿
+using System.Reflection.Emit;
+using System.Xml.Linq;
+
 namespace DO;
 /// <summary>
 /// An entity that describes dependencies between tasks
@@ -10,5 +13,12 @@ public record Dependency(
     int ID,
     int dependentTask,
     int dependsOnTask
-    );
+)
+
+{
+    public override string ToString()
+    {
+        return "Engineer: ID: " + ID + " pending task: " + dependentTask + " previous task: " + dependsOnTask;
+    }
+}
 
