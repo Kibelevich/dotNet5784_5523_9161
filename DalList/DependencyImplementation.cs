@@ -45,7 +45,6 @@ public class DependencyImplementation : IDependency
     }
 
 
-    // לא בטוח שצריך אולי קשור לשכבה אחרת
     public bool isDepend(int _dependentTask, int _dependsOnTask)
     {
         bool flag = false;
