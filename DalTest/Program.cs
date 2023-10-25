@@ -1,6 +1,9 @@
 ﻿using Dal;
 using DalApi;
 using DO;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DalTest
 { 
@@ -11,17 +14,18 @@ namespace DalTest
         private static IDependency? s_dalDependency = new DependencyImplementation();
         private static void createEngineer()
         {
-            try { 
-                int _id, _level;
+            try {
+                int _id;
+                DO.EngineerExperiece _level;
                 string _name, _email;
                 double _cost;
                 Console.WriteLine("Enter id, name, email, level, cost");
-                _id = Convert.ToInt32(Console.ReadLine());
+                int.TryParse(Console.ReadLine()!, out _id);
                 _name = Console.ReadLine()!;
                 _email = Console.ReadLine()!;
-                _level = Convert.ToInt32(Console.ReadLine());
-                _cost = Convert.ToInt32(Console.ReadLine());
-                Engineer newEngineer = new(_id, _name, _email, (DO.EngineerExperiece)_level, _cost);
+                DO.EngineerExperiece.TryParse(Console.ReadLine()!, out _level);
+                double.TryParse(Console.ReadLine()!, out _cost);
+                Engineer newEngineer = new(_id, _name, _email, _level, _cost);
                 s_dalEngineer!.Create(newEngineer);
             }
             catch (Exception e)
@@ -31,8 +35,9 @@ namespace DalTest
         }
         private static void readEngineer()
         {
+            int _id;
             Console.WriteLine("Enter engineer's ID");
-            int _id = Convert.ToInt32(Console.ReadLine());
+            int.TryParse(Console.ReadLine()!, out _id);
             Console.WriteLine(s_dalEngineer!.Read(_id));
         }
 
@@ -46,17 +51,20 @@ namespace DalTest
 
         private static void updateEngineer()
         {
-            try { 
-                int _id, _level;
+            try {
+                int _id;
+                DO.EngineerExperiece _level;
                 string _name, _email;
                 double _cost;
-                Console.WriteLine("Enter id, name, email, level, cost");
-                _id = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter id");
+                int.TryParse(Console.ReadLine()!, out _id);
+                Console.WriteLine(s_dalEngineer!.Read(_id));
+                Console.WriteLine("Enter details to update");
                 _name = Console.ReadLine()!;
                 _email = Console.ReadLine()!;
-                _level = Convert.ToInt32(Console.ReadLine());
-                _cost = Convert.ToInt32(Console.ReadLine());
-                Engineer newEngineer = new(_id, _name, _email, (DO.EngineerExperiece)_level, _cost);
+                DO.EngineerExperiece.TryParse(Console.ReadLine()!, out _level);
+                double.TryParse(Console.ReadLine()!, out _cost);
+                Engineer newEngineer = new(_id, _name, _email, _level, _cost);
                 s_dalEngineer!.Update(newEngineer);
             }
             catch (Exception e)
@@ -69,7 +77,8 @@ namespace DalTest
         {
             try { 
                 Console.WriteLine("Enter engineer's ID");
-                int _id = Convert.ToInt32(Console.ReadLine());
+                int _id;
+                int.TryParse(Console.ReadLine()!, out _id); 
                 s_dalEngineer!.Delete(_id);
             }
             catch (Exception e)
@@ -119,26 +128,27 @@ namespace DalTest
         }
         private static int createTask()
         {
-            int _complexityLevel;
-            int? _engineerId;
+            DO.EngineerExperiece _complexityLevel;
+            int _engineerId;
             string? _desciption, _alias, _remarks, _deliverable;
             DateTime _deadline, _createdAt;
             Console.WriteLine("Enter description, alias, dead line, deliverable, remarks, engineer ID, complexity level");
             _desciption = Console.ReadLine();
             _alias = Console.ReadLine();
             _createdAt = DateTime.Now;
-            _deadline = DateTime.Parse(Console.ReadLine()!);
+            DateTime.TryParse(Console.ReadLine()!, out _deadline);
             _deliverable = Console.ReadLine();
             _remarks = Console.ReadLine();
-            _engineerId = Convert.ToInt32(Console.ReadLine());
-            _complexityLevel = Convert.ToInt32(Console.ReadLine());
-            DO.Task newTask = new(0, _desciption, _alias, false, _createdAt, null, null, _deadline, null, _deliverable, _remarks, _engineerId, (DO.EngineerExperiece)_complexityLevel);
+            int.TryParse(Console.ReadLine()!, out _engineerId);
+            DO.EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
+            DO.Task newTask = new(0, _desciption, _alias, false, _createdAt, null, null, _deadline, null, _deliverable, _remarks, _engineerId, _complexityLevel);
             return s_dalTask!.Create(newTask);
         }
         private static void readTask()
         {
+            int _id;
             Console.WriteLine("Enter task's ID");
-            int _id = Convert.ToInt32(Console.ReadLine());
+            int.TryParse(Console.ReadLine()!, out _id);
             Console.WriteLine(s_dalTask!.Read(_id));
         }
 
@@ -152,22 +162,30 @@ namespace DalTest
 
         private static void updateTask()
         {
-            try { 
-                int _complexityLevel, ID;
-                int? _engineerId;
+            try {
+                DO.EngineerExperiece _complexityLevel;
+                int ID;
+                int _engineerId;
                 string? _desciption, _alias, _remarks, _deliverable;
-                DateTime _deadline, _createdAt;
-                Console.WriteLine("Enter ID, description, alias, dead line, deliverable, remarks, engineer ID, complexity level");
-                ID = Convert.ToInt32(Console.ReadLine());
+                bool _milestone; 
+                DateTime _deadline, _createdAt, _complete, _start, _forecastDate;
+                Console.WriteLine("Enter ID");
+                int.TryParse(Console.ReadLine()!, out ID); 
+                Console.WriteLine(s_dalTask!.Read(ID));
+                Console.WriteLine("Enter details to update");
                 _desciption = Console.ReadLine();
                 _alias = Console.ReadLine();
+                bool.TryParse(Console.ReadLine()!, out _milestone);
                 _createdAt = DateTime.Now;
-                _deadline = DateTime.Parse(Console.ReadLine()!);
+                DateTime.TryParse(Console.ReadLine()!, out _start);
+                DateTime.TryParse(Console.ReadLine()!, out _forecastDate);
+                DateTime.TryParse(Console.ReadLine()!, out _deadline);
+                DateTime.TryParse(Console.ReadLine()!, out _complete);
                 _deliverable = Console.ReadLine();
                 _remarks = Console.ReadLine();
-                _engineerId = Convert.ToInt32(Console.ReadLine());
-                _complexityLevel = Convert.ToInt32(Console.ReadLine());
-                DO.Task newTask = new(ID, _desciption, _alias, false, _createdAt, null, null, _deadline, null, _deliverable, _remarks, _engineerId, (DO.EngineerExperiece)_complexityLevel);
+                int.TryParse(Console.ReadLine()!, out _engineerId);
+                DO.EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
+                DO.Task newTask = new(ID, _desciption, _alias, _milestone, _createdAt, _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
                 s_dalTask!.Update(newTask);
             }
             catch (Exception e)
@@ -180,7 +198,8 @@ namespace DalTest
         {
             try { 
                 Console.WriteLine("Enter task's ID");
-                int _id = Convert.ToInt32(Console.ReadLine());
+                int _id;
+                int.TryParse(Console.ReadLine()!, out _id);
                 s_dalTask!.Delete(_id);
             }
             catch (Exception e)
@@ -234,15 +253,16 @@ namespace DalTest
         {
             int _dependsOnTask, _dependentTask;
             Console.WriteLine("Enter, pending task, previous task");
-            _dependentTask = Convert.ToInt32(Console.ReadLine());
-            _dependsOnTask = Convert.ToInt32(Console.ReadLine());
+            int.TryParse(Console.ReadLine()!, out _dependentTask);
+            int.TryParse(Console.ReadLine()!, out _dependsOnTask);
             DO.Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
             return s_dalDependency!.Create(newDependency);
         }
         private static void readDependency()
         {
+            int _id;
             Console.WriteLine("Enter dependency's ID");
-            int _id = Convert.ToInt32(Console.ReadLine());
+            int.TryParse(Console.ReadLine()!, out _id);
             Console.WriteLine(s_dalDependency!.Read(_id));
         }
 
@@ -258,11 +278,12 @@ namespace DalTest
         {
             try { 
                 int ID, _dependsOnTask, _dependentTask;
-                Console.WriteLine("Enter ID, pending task, previous task");
-                ID = Convert.ToInt32(Console.ReadLine());
-                _dependentTask = Convert.ToInt32(Console.ReadLine());
-                _dependsOnTask = Convert.ToInt32(Console.ReadLine());
-                DO.Dependency newDependency = new(ID, _dependentTask, _dependsOnTask);
+                Console.WriteLine("Enter ID");
+                int.TryParse(Console.ReadLine()!, out ID);
+                Console.WriteLine(s_dalDependency!.Read(ID));
+                int.TryParse(Console.ReadLine()!, out _dependentTask);
+                int.TryParse(Console.ReadLine()!, out _dependsOnTask);
+                Dependency newDependency = new(ID, _dependentTask, _dependsOnTask);
                 s_dalDependency!.Update(newDependency);
             }
             catch (Exception e)
@@ -275,7 +296,8 @@ namespace DalTest
         {
             try { 
                 Console.WriteLine("Enter dependency's ID");
-                int _id = Convert.ToInt32(Console.ReadLine());
+                int _id;
+                int.TryParse(Console.ReadLine()!, out _id);
                 s_dalDependency!.Delete(_id);
             }
             catch (Exception e)
