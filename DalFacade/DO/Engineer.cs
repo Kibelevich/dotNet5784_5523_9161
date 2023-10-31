@@ -18,7 +18,7 @@ public record Engineer(
 {
     public override string ToString()
     {
-        return "Engineer: ID: " + ID + " name: " + name + " email: " + email + " level: " + level
-            + " cost: " + cost;
+        return "Engineer:  ID: " + ID + "  name: " + name + "  email: " + email + "  level: " + level
+            + "  cost: " + cost; 
     }
 }

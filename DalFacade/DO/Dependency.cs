@@ -18,7 +18,7 @@ public record Dependency(
 {
     public override string ToString()
     {
-        return "Engineer: ID: " + ID + " pending task: " + dependentTask + " previous task: " + dependsOnTask;
+        return "Engineer:  ID: " + ID + "  pending task: " + dependentTask + "  previous task: " + dependsOnTask;
     }
 }
 
