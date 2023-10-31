@@ -3,7 +3,6 @@ namespace Dal;
 using DO;
 using DalApi;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
 public class TaskImplementation : ITask
 {
@@ -21,6 +20,8 @@ public class TaskImplementation : ITask
         if (task == null)
             throw new Exception($"Task with ID={id} not exists");
         DataSource.Tasks.Remove(task);
+        task = task with { complete = DateTime.Now };
+        DataSource.Tasks.Add(task);
     }
 
     public Task? Read(int id)

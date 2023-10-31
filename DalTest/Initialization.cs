@@ -3,6 +3,7 @@ namespace DalTest;
 using DalApi;
 using DO;
 
+
 public static class Initialization
 {
     private static IEngineer? s_dalEngineer;
@@ -10,6 +11,7 @@ public static class Initialization
     private static IDependency? s_dalDependency;
     private static readonly Random s_rand = new Random();
 
+    // inits the engineer's list with random instances
     private static void createEngineer()
     {
         string[] engineerName =
@@ -63,10 +65,12 @@ public static class Initialization
             while (s_dalEngineer!.Read(_id) != null);
             string _email= $"{engineer.Split(' ')[0]}{_id%1000}@gmail.com";
             int _level = _id % 5;
-            Engineer newEngineer = new(_id, engineer, _email, (DO.EngineerExperiece)_level, 0);
+            Engineer newEngineer = new(_id, engineer, _email, (EngineerExperiece)_level, 0);
             s_dalEngineer!.Create(newEngineer);
         }
     }
+
+    // inits the task's list with random instances
     public static void createTask()
     {
         List<Engineer> engineers = s_dalEngineer!.ReadAll();
@@ -77,10 +81,12 @@ public static class Initialization
             int _engineerId = engineers[s_rand.Next(40)].ID;
             int _complexityLevel = s_rand.Next(1, 5);
             Task newTask = new(0, null, null, _milestone, _createdAt, null, null,
-                _deadline, null, null, null, _engineerId, (DO.EngineerExperiece)_complexityLevel);
+                _deadline, null, null, null, _engineerId, (EngineerExperiece)_complexityLevel);
             s_dalTask!.Create(newTask);
         }
     }
+
+    // inits the dependency's list with random instances
     public static void createDependency()
     {
         int _dependentTask, _dependsOnTask;
@@ -96,6 +102,7 @@ public static class Initialization
         }
     }
 
+    // inits the lists with random instances
     public static void Do(IEngineer? dalEngineer, ITask? dalTask, IDependency? dalDependency)
     {
         s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");

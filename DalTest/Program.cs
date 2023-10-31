@@ -1,9 +1,6 @@
 ﻿using Dal;
 using DalApi;
 using DO;
-using System.Reflection.PortableExecutable;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 
 namespace DalTest
 { 
@@ -12,18 +9,22 @@ namespace DalTest
         private static IEngineer? s_dalEngineer = new EngineerImplementation();
         private static ITask? s_dalTask = new TaskImplementation();
         private static IDependency? s_dalDependency = new DependencyImplementation();
+
+        /// <summary>
+        /// Crud functions for engineer
+        /// </summary>
         private static void createEngineer()
         {
             try {
                 int _id;
-                DO.EngineerExperiece _level;
+                EngineerExperiece _level;
                 string _name, _email;
                 double _cost;
                 Console.WriteLine("Enter id, name, email, level, cost");
                 int.TryParse(Console.ReadLine()!, out _id);
                 _name = Console.ReadLine()!;
                 _email = Console.ReadLine()!;
-                DO.EngineerExperiece.TryParse(Console.ReadLine()!, out _level);
+                EngineerExperiece.TryParse(Console.ReadLine()!, out _level);
                 double.TryParse(Console.ReadLine()!, out _cost);
                 Engineer newEngineer = new(_id, _name, _email, _level, _cost);
                 s_dalEngineer!.Create(newEngineer);
@@ -62,7 +63,7 @@ namespace DalTest
                 Console.WriteLine("Enter details to update");
                 _name = Console.ReadLine()!;
                 _email = Console.ReadLine()!;
-                DO.EngineerExperiece.TryParse(Console.ReadLine()!, out _level);
+                EngineerExperiece.TryParse(Console.ReadLine()!, out _level);
                 double.TryParse(Console.ReadLine()!, out _cost);
                 Engineer newEngineer = new(_id, _name, _email, _level, _cost);
                 s_dalEngineer!.Update(newEngineer);
@@ -86,6 +87,8 @@ namespace DalTest
                 Console.WriteLine(e.ToString());
             }
         }
+
+        // Submenu for engineer
         private static void crudEngineer()
         {
             string choice;
@@ -126,9 +129,13 @@ namespace DalTest
                 choice = Console.ReadLine()!;
             } while (choice != "0");
         }
+
+        /// <summary>
+        /// Crud functions for engineer
+        /// </summary>
         private static int createTask()
         {
-            DO.EngineerExperiece _complexityLevel;
+            EngineerExperiece _complexityLevel;
             int _engineerId;
             string? _desciption, _alias, _remarks, _deliverable;
             DateTime _deadline, _createdAt;
@@ -140,7 +147,7 @@ namespace DalTest
             _deliverable = Console.ReadLine();
             _remarks = Console.ReadLine();
             int.TryParse(Console.ReadLine()!, out _engineerId);
-            DO.EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
+            EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
             DO.Task newTask = new(0, _desciption, _alias, false, _createdAt, null, null, _deadline, null, _deliverable, _remarks, _engineerId, _complexityLevel);
             return s_dalTask!.Create(newTask);
         }
@@ -163,7 +170,7 @@ namespace DalTest
         private static void updateTask()
         {
             try {
-                DO.EngineerExperiece _complexityLevel;
+                EngineerExperiece _complexityLevel;
                 int ID;
                 int _engineerId;
                 string? _desciption, _alias, _remarks, _deliverable;
@@ -184,7 +191,7 @@ namespace DalTest
                 _deliverable = Console.ReadLine();
                 _remarks = Console.ReadLine();
                 int.TryParse(Console.ReadLine()!, out _engineerId);
-                DO.EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
+                EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
                 DO.Task newTask = new(ID, _desciption, _alias, _milestone, _createdAt, _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
                 s_dalTask!.Update(newTask);
             }
@@ -207,6 +214,8 @@ namespace DalTest
                 Console.WriteLine(e.ToString());
             }
         }
+
+        // Submenu for task
         private static void crudTask()
         {
             string choice;
@@ -249,13 +258,16 @@ namespace DalTest
 
         }
 
+        /// <summary>
+        /// Crud functions for engineer
+        /// </summary>
         private static int createDependency()
         {
             int _dependsOnTask, _dependentTask;
             Console.WriteLine("Enter, pending task, previous task");
             int.TryParse(Console.ReadLine()!, out _dependentTask);
             int.TryParse(Console.ReadLine()!, out _dependsOnTask);
-            DO.Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
+            Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
             return s_dalDependency!.Create(newDependency);
         }
         private static void readDependency()
@@ -305,6 +317,8 @@ namespace DalTest
                 Console.WriteLine(e.ToString());
             }
         }
+
+        // Submenu for dependency
         private static void crudDependency()
         {
             string choice;
@@ -345,12 +359,15 @@ namespace DalTest
                 choice = Console.ReadLine()!;
             } while (choice != "0");
         }
+
+        // Prints the entity's options 
         private static void crudMenu(string entity)
         {    
             Console.WriteLine($"Choose:\n 0 to exit\n 1 to create a new {entity}\n 2 to read the {entity}\n" +
             $" 3 to read all\n 4 to update the {entity}\n 5 to delete the {entity}\n"); 
         }
 
+        // Main menu - entity selection 
         private static void mainMenu()
         {
             Console.WriteLine("Choose:\n 0 to exit\n 1 to engineer\n 2 to task\n 3 to dependency\n");
