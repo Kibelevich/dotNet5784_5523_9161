@@ -131,7 +131,7 @@ namespace DalTest
         }
 
         /// <summary>
-        /// Crud functions for engineer
+        /// Crud functions for task
         /// </summary>
         private static int createTask()
         {
@@ -259,7 +259,7 @@ namespace DalTest
         }
 
         /// <summary>
-        /// Crud functions for engineer
+        /// Crud functions for dependency
         /// </summary>
         private static int createDependency()
         {
