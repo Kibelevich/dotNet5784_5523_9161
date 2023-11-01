@@ -9,7 +9,7 @@ public static class Initialization
     //private static IEngineer? s_dalEngineer;
     //private static ITask? s_dalTask;
     //private static IDependency? s_dalDependency;
-    private static IDal s_dal;
+    private static IDal? s_dal;
     private static readonly Random s_rand = new Random();
 
     // inits the engineer's list with random instances
@@ -63,7 +63,7 @@ public static class Initialization
             int _id;
             do
                 _id = s_rand.Next(100000000, 1000000000);
-            while (s_dal.Engineer.Read(_id) != null);
+            while (s_dal!.Engineer.Read(_id) != null);
             string _email= $"{engineer.Split(' ')[0]}{_id%1000}@gmail.com";
             int _level = _id % 5;
             Engineer newEngineer = new(_id, engineer, _email, (EngineerExperiece)_level, 0);
@@ -74,7 +74,7 @@ public static class Initialization
     // inits the task's list with random instances
     public static void createTask()
     {
-        IEnumerable<Engineer> engineers = s_dal.Engineer!.ReadAll(ele => { return true; })!;
+        IEnumerable<Engineer> engineers = s_dal!.Engineer!.ReadAll(ele => { return true; })!;
         for (int i = 0; i < 100; i++) {
             bool _milestone = s_rand.NextInt64()%2 == 0;
             DateTime _createdAt = DateTime.Today.AddDays(s_rand.Next(365));
@@ -97,7 +97,7 @@ public static class Initialization
                 _dependentTask = s_rand.Next(100);
                 _dependsOnTask = s_rand.Next(_dependentTask);
             }
-            while (s_dal.Dependency!.isDepend(_dependentTask, _dependsOnTask));
+            while (s_dal!.Dependency!.isDepend(_dependentTask, _dependsOnTask));
             Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
             s_dal.Dependency!.Create(newDependency);
         }
