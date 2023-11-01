@@ -3,8 +3,9 @@ namespace Dal;
 using DO;
 using DalApi;
 using System.Collections.Generic;
+using System.Linq;
 
-public class TaskImplementation : ITask
+internal class TaskImplementation : ITask
 {
     /// <summary>
     /// Creates new entity object
@@ -26,8 +27,8 @@ public class TaskImplementation : ITask
     /// <exception cref="Exception">if the object not found</exception>
     public void Delete(int id)
     {
-        Task task = DataSource.Tasks.Find(ele => ele.ID == id)??
-            throw new Exception($"Task with ID={id} not exists");
+        Task task = DataSource.Tasks.FirstOrDefault(ele => ele.ID == id)??
+            throw new DalDoesNotExistExeption($"Task with ID={id} not exists");
         DataSource.Tasks.Remove(task);
         task = task with { complete = DateTime.Now };
         DataSource.Tasks.Add(task);
@@ -38,25 +39,31 @@ public class TaskImplementation : ITask
     /// </summary>
     /// <param name="id">the object's id to read</param>
     /// <returns></returns>
-    /// <exception cref="Exception">if the object not found</exception>
     public Task? Read(int id)
     {
-        Task? task = null;
-        DataSource.Tasks.ForEach(element=>
-        {
-            if (element.ID == id)
-                task = element;
-        });
+        Task? task = DataSource.Tasks.FirstOrDefault(ele => ele.ID == id);
         return task;
+    }
+
+    /// <summary>
+    ///  Reads entity object by filter
+    /// </summary>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
+    /// <returns>The object that met the condition</returns>
+    public Task? Read(Func<Task, bool> filter)
+    {
+        return DataSource.Tasks.First(filter);
     }
 
     /// <summary>
     /// Reads all entity objects
     /// </summary>
     /// <returns>List of all objects</returns>
-    public List<Task> ReadAll()
+    public IEnumerable<Task> ReadAll(Func<Task, bool>? filter = null)
     {
-        return new List<Task>(DataSource.Tasks);
+        if (filter != null)
+            return DataSource.Tasks.Where(filter);
+        return DataSource.Tasks.Select(task => task);
     }
 
     /// <summary>
@@ -66,8 +73,8 @@ public class TaskImplementation : ITask
     /// <exception cref="Exception">if object not found</exception>
     public void Update(Task item)
     {
-        Task task = DataSource.Tasks.Find(ele => ele.ID == item.ID)??
-            throw new Exception($"Task with ID={item.ID} not exists");
+        Task task = DataSource.Tasks.FirstOrDefault(ele => ele.ID == item.ID)??
+            throw new DalDoesNotExistExeption($"Task with ID={item.ID} not exists");
         DataSource.Tasks.Remove(task);
         DataSource.Tasks.Add(item);
     }

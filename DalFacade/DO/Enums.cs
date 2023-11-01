@@ -1,8 +1,4 @@
-﻿
-namespace DO;
-
-
-
+﻿namespace DO;
 public enum EngineerExperiece {
   Novice,
   Beginner,
