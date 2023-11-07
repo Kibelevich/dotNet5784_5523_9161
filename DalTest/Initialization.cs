@@ -72,14 +72,19 @@ public static class Initialization
     // inits the task's list with random instances
     public static void createTask()
     {
-        IEnumerable<Engineer> engineers = s_dal!.Engineer!.ReadAll(ele => { return true; })!;
-        for (int i = 0; i < 100; i++) {
-            bool _milestone = s_rand.NextInt64() % 2 == 0;
-            DateTime _createdAt = DateTime.Today.AddDays(s_rand.Next(365));
+        string[] descriptions = { "easy", "fun", "difficult", "challenging", "be careful", "good luck" };
+        string[] aliases = { "add road", "built a shop", "painting", "help mother", "plan party" };
+         IEnumerable<Engineer> engineers = s_dal!.Engineer!.ReadAll(ele => { return true; })!;
+        for (int i = 0; i < 100; i++)
+        {
+            string _description = descriptions[s_rand.Next(6)];
+            string _alias = aliases[s_rand.Next(5)];
+            TimeSpan span = new(s_rand.Next(300), s_rand.Next(24), s_rand.Next(60), s_rand.Next(60));
+            DateTime _createdAt = DateTime.Today - span;
             DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
-            int _engineerId = engineers.ElementAt(s_rand.Next(40)).ID;
-            int _complexityLevel = s_rand.Next(1, 5);
-            Task newTask = new(0, null, null, _milestone, _createdAt, null, null,
+            int _engineerId = engineers[s_rand.Next(40)].ID;
+            int _complexityLevel = s_rand.Next(1, 6);
+            Task newTask = new(0, _description, _alias, false, _createdAt, null, null,
                 _deadline, null, null, null, _engineerId, (EngineerExperiece)_complexityLevel);
             s_dal.Task!.Create(newTask);
         }

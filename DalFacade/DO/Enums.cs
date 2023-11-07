@@ -1,8 +1,12 @@
-﻿namespace DO;
-public enum EngineerExperiece {
-  Novice,
-  Beginner,
-  Competent,
-  Proficient,
-  Expert
+
+
+namespace DO;
+
+public enum EngineerExperiece
+{
+    Novice = 1,
+    Beginner,
+    Competent,
+    Proficient,
+    Expert
 }
