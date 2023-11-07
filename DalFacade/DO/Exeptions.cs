@@ -6,13 +6,15 @@ public class DalDoesNotExistExeption : Exception
     public DalDoesNotExistExeption(string? message) : base(message){ }
 }
 
+[Serializable]
 public class DalAlreadyExistException : Exception
 {
     public DalAlreadyExistException(string? message) : base(message) { }
 }
 
-public class DalDeletionImpossible : Exception
+[Serializable]
+public class DalDeletionImpossibleException : Exception
 {
-    public DalDeletionImpossible(string? message) : base(message) { }
+    public DalDeletionImpossibleException(string? message) : base(message) { }
 
 }

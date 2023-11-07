@@ -1,8 +1,6 @@
-﻿
-namespace DalTest;
+﻿namespace DalTest;
 using DalApi;
 using DO;
-using System.Reflection.Metadata.Ecma335;
 
 public static class Initialization
 {
@@ -62,9 +60,9 @@ public static class Initialization
         {
             int _id;
             do
-                _id = s_rand.Next(100000000, 1000000000);
+                _id = s_rand.Next(200000000, 400000000);
             while (s_dal!.Engineer.Read(_id) != null);
-            string _email= $"{engineer.Split(' ')[0]}{_id%1000}@gmail.com";
+            string _email = $"{engineer.Split(' ')[0]}{_id % 1000}@gmail.com";
             int _level = _id % 5;
             Engineer newEngineer = new(_id, engineer, _email, (EngineerExperiece)_level, 0);
             s_dal.Engineer!.Create(newEngineer);
@@ -76,7 +74,7 @@ public static class Initialization
     {
         IEnumerable<Engineer> engineers = s_dal!.Engineer!.ReadAll(ele => { return true; })!;
         for (int i = 0; i < 100; i++) {
-            bool _milestone = s_rand.NextInt64()%2 == 0;
+            bool _milestone = s_rand.NextInt64() % 2 == 0;
             DateTime _createdAt = DateTime.Today.AddDays(s_rand.Next(365));
             DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
             int _engineerId = engineers.ElementAt(s_rand.Next(40)).ID;
@@ -91,7 +89,7 @@ public static class Initialization
     public static void createDependency()
     {
         int _dependentTask, _dependsOnTask;
-        for (int i = 0;i < 250;i++) {
+        for (int i = 0; i < 250; i++) {
             do
             {
                 _dependentTask = s_rand.Next(100);
@@ -105,11 +103,7 @@ public static class Initialization
 
     // inits the lists with random instances
     public static void Do(IDal dal)
-    {
-        //s_dalEngineer = dalEngineer ?? throw new NullReferenceException("DAL can not be null!");
-        //s_dalTask = dalTask ?? throw new NullReferenceException("DAL can not be null!");
-        //s_dalDependency = dalDependency ?? throw new NullReferenceException("DAL can not be null!");
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
+    {   s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
         createEngineer();
         createTask();
         createDependency();

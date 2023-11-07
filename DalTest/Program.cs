@@ -28,9 +28,13 @@ namespace DalTest
                 Engineer newEngineer = new(_id, _name, _email, _level, _cost);
                 s_dal.Engineer!.Create(newEngineer);
             }
+            catch (DalAlreadyExistException e)
+            {
+                Console.WriteLine(e);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e);
             }
         }
         private static void readEngineer()
@@ -66,9 +70,13 @@ namespace DalTest
                 Engineer newEngineer = new(_id, _name, _email, _level, _cost);
                 s_dal.Engineer!.Update(newEngineer);
             }
+            catch (DalDoesNotExistExeption e)
+            {
+                Console.WriteLine(e);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e);
             }
         }
 
@@ -80,9 +88,13 @@ namespace DalTest
                 int.TryParse(Console.ReadLine()!, out _id); 
                 s_dal.Engineer!.Delete(_id);
             }
+            catch (DalDoesNotExistExeption e)
+            {
+                Console.WriteLine(e);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e);
             }
         }
 
@@ -192,9 +204,13 @@ namespace DalTest
                 DO.Task newTask = new(ID, _desciption, _alias, _milestone, _createdAt, _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
                 s_dal.Task!.Update(newTask);
             }
+            catch (DalDoesNotExistExeption e)
+            {
+                Console.WriteLine(e);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e);
             }
         }
 
@@ -206,9 +222,13 @@ namespace DalTest
                 int.TryParse(Console.ReadLine()!, out _id);
                 s_dal.Task!.Delete(_id);
             }
+            catch (DalDoesNotExistExeption e)
+            {
+                Console.WriteLine(e);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e);
             }
         }
 
@@ -294,9 +314,13 @@ namespace DalTest
                 Dependency newDependency = new(ID, _dependentTask, _dependsOnTask);
                 s_dal.Dependency!.Update(newDependency);
             }
+            catch (DalDoesNotExistExeption e)
+            {
+                Console.WriteLine(e);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e);
             }
         }
 
@@ -308,9 +332,13 @@ namespace DalTest
                 int.TryParse(Console.ReadLine()!, out _id);
                 s_dal.Dependency!.Delete(_id);
             }
+            catch (DalDoesNotExistExeption e)
+            {
+                Console.WriteLine(e);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e);
             }
         }
 
@@ -402,9 +430,18 @@ namespace DalTest
             {
                 Initialization.Do(s_dal);
                 mainMenu();
-            }catch(Exception e)
+            }
+            catch(NullReferenceException e)                        
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e);
+            }
+            catch(DalAlreadyExistException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }
