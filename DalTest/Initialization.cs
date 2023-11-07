@@ -4,9 +4,6 @@ using DO;
 
 public static class Initialization
 {
-    //private static IEngineer? s_dalEngineer;
-    //private static ITask? s_dalTask;
-    //private static IDependency? s_dalDependency;
     private static IDal? s_dal;
     private static readonly Random s_rand = new Random();
 
@@ -82,7 +79,7 @@ public static class Initialization
             TimeSpan span = new(s_rand.Next(300), s_rand.Next(24), s_rand.Next(60), s_rand.Next(60));
             DateTime _createdAt = DateTime.Today - span;
             DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
-            int _engineerId = engineers[s_rand.Next(40)].ID;
+            int _engineerId = engineers.ElementAt(s_rand.Next(40)).ID;
             int _complexityLevel = s_rand.Next(1, 6);
             Task newTask = new(0, _description, _alias, false, _createdAt, null, null,
                 _deadline, null, null, null, _engineerId, (EngineerExperiece)_complexityLevel);
