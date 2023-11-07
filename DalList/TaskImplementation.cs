@@ -19,7 +19,6 @@ public class TaskImplementation : ITask
         return id;
     }
 
-
     /// <summary>
     /// Deletes an object by its Id
     /// </summary>
@@ -27,7 +26,7 @@ public class TaskImplementation : ITask
     /// <exception cref="Exception">if the object not found</exception>
     public void Delete(int id)
     {
-        Task task = DataSource.Tasks.Find(ele => ele.ID == id)??
+        Task task = DataSource.Tasks.Find(ele => ele.ID == id) ??
             throw new Exception($"Task with ID={id} not exists");
         DataSource.Tasks.Remove(task);
         task = task with { complete = DateTime.Now };
@@ -43,7 +42,7 @@ public class TaskImplementation : ITask
     public Task? Read(int id)
     {
         Task? task = null;
-        DataSource.Tasks.ForEach(element=>
+        DataSource.Tasks.ForEach(element =>
         {
             if (element.ID == id)
                 task = element;
@@ -67,7 +66,7 @@ public class TaskImplementation : ITask
     /// <exception cref="Exception">if object not found</exception>
     public void Update(Task item)
     {
-        Task task = DataSource.Tasks.Find(ele => ele.ID == item.ID)??
+        Task task = DataSource.Tasks.Find(ele => ele.ID == item.ID) ??
             throw new Exception($"Task with ID={item.ID} not exists");
         DataSource.Tasks.Remove(task);
         DataSource.Tasks.Add(item);

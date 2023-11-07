@@ -17,10 +17,10 @@ namespace DO;
 /// <param name="remarks">Remarks of the task</param>
 /// <param name="engineerId">The engineer ID assigned to the task</param>
 /// <param name="complexityLevel">Difficulty level of a task</param>
-public record Task (
+public record Task(
     int ID,
-    string? desciption, 
-    string? alias, 
+    string desciption,
+    string alias,
     bool milestone,
     DateTime createdAt,
     DateTime? start,
@@ -30,7 +30,7 @@ public record Task (
     string? deliverable,
     string? remarks,
     int? engineerId,
-    EngineerExperiece complexityLevel
+    EngineerExperiece? complexityLevel
     )
 {
     public override string ToString()
@@ -38,6 +38,6 @@ public record Task (
         return "Task:  ID: " + ID + "  desciption: " + desciption + "  alias: " + alias + "  milestone: " + milestone
             + "  created at: " + createdAt + "  start: " + start + "  forecast date: " + forecastDate + "  dead line: "
             + deadline + "  complete: " + complete + "  deliverable: " + deliverable + "  remarks: " + remarks
-            + "  engineer id: " + engineerId + "  complexity level: " + complexityLevel;
+            + "  engineer id: " + engineerId + "  complexity level: " + complexityLevel + "\n";
     }
 }

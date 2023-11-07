@@ -1,6 +1,4 @@
 ﻿
-using System.Reflection.Emit;
-using System.Xml.Linq;
 
 namespace DO;
 /// <summary>
@@ -18,7 +16,7 @@ public record Dependency(
 {
     public override string ToString()
     {
-        return "Engineer:  ID: " + ID + "  pending task: " + dependentTask + "  previous task: " + dependsOnTask;
+        return "Engineer:  ID: " + ID + "  pending task: " + dependentTask + "  previous task: " + dependsOnTask + "\n";
     }
 }
 

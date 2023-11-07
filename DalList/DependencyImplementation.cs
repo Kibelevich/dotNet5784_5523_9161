@@ -27,7 +27,7 @@ public class DependencyImplementation : IDependency
 
     public void Delete(int id)
     {
-        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == id)??
+        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == id) ??
             throw new Exception($"Dependency with ID={id} not exists");
         DataSource.Dependencies.Remove(dependency);
     }
@@ -40,7 +40,7 @@ public class DependencyImplementation : IDependency
     /// <exception cref="Exception">if the object not found</exception>
     public Dependency? Read(int id)
     {
-        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == id)??
+        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == id) ??
             throw new Exception($"Dependency with ID={id} not exists");
         return dependency;
     }
@@ -61,7 +61,7 @@ public class DependencyImplementation : IDependency
     /// <exception cref="Exception">if object not found</exception>
     public void Update(Dependency item)
     {
-        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == item.ID)??
+        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == item.ID) ??
             throw new Exception($"Dependency with ID={item.ID} not exists");
         DataSource.Dependencies.Remove(dependency);
         DataSource.Dependencies.Add(item);

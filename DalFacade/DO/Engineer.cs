@@ -1,6 +1,4 @@
-﻿
-
-namespace DO;
+﻿namespace DO;
 /// <summary>
 /// Engineer Entity represents an engineer with all its props
 /// </summary>
@@ -19,6 +17,6 @@ public record Engineer(
     public override string ToString()
     {
         return "Engineer:  ID: " + ID + "  name: " + name + "  email: " + email + "  level: " + level
-            + "  cost: " + cost; 
+            + "  cost: " + cost + "\n";
     }
 }

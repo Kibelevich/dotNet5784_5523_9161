@@ -1,10 +1,11 @@
-﻿using DO;
-namespace Dal;
+﻿namespace Dal;
+using DO;
+
 
 internal static class DataSource
 {
     internal static List<Engineer> Engineers = new();
-    internal static List<DO.Task> Tasks = new();
+    internal static List<Task> Tasks = new();
     internal static List<Dependency> Dependencies = new();
     internal static class Config
     {

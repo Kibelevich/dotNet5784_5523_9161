@@ -29,7 +29,7 @@ public class EngineerImplementation : IEngineer
     /// <exception cref="Exception">if the object not found</exception>
     public void Delete(int id)
     {
-        Engineer engineer = DataSource.Engineers.Find(ele => ele.ID == id)??
+        Engineer engineer = DataSource.Engineers.Find(ele => ele.ID == id) ??
             throw new Exception($"Engineer with ID={id} not exists");
         DataSource.Engineers.Remove(engineer);
     }
@@ -67,7 +67,7 @@ public class EngineerImplementation : IEngineer
     /// <exception cref="Exception">if object not found</exception>
     public void Update(Engineer item)
     {
-        Engineer engineer = DataSource.Engineers.Find(ele => ele.ID == item.ID)??
+        Engineer engineer = DataSource.Engineers.Find(ele => ele.ID == item.ID) ??
             throw new Exception($"Engineer with ID={item.ID} not exists");
         DataSource.Engineers.Remove(engineer);
         DataSource.Engineers.Add(item);
