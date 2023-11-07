@@ -3,8 +3,10 @@ namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Linq;
 
-public class EngineerImplementation : IEngineer
+internal class EngineerImplementation : IEngineer
 {
     /// <summary>
     /// Creates new entity object
@@ -13,11 +15,8 @@ public class EngineerImplementation : IEngineer
     /// <returns>the object's id</returns>
     public int Create(Engineer item)
     {
-        DataSource.Engineers.ForEach(engineer =>
-        {
-            if (engineer.ID == item.ID)
-                throw new Exception($"Engineer with ID={item.ID} already exists");
-        });
+        if(DataSource.Engineers.Any(engineer => engineer.ID == item.ID))
+            throw new DalAlreadyExistException($"Engineer with ID={item.ID} already exists");
         DataSource.Engineers.Add(item);
         return item.ID;
     }
@@ -29,8 +28,8 @@ public class EngineerImplementation : IEngineer
     /// <exception cref="Exception">if the object not found</exception>
     public void Delete(int id)
     {
-        Engineer engineer = DataSource.Engineers.Find(ele => ele.ID == id) ??
-            throw new Exception($"Engineer with ID={id} not exists");
+        Engineer engineer = DataSource.Engineers.FirstOrDefault(ele => ele.ID == id)??
+            throw new DalDoesNotExistExeption($"Engineer with ID={id} not exists");
         DataSource.Engineers.Remove(engineer);
     }
 
@@ -39,25 +38,31 @@ public class EngineerImplementation : IEngineer
     /// </summary>
     /// <param name="id">the object's id to read</param>
     /// <returns></returns>
-    /// <exception cref="Exception">if the object not found</exception>
     public Engineer? Read(int id)
     {
-        Engineer? eng = null;
-        DataSource.Engineers.ForEach(engineer =>
-        {
-            if (engineer.ID == id)
-                eng = engineer;
-        });
+        Engineer? eng = DataSource.Engineers.FirstOrDefault(ele => ele.ID == id);
         return eng;
+    }
+
+    /// <summary>
+    ///  Reads entity object by filter
+    /// </summary>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
+    /// <returns>The object that met the condition</returns>
+    public Engineer? Read(Func<Engineer, bool> filter)
+    {
+        return DataSource.Engineers.First(filter);
     }
 
     /// <summary>
     /// Reads all entity objects
     /// </summary>
     /// <returns>List of all objects</returns>
-    public List<Engineer> ReadAll()
+    public IEnumerable<Engineer> ReadAll(Func<Engineer, bool>? filter = null)
     {
-        return new List<Engineer>(DataSource.Engineers);
+        if(filter != null)
+            return DataSource.Engineers.Where(filter);
+        return DataSource.Engineers.Select(engineer => engineer);
     }
 
     /// <summary>
@@ -65,10 +70,11 @@ public class EngineerImplementation : IEngineer
     /// </summary>
     /// <param name="item">The object to update</param>
     /// <exception cref="Exception">if object not found</exception>
+    /// 
     public void Update(Engineer item)
     {
-        Engineer engineer = DataSource.Engineers.Find(ele => ele.ID == item.ID) ??
-            throw new Exception($"Engineer with ID={item.ID} not exists");
+        Engineer engineer = DataSource.Engineers.FirstOrDefault(ele => ele.ID == item.ID) ??
+           throw new DalDoesNotExistExeption($"Engineer with ID={item.ID} not exists");
         DataSource.Engineers.Remove(engineer);
         DataSource.Engineers.Add(item);
     }

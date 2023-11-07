@@ -4,7 +4,7 @@ using DO;
 using DalApi;
 using System.Collections.Generic;
 
-public class DependencyImplementation : IDependency
+internal class DependencyImplementation : IDependency
 {
     /// <summary>
     /// Creates new entity object
@@ -27,9 +27,10 @@ public class DependencyImplementation : IDependency
 
     public void Delete(int id)
     {
-        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == id) ??
-            throw new Exception($"Dependency with ID={id} not exists");
+        Dependency dependency = DataSource.Dependencies.FirstOrDefault(ele => ele.ID == id)??
+            throw new DalDoesNotExistExeption($"Dependency with ID={id} not exists");
         DataSource.Dependencies.Remove(dependency);
+
     }
 
     /// <summary>
@@ -37,11 +38,9 @@ public class DependencyImplementation : IDependency
     /// </summary>
     /// <param name="id">the object's id to read</param>
     /// <returns></returns>
-    /// <exception cref="Exception">if the object not found</exception>
     public Dependency? Read(int id)
     {
-        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == id) ??
-            throw new Exception($"Dependency with ID={id} not exists");
+        Dependency? dependency = DataSource.Dependencies.FirstOrDefault(ele => ele.ID == id);
         return dependency;
     }
 
@@ -49,9 +48,11 @@ public class DependencyImplementation : IDependency
     /// Reads all entity objects
     /// </summary>
     /// <returns>List of all objects</returns>
-    public List<Dependency> ReadAll()
+    public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
-        return new List<Dependency>(DataSource.Dependencies);
+        if (filter != null)
+            return DataSource.Dependencies.Where(filter);
+        return DataSource.Dependencies.Select(dependency => dependency);
     }
 
     /// <summary>
@@ -61,8 +62,8 @@ public class DependencyImplementation : IDependency
     /// <exception cref="Exception">if object not found</exception>
     public void Update(Dependency item)
     {
-        Dependency dependency = DataSource.Dependencies.Find(ele => ele.ID == item.ID) ??
-            throw new Exception($"Dependency with ID={item.ID} not exists");
+        Dependency dependency = DataSource.Dependencies.FirstOrDefault(ele => ele.ID == item.ID)??
+            throw new DalDoesNotExistExeption($"Dependency with ID={item.ID} not exists");
         DataSource.Dependencies.Remove(dependency);
         DataSource.Dependencies.Add(item);
     }
@@ -70,12 +71,18 @@ public class DependencyImplementation : IDependency
 
     public bool isDepend(int _dependentTask, int _dependsOnTask)
     {
-        bool flag = false;
-        DataSource.Dependencies.ForEach(dependency =>
-        {
-            if (dependency.dependentTask == _dependentTask && dependency.dependsOnTask == _dependsOnTask)
-                flag = true;
-        });
-        return flag;
+        return DataSource.Dependencies.
+            Any(dependency => dependency.dependentTask == _dependentTask 
+            && dependency.dependsOnTask == _dependsOnTask);
+    }
+
+    /// <summary>
+    ///  Reads entity object by filter
+    /// </summary>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
+    /// <returns>The object that met the condition</returns>
+    public Dependency? Read(Func<Dependency, bool> filter)
+    {
+        return DataSource.Dependencies.First(filter);
     }
 }
