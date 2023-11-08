@@ -6,9 +6,6 @@ using DalApi;
 using DO;
 internal class Program
 {
-    //private static IEngineer? s_dalEngineer = new EngineerImplementation();
-    //private static ITask? s_dalTask = new TaskImplementation();
-    //private static IDependency? s_dalDependency = new DependencyImplementation();
     static readonly IDal s_dal = new Dal.DalList();
     /// <summary>
     /// Crud functions for engineer
@@ -466,7 +463,6 @@ internal class Program
     {
         try
         {
-
             Initialization.Do(s_dal);
             mainMenu();
         }
