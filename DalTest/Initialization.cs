@@ -63,7 +63,7 @@ public static class Initialization
                 _id = s_rand.Next(200000000, 400000000);
             while (s_dal!.Engineer.Read(_id) != null);
             string _email = $"{engineer.Split(' ')[0]}{_id % 1000}@gmail.com";
-            int _level = _id % 5;
+            int _level = _id % 5+1;
             Engineer newEngineer = new(_id, engineer, _email, (EngineerExperiece)_level, 0);
             s_dal.Engineer!.Create(newEngineer);
         }
@@ -82,7 +82,7 @@ public static class Initialization
             TimeSpan span = new(s_rand.Next(300), s_rand.Next(24), s_rand.Next(60), s_rand.Next(60));
             DateTime _createdAt = DateTime.Today - span;
             DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
-            int _engineerId = engineers[s_rand.Next(40)].ID;
+            int _engineerId = engineers.ElementAt(s_rand.Next(40)).ID;
             int _complexityLevel = s_rand.Next(1, 6);
             Task newTask = new(0, _description, _alias, false, _createdAt, null, null,
                 _deadline, null, null, null, _engineerId, (EngineerExperiece)_complexityLevel);
