@@ -33,6 +33,8 @@ public record Task(
     EngineerExperiece? complexityLevel
     )
 {
+    public Task() : this(null!) { } //empty ctor 
+    public DateTime RegistrationDate => DateTime.Now; //get only
     public override string ToString()
     {
         return "Task:  ID: " + ID + "  desciption: " + desciption + "  alias: " + alias + "  milestone: " + milestone

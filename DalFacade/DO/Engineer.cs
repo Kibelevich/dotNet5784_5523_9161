@@ -14,6 +14,10 @@ public record Engineer(
     EngineerExperiece level,
     double cost)
 {
+    public Engineer() : this(null!) { } //empty ctor
+
+    public DateTime RegistrationDate => DateTime.Now; //get only
+
     public override string ToString()
     {
         return "Engineer:  ID: " + ID + "  name: " + name + "  email: " + email + "  level: " + level
