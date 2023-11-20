@@ -81,7 +81,7 @@ internal class DependencyImplementation : IDependency
     {
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
         return getDependency(Dependencies.Elements()
-            .FirstOrDefault(ele => (int?)ele.Element("ID") == id)!);
+            .FirstOrDefault(ele => ele.ToIntNullable("ID") == id)!);
     }
 
     /// <summary>
