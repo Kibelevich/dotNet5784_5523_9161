@@ -6,7 +6,7 @@ using DalApi;
 using DO;
 internal class Program
 {
-    static readonly IDal s_dal = new Dal.DalList();
+    static readonly IDal s_dal = new DalXml();
     /// <summary>
     /// Crud functions for engineer
     /// </summary>
@@ -193,8 +193,7 @@ internal class Program
         try
         {
             EngineerExperiece _complexityLevel;
-            int ID;
-            int _engineerId;
+            int ID, _engineerId;
             string? _desciption, _alias, _remarks, _deliverable;
             bool _milestone;
             DateTime _deadline, _createdAt, _complete, _start, _forecastDate;
@@ -311,8 +310,8 @@ internal class Program
     {
         int _dependsOnTask, _dependentTask;
         Console.WriteLine("Enter, pending task, previous task");
-        int.TryParse(Console.ReadLine()!, out _dependentTask);
-        int.TryParse(Console.ReadLine()!, out _dependsOnTask);
+        int.TryParse(Console.ReadLine(), out _dependentTask);
+        int.TryParse(Console.ReadLine(), out _dependsOnTask);
         Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
         return s_dal.Dependency!.Create(newDependency);
     }
@@ -335,16 +334,17 @@ internal class Program
     {
         try
         {
-            int ID, _dependsOnTask, _dependentTask;
+            int ID;
+            int _dependsOnTask, _dependentTask;
             Console.WriteLine("Enter ID");
             int.TryParse(Console.ReadLine()!, out ID);
-            Dependency depend = s_dal.Dependency!.Read(ID) ??
+            Dependency depend = s_dal.Dependency.Read(ID) ??
                throw new Exception($"Dependency with ID={ID} not exists");
             Console.WriteLine(s_dal.Dependency!.Read(ID));
             int.TryParse(Console.ReadLine()!, out _dependentTask);
             int.TryParse(Console.ReadLine()!, out _dependsOnTask);
-            if (_dependentTask == 0) _dependentTask = depend.dependentTask;
-            if (_dependsOnTask == 0) _dependsOnTask = depend.dependsOnTask;
+            if (_dependentTask == 0) _dependentTask = Convert.ToInt32(depend.dependentTask);
+            if (_dependsOnTask == 0) _dependsOnTask = Convert.ToInt32(depend.dependsOnTask);
             Dependency newDependency = new(ID, _dependentTask, _dependsOnTask);
             s_dal.Dependency!.Update(newDependency);
         }
