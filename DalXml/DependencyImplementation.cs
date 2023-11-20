@@ -21,18 +21,18 @@ internal class DependencyImplementation : IDependency
             dependsOnTask = (int)dependency.Element("dependsOnTask")!,
         };
     }
-        
 
-    //static IEnumerable<XElement> createDependencyElement(Dependency dependency, int? id = null)
-    //{
-    //    id = id is not null ? id : dependency.ID;
-    //    yield return new XElement("ID", id);
-    //    if (dependency.dependentTask is not null)
-    //        yield return new XElement("dependentTask", dependency.dependentTask);
-    //    if (dependency.dependsOnTask is not null)
-    //        yield return new XElement("dependsOnTask", dependency.dependsOnTask);
 
-    //}
+    static IEnumerable<XElement> createDependencyElement(Dependency dependency, int? id = null)
+    {
+        id = id is not null ? id : dependency.ID;
+        yield return new XElement("ID", id);
+        if (dependency.dependentTask is not null)
+            yield return new XElement("dependentTask", dependency.dependentTask);
+        if (dependency.dependsOnTask is not null)
+            yield return new XElement("dependsOnTask", dependency.dependsOnTask);
+
+    }
 
     /// <summary>
     /// Creates new entity object
@@ -44,7 +44,7 @@ internal class DependencyImplementation : IDependency
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
         int id = Config.NextIdD;
         Dependency depend = item with { ID = id };
-        Dependencies.Add(depend);
+        Dependencies.Add(createDependencyElement(depend));
         XMLTools.SaveListToXMLElement(Dependencies, dependencyFile);
         return id;
     }
@@ -81,7 +81,7 @@ internal class DependencyImplementation : IDependency
     {
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
         return getDependency(Dependencies.Elements()
-            .FirstOrDefault(ele => ele.ToIntNullable("ID") == id)!);
+            .FirstOrDefault(ele => (int?)ele.Element("ID") == id)!);
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ internal class DependencyImplementation : IDependency
             FirstOrDefault(depend => depend.ToIntNullable("ID") == item.ID) ??
             throw new DalDoesNotExistExeption($"Dependency with ID={item.ID} not exists"))
             .Remove();
-        Dependencies.Add(item);
+        Dependencies.Add(createDependencyElement(item));
         XMLTools.SaveListToXMLElement(Dependencies, dependencyFile);
     }
 

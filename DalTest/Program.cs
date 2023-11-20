@@ -47,7 +47,7 @@ internal class Program
 
     private static void readAllEngineers()
     {
-        s_dal.Engineer!.ReadAll(eng => eng.ID > 100)!
+        s_dal.Engineer!.ReadAll(eng => eng.ID > 0)!
               .ToList<Engineer>().ForEach(ele =>
               Console.WriteLine(ele));
     }
