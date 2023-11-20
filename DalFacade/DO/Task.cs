@@ -33,7 +33,9 @@ public record Task(
     EngineerExperiece? complexityLevel
     )
 {
-    public Task() : this(null!) { } //empty ctor 
+    public Task() : this(0,"","",false, DateTime.MinValue, DateTime.MinValue,
+        DateTime.MinValue, DateTime.MinValue, DateTime.MinValue,"", "", 0,
+        (EngineerExperiece)0) { } //empty ctor 
     public DateTime RegistrationDate => DateTime.Now; //get only
     public override string ToString()
     {

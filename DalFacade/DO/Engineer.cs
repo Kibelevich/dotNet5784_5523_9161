@@ -14,7 +14,7 @@ public record Engineer(
     EngineerExperiece level,
     double cost)
 {
-    public Engineer() : this(null!) { } //empty ctor
+    public Engineer() : this(0,"","",(EngineerExperiece)0,0) { } //empty ctor
 
     public DateTime RegistrationDate => DateTime.Now; //get only
 

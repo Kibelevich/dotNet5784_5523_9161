@@ -14,13 +14,13 @@ public record Dependency(
 )
 
 {
-    public Dependency() : this(null!) { } //empty ctor 
+    public Dependency() : this(0,0,0) { } //empty ctor 
 
     public DateTime RegistrationDate => DateTime.Now; //get only
 
     public override string ToString()
     {
-        return "Engineer:  ID: " + ID + "  pending task: " + dependentTask + "  previous task: " + dependsOnTask + "\n";
+        return "ID: " + ID + "  pending task: " + dependentTask + "  previous task: " + dependsOnTask + "\n";
     }
 }
 
