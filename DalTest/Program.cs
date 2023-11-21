@@ -86,7 +86,6 @@ internal class Program
         {
             Console.WriteLine(e);
         }
-
     }
 
     private static void deleteEngineer()
@@ -320,7 +319,7 @@ internal class Program
         int _id;
         Console.WriteLine("Enter dependency's ID");
         int.TryParse(Console.ReadLine()!, out _id);
-        Console.WriteLine(s_dal.Dependency!.Read(_id));
+        Console.WriteLine(s_dal.Dependency!.Read( d=>d.ID==_id));
     }
 
     private static void readAllDependencies()

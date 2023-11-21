@@ -99,7 +99,7 @@ public static class Initialization
             }
             while (s_dal!.Dependency!.isDepend(_dependentTask, _dependsOnTask));
             Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
-            s_dal.Dependency!.Create(newDependency);
+            s_dal!.Dependency!.Create(newDependency);
         }
     }
 
