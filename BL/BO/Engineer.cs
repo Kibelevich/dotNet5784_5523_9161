@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace BO
+namespace BO;
+
+public class Engineer
 {
-    internal class Engineer
-    {
-    }
+    public int ID { get; init; }
+    public required string name { get; set; }
+    public required string email { get; set; }
+    public EngineerExperiece level { get; set; }
+    public  double cost { get; set; }
+    //public override string ToString() => this.ToStringProperty();
 }

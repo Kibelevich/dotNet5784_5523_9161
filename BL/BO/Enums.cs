@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace BO
+namespace BO;
+
+public enum EngineerExperiece
 {
-    internal class Enums
-    {
-    }
+    Novice = 1,
+    Beginner,
+    Competent,
+    Proficient,
+    Expert
 }
+
+
+public enum Status
+{
+    Unscheduled,
+    Scheduled,
+    OnTrack,
+    InJeopardy,
+    Done
+}
+

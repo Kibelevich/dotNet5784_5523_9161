@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+namespace BO;
 
-namespace BO
+public class EngineerInTask
 {
-    internal class EngineerInTask
-    {
-    }
+    public int ID { get; init; }
+    public required string name { get; set; }
 }
