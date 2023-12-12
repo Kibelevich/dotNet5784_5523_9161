@@ -104,8 +104,9 @@ public static class Initialization
     }
 
     // inits the lists with random instances
-    public static void Do(IDal dal)
-    {   s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!");
+    public static void Do()
+    {
+        s_dal = DalApi.Factory.Get;
         createEngineer();
         createTask();
         createDependency();
