@@ -32,7 +32,7 @@ internal class TaskImplementation : ITask
     {
         List<Task> Tasks = XMLTools.LoadListFromXMLSerializer<Task>(taskFile);
         Task task = Tasks.FirstOrDefault(ele => ele.ID == id) ??
-            throw new DalDoesNotExistExeption($"Task with ID={id} not exists");
+            throw new DalDoesNotExistException($"Task with ID={id} not exists");
         Tasks.Remove(task);
         task = task with { complete = DateTime.Now };
         Tasks.Add(task);
@@ -84,7 +84,7 @@ internal class TaskImplementation : ITask
     {
         List<Task> Tasks = XMLTools.LoadListFromXMLSerializer<Task>(taskFile);
         Task task = Tasks.FirstOrDefault(ele => ele.ID == item.ID) ??
-            throw new DalDoesNotExistExeption($"Task with ID={item.ID} not exists");
+            throw new DalDoesNotExistException($"Task with ID={item.ID} not exists");
         Tasks.Remove(task);
         Tasks.Add(item);
         XMLTools.SaveListToXMLSerializer(Tasks, taskFile);

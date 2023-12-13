@@ -28,7 +28,7 @@ internal class DependencyImplementation : IDependency
     public void Delete(int id)
     {
         Dependency dependency = DataSource.Dependencies.FirstOrDefault(ele => ele.ID == id)??
-            throw new DalDoesNotExistExeption($"Dependency with ID={id} not exists");
+            throw new DalDoesNotExistException($"Dependency with ID={id} not exists");
         DataSource.Dependencies.Remove(dependency);
 
     }
@@ -63,7 +63,7 @@ internal class DependencyImplementation : IDependency
     public void Update(Dependency item)
     {
         Dependency dependency = DataSource.Dependencies.FirstOrDefault(ele => ele.ID == item.ID)??
-            throw new DalDoesNotExistExeption($"Dependency with ID={item.ID} not exists");
+            throw new DalDoesNotExistException($"Dependency with ID={item.ID} not exists");
         DataSource.Dependencies.Remove(dependency);
         DataSource.Dependencies.Add(item);
     }

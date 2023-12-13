@@ -1,9 +1,9 @@
 ﻿
 namespace DO;
 [Serializable]
-public class DalDoesNotExistExeption : Exception
+public class DalDoesNotExistException : Exception
 {
-    public DalDoesNotExistExeption(string? message) : base(message){ }
+    public DalDoesNotExistException(string? message) : base(message){ }
 }
 
 [Serializable]

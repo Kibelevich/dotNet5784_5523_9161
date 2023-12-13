@@ -60,7 +60,7 @@ internal class DependencyImplementation : IDependency
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
         (Dependencies.Elements().
             FirstOrDefault(depend => depend.ToIntNullable("ID") == id) ??
-            throw new DalDoesNotExistExeption($"Dependency with ID={id} not exists"))
+            throw new DalDoesNotExistException($"Dependency with ID={id} not exists"))
             .Remove();
         XMLTools.SaveListToXMLElement(Dependencies, dependencyFile);
     }
@@ -109,7 +109,7 @@ internal class DependencyImplementation : IDependency
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
         (Dependencies.Elements().
             FirstOrDefault(depend => depend.ToIntNullable("ID") == item.ID) ??
-            throw new DalDoesNotExistExeption($"Dependency with ID={item.ID} not exists"))
+            throw new DalDoesNotExistException($"Dependency with ID={item.ID} not exists"))
             .Remove();
         XElement e = new XElement("dependency", createDependencyElement(item));
         Dependencies.Add(e);

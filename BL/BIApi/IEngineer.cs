@@ -3,7 +3,7 @@ namespace BIApi;
 
 public interface IEngineer
 {
-    public void Create(BO.Engineer item); //Creates new entity object
+    public int Create(BO.Engineer item); //Creates new entity object
     public BO.Engineer? Read(int id); //Reads entity object by its ID 
     // public BO.Engineer? Read(Func<BO.Engineer, bool> filter); // Reads entity object by filter
     public IEnumerable<BO.Engineer?> ReadAll(Func<BO.Engineer, bool>? filter = null); //Reads all entity objects by condition

@@ -34,7 +34,7 @@ internal class EngineerImplementation : IEngineer
     {
         List<Engineer> Engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(engineerFile);
         Engineer engineer = Engineers.FirstOrDefault(ele => ele.ID == id) ??
-            throw new DalDoesNotExistExeption($"Engineer with ID={id} not exists");
+            throw new DalDoesNotExistException($"Engineer with ID={id} not exists");
         Engineers.Remove(engineer);
         XMLTools.SaveListToXMLSerializer(Engineers, engineerFile);
     }
@@ -84,7 +84,7 @@ internal class EngineerImplementation : IEngineer
     {
         List<Engineer> Engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(engineerFile);
         Engineer engineer = Engineers.FirstOrDefault(ele => ele.ID == item.ID) ??
-           throw new DalDoesNotExistExeption($"Engineer with ID={item.ID} not exists");
+           throw new DalDoesNotExistException($"Engineer with ID={item.ID} not exists");
         Engineers.Remove(engineer);
         Engineers.Add(item);
         XMLTools.SaveListToXMLSerializer(Engineers, engineerFile);

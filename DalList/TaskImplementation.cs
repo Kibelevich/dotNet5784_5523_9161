@@ -28,7 +28,7 @@ internal class TaskImplementation : ITask
     public void Delete(int id)
     {
         Task task = DataSource.Tasks.FirstOrDefault(ele => ele.ID == id)??
-            throw new DalDoesNotExistExeption($"Task with ID={id} not exists");
+            throw new DalDoesNotExistException($"Task with ID={id} not exists");
         DataSource.Tasks.Remove(task);
         task = task with { complete = DateTime.Now };
         DataSource.Tasks.Add(task);
@@ -75,7 +75,7 @@ internal class TaskImplementation : ITask
     public void Update(Task item)
     {
         Task task = DataSource.Tasks.FirstOrDefault(ele => ele.ID == item.ID)??
-            throw new DalDoesNotExistExeption($"Task with ID={item.ID} not exists");
+            throw new DalDoesNotExistException($"Task with ID={item.ID} not exists");
         DataSource.Tasks.Remove(task);
         DataSource.Tasks.Add(item);
     }

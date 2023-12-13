@@ -78,7 +78,7 @@ internal class Program
             Engineer newEngineer = new(_id, _name, _email, _level, _cost);
             s_dal.Engineer!.Update(newEngineer);
         }
-        catch (DalDoesNotExistExeption e)
+        catch (DalDoesNotExistException e)
         {
             Console.WriteLine(e);
         }
@@ -98,7 +98,7 @@ internal class Program
             int.TryParse(Console.ReadLine()!, out _id);
             s_dal.Engineer!.Delete(_id);
         }
-        catch (DalDoesNotExistExeption e)
+        catch (DalDoesNotExistException e)
         {
             Console.WriteLine(e);
         }
@@ -231,7 +231,7 @@ internal class Program
             Task newTask = new(ID, _desciption!, _alias!, _milestone, _createdAt, _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
             s_dal.Task!.Update(newTask);
         }
-        catch (DalDoesNotExistExeption e)
+        catch (DalDoesNotExistException e)
         {
             Console.WriteLine(e);
         }
@@ -250,7 +250,7 @@ internal class Program
             int.TryParse(Console.ReadLine()!, out _id);
             s_dal.Task!.Delete(_id);
         }
-        catch (DalDoesNotExistExeption e)
+        catch (DalDoesNotExistException e)
         {
             Console.WriteLine(e);
         }
@@ -347,7 +347,7 @@ internal class Program
             Dependency newDependency = new(ID, _dependentTask, _dependsOnTask);
             s_dal.Dependency!.Update(newDependency);
         }
-        catch (DalDoesNotExistExeption e)
+        catch (DalDoesNotExistException e)
         {
             Console.WriteLine(e);
         }
@@ -366,7 +366,7 @@ internal class Program
             int.TryParse(Console.ReadLine()!, out _id);
             s_dal.Dependency!.Delete(_id);
         }
-        catch (DalDoesNotExistExeption e)
+        catch (DalDoesNotExistException e)
         {
             Console.WriteLine(e);
         }
@@ -462,7 +462,7 @@ internal class Program
     {
         try
         {
-            Initialization.Do(s_dal);
+            Initialization.Do();
             mainMenu();
         }
         catch (NullReferenceException e)
