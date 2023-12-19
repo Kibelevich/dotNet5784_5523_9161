@@ -7,5 +7,6 @@ public class Engineer
     public required string email { get; set; }
     public EngineerExperiece level { get; set; }
     public  double cost { get; set; }
+    public TaskInEngineer? currentTask { get; set; }
     //public override string ToString() => this.ToStringProperty();
 }

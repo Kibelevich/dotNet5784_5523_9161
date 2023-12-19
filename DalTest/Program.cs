@@ -22,7 +22,7 @@ internal class Program
             int.TryParse(Console.ReadLine()!, out _id);
             _name = Console.ReadLine()!;
             _email = Console.ReadLine()!;
-            EngineerExperiece.TryParse(Console.ReadLine()!, out _level);
+            EngineerExperiece.TryParse(Console.ReadLine(), out _level);
             double.TryParse(Console.ReadLine()!, out _cost);
             Engineer newEngineer = new(_id, _name, _email, _level, _cost);
             s_dal.Engineer!.Create(newEngineer);
@@ -69,7 +69,7 @@ internal class Program
             Console.WriteLine("Enter details to update");
             _name = Console.ReadLine()!;
             _email = Console.ReadLine()!;
-            EngineerExperiece.TryParse(Console.ReadLine()!, out _level);
+            EngineerExperiece.TryParse(Console.ReadLine(), out _level);
             double.TryParse(Console.ReadLine()!, out _cost);
             if (_name == "") _name = eng.name;
             if (_email == "") _email = eng.email;

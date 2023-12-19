@@ -1,5 +1,5 @@
 ﻿
-namespace BIApi;
+namespace BlApi;
 
 public interface IMilestone
 {
