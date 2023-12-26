@@ -14,5 +14,5 @@ public class Milestone
     public DateTime? complete { get; set; }
     public int? completionPercentage { get; set; }
     public string? remarks { get; set; }
-    public TaskInList? dependencies { get; set; }
+    public IEnumerable<TaskInList?> dependencies { get; set; } = new List<TaskInList?>();
 }

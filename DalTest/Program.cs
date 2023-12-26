@@ -157,11 +157,11 @@ internal class Program
     {
         EngineerExperiece _complexityLevel;
         int _engineerId;
-        string _desciption, _alias;
+        string _description, _alias;
         string? _remarks, _deliverable;
         DateTime _deadline, _createdAt;
         Console.WriteLine("Enter description, alias, dead line, deliverable, remarks, engineer ID, complexity level");
-        _desciption = Console.ReadLine()!;
+        _description = Console.ReadLine()!;
         _alias = Console.ReadLine()!;
         _createdAt = DateTime.Now;
         DateTime.TryParse(Console.ReadLine()!, out _deadline);
@@ -169,7 +169,7 @@ internal class Program
         _remarks = Console.ReadLine();
         int.TryParse(Console.ReadLine()!, out _engineerId);
         EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
-        DO.Task newTask = new(0, _desciption, _alias, false, _createdAt, null, null, _deadline, null, _deliverable, _remarks, _engineerId, _complexityLevel);
+        DO.Task newTask = new(0, _description, _alias, false, _createdAt, null, null, _deadline, null, _deliverable, _remarks, _engineerId, _complexityLevel);
         return s_dal.Task!.Create(newTask);
     }
     private static void readTask()
@@ -193,7 +193,7 @@ internal class Program
         {
             EngineerExperiece _complexityLevel;
             int ID, _engineerId;
-            string? _desciption, _alias, _remarks, _deliverable;
+            string? _description, _alias, _remarks, _deliverable;
             bool _milestone;
             DateTime _deadline, _createdAt, _complete, _start, _forecastDate;
             Console.WriteLine("Enter ID");
@@ -202,7 +202,7 @@ internal class Program
                throw new Exception($"Task with ID={ID} not exists");
             Console.WriteLine(task);
             Console.WriteLine("Enter details to update");
-            _desciption = Console.ReadLine();
+            _description = Console.ReadLine();
             _alias = Console.ReadLine();
             bool.TryParse(Console.ReadLine()!, out _milestone);
             _createdAt = DateTime.Now;
@@ -214,7 +214,7 @@ internal class Program
             _remarks = Console.ReadLine();
             int.TryParse(Console.ReadLine()!, out _engineerId);
             EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
-            if (_desciption == "") _desciption = task.desciption!;
+            if (_description == "") _description = task.description!;
             if (_alias == "") _alias = task.alias!;
             if (_start == DateTime.MinValue)
                 _start = Convert.ToDateTime(task.start);
@@ -228,7 +228,7 @@ internal class Program
             if (_remarks == "") _remarks = task.remarks!;
             if (_engineerId == 0) _engineerId = Convert.ToInt32(task.engineerId);
             if (_complexityLevel == 0) _complexityLevel = (EngineerExperiece)task.complexityLevel!;
-            Task newTask = new(ID, _desciption!, _alias!, _milestone, _createdAt, _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
+            Task newTask = new(ID, _description!, _alias!, _milestone, _createdAt, _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
             s_dal.Task!.Update(newTask);
         }
         catch (DalDoesNotExistException e)

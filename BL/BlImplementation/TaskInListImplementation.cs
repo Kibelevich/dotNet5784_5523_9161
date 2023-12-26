@@ -15,7 +15,7 @@ internal class TaskInListImplementation : ITaskInList
         return new BO.TaskInList()
         {
             ID = task.ID,
-            description = task.desciption,
+            description = task.description,
             alias = task.alias,
             status = calcStatus(task)
         };

@@ -5,7 +5,7 @@ namespace DO;
 /// Task entity represents a task with all its props
 /// </summary>
 /// <param name="ID">Task unique ID</param>
-/// <param name="desciption">Description of the task</param>
+/// <param name="description">Description of the task</param>
 /// <param name="alias">Alias of the task</param>
 /// <param name="milestone">Milestone of the task</param>
 /// <param name="createdAt">The date of creating the task</param>
@@ -19,7 +19,7 @@ namespace DO;
 /// <param name="complexityLevel">Difficulty level of a task</param>
 public record Task(
     int ID,
-    string desciption,
+    string description,
     string alias,
     bool milestone,
     DateTime createdAt,
@@ -39,7 +39,7 @@ public record Task(
     public DateTime RegistrationDate => DateTime.Now; //get only
     public override string ToString()
     {
-        return "Task:  ID: " + ID + "  desciption: " + desciption + "  alias: " + alias + "  milestone: " + milestone
+        return "Task:  ID: " + ID + "  description: " + description + "  alias: " + alias + "  milestone: " + milestone
             + "  created at: " + createdAt + "  start: " + start + "  forecast date: " + forecastDate + "  dead line: "
             + deadline + "  complete: " + complete + "  deliverable: " + deliverable + "  remarks: " + remarks
             + "  engineer id: " + engineerId + "  complexity level: " + complexityLevel + "\n";

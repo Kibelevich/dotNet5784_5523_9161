@@ -27,10 +27,10 @@ internal class MilestoneImplementation : IMilestone
     BO.Milestone replaceTaskToMilestone(DO.Task task) {
         IBl bl = Factory.Get();
         IEnumerable<BO.TaskInList?> taskInLists = dependList(task.ID);
-        return new BO.Task()
+        return new BO.Milestone()
         {
             ID = task.ID,
-            desciption = task.desciption,
+            description = task.description,
             alias = task.alias,
             status = calcStatus(task),
             createdAt = task.createdAt,
@@ -39,8 +39,8 @@ internal class MilestoneImplementation : IMilestone
             deadline = task.deadline,
             complete = task.complete,
             remarks = task.remarks,
-            completionPercentage= calcCompletionPercentage(taskInLists),
-            dependList = taskInLists
+            completionPercentage = calcCompletionPercentage(taskInLists),
+            dependencies = taskInLists
         };
     }
     BO.Status calcStatus(DO.Task doTask)

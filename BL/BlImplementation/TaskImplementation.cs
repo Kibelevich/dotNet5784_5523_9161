@@ -85,7 +85,7 @@ internal class TaskImplementation : BlApi.ITask
             complexityLevel = (DO.EngineerExperiece)boTask.complexityLevel;
         return new DO.Task
          (boTask.ID,
-          boTask.desciption,
+          boTask.description,
           boTask.alias,
           milestone,
           boTask.createdAt,
@@ -109,7 +109,7 @@ internal class TaskImplementation : BlApi.ITask
         return new BO.Task()
         {
             ID = doTask.ID,
-            desciption = doTask.desciption,
+            description = doTask.description,
             alias = doTask.alias,
             dependList = taskInLists,
             milestone = calcMilestone(doTask.ID),

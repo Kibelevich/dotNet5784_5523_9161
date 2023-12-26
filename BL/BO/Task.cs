@@ -4,7 +4,7 @@ namespace BO;
 public class Task
 {
     public int ID { get; init; }
-    public required string desciption{ get; set; }
+    public required string description{ get; set; }
     public required string alias { get; set; }
     public IEnumerable<TaskInList?> dependList { get; set; } = new List<TaskInList?>();
     public MilestoneInTask? milestone { get; set; }
