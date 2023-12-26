@@ -1,21 +1,21 @@
-﻿
-using BlApi;
-
+﻿using BlApi;
 namespace BlImplementation;
 
 internal class TaskInListImplementation : ITaskInList
 {
-    private DalApi.IDal _dal = DalApi.Factory.Get;
+    private static DalApi.IDal _dal = DalApi.Factory.Get;
 
-    public BO.TaskInList? Read(int id)
+    public static BO.TaskInList? Read(int id)
     {
-        BO.Task? task = BO.Task.Read(id);
+        DO.Task? task = _dal.Task.Read(id);
+        if (task == null)
+            return null;
         return new BO.TaskInList()
         {
             ID = task.ID,
             description = task.desciption,
             alias = task.alias,
-            status = task.status
+            status = null
         };
     }
 }
