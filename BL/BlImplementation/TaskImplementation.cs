@@ -89,10 +89,11 @@ internal class TaskImplementation : ITask
         };
     }
 
-    IEnumerable<BO.TaskInList> dependList(int ID)
+    IEnumerable<BO.TaskInList>? dependList(int ID)
     {
+        IBl  bl = BlApi.Factory.Get();
         return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
-            .Select(depend => BO.TaskInList.Read(depend.dependsOnTask));
+            .Select(depend => bl.TaskInList.Read(depend.dependsOnTask));
     }
 
     IEnumerable<BO.MilestoneInList> calcMilestone(int id)

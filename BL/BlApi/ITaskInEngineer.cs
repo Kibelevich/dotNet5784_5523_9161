@@ -1,6 +1,6 @@
 ﻿
 namespace BlApi;
 
-public class ITaskInEngineer
+public interface ITaskInEngineer
 {
 }
