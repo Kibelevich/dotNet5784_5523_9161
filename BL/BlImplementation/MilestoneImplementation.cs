@@ -1,8 +1,4 @@
-﻿
-
-using BlApi;
-using DO;
-using System.Text.RegularExpressions;
+﻿using BlApi;
 
 namespace BlImplementation;
 
@@ -14,7 +10,7 @@ internal class MilestoneImplementation : IMilestone
     {
         DO.Task? doTask = _dal.Task.Read(id);
         if (doTask == null)
-            throw new BO.BlDoesNotExistException($"Task with ID={id} does not exist");
+            throw new BO.BlDoesNotExistException($"Milestone with ID={id} does not exist");
         return replaceTaskToMilestone(doTask);
 
     }
