@@ -4,7 +4,7 @@ using DalApi;
 
 namespace BlImplementation;
 
-internal class TaskImplementation : ITask
+internal class TaskImplementation : BlApi.ITask
 {
     private IDal _dal = DalApi.Factory.Get;
 
@@ -16,10 +16,10 @@ internal class TaskImplementation : ITask
             throw new BO.BlIllegalPropertyException($"Illegal property");
         DO.Task doTask = replaceBoToDo(boTask);
         int id = _dal.Task.Create(doTask);
-        IEnumerable<int> i;
-        if (boTask.dependList != null)
-            i = (from BO.TaskInList task in boTask.dependList
-                 select _dal.Dependency.Create(new DO.Dependency(0, id, task.ID)));
+        if (boTask.dependList == null)
+            return id;
+        IEnumerable<int>  i = (from BO.TaskInList task in boTask.dependList
+             select _dal.Dependency.Create(new DO.Dependency(0, id, task.ID)));
         return id;
     }
 
@@ -36,7 +36,8 @@ internal class TaskImplementation : ITask
 
     public IEnumerable<BO.Task?> ReadAll(Func<BO.Task, bool>? filter = null)
     {
-    
+        throw new NotImplementedException();
+
     }
 
     public void Update(BO.Task item)
@@ -50,33 +51,34 @@ internal class TaskImplementation : ITask
         DO.EngineerExperiece? complexityLevel = null;
         if (boTask.complexityLevel != null)
             complexityLevel = (DO.EngineerExperiece)boTask.complexityLevel;
-       return new DO.Task
-        (boTask.ID,
-         boTask.desciption,
-         boTask.alias,
-         milestone,
-         boTask.createdAt,
-         boTask.start,
-         boTask.forecastDate,
-         boTask.deadline,
-         boTask.complete,
-         boTask.deliverable,
-         boTask.remarks,
-         boTask.engineer?.ID,
-         complexityLevel);
+        return new DO.Task
+         (boTask.ID,
+          boTask.desciption,
+          boTask.alias,
+          milestone,
+          boTask.createdAt,
+          boTask.start,
+          boTask.forecastDate,
+          boTask.deadline,
+          boTask.complete,
+          boTask.deliverable,
+          boTask.remarks,
+          boTask.engineer?.ID,
+          complexityLevel);
     }
     BO.Task replaceDoToBo(DO.Task doTask)
     {
         BO.EngineerExperiece? complexityLevel = null;
         if (doTask.complexityLevel != null)
             complexityLevel = (BO.EngineerExperiece)doTask.complexityLevel;
+        IEnumerable<BO.TaskInList?> taskInLists = dependList(doTask.ID);
         return new BO.Task()
         {
             ID = doTask.ID,
             desciption = doTask.desciption,
             alias = doTask.alias,
-            dependList=dependList(doTask.ID),
-            milestone=doTask.milestone?calcMilestone(doTask.ID):null,
+            dependList=taskInLists,
+            milestone=calcMilestone(taskInLists),
             createdAt = doTask.createdAt,
             start = doTask.start,
             forecastDate = doTask.forecastDate,
@@ -84,20 +86,23 @@ internal class TaskImplementation : ITask
             complete = doTask.complete,
             deliverable = doTask.deliverable,
             remarks = doTask.remarks,
-            doTask.engineer?.ID,
+            engineer = doTask.engineer.ID,
             complexityLevel = complexityLevel
         };
     }
 
-    IEnumerable<BO.TaskInList>? dependList(int ID)
+    IEnumerable<BO.TaskInList?> dependList(int ID)
     {
-        IBl  bl = BlApi.Factory.Get();
+        IBl bl = BlApi.Factory.Get();
         return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
-            .Select(depend => bl.TaskInList.Read(depend.dependsOnTask));
+            .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.dependsOnTask));
     }
 
-    IEnumerable<BO.MilestoneInList> calcMilestone(int id)
+    IEnumerable<BO.MilestoneInList?> calcMilestone(IEnumerable<BO.TaskInList?> dependTask)
     {
-
+        IBl bl = BlApi.Factory.Get();
+        return dependTask.Where(task => task != null && _dal.Task.Read(task.ID) != null 
+                                        && (_dal.Task.Read(task.ID)!.milestone == true))
+            .Select(task=>task==null?null:bl.MilestoneInList.Read(task.ID));
     }
 }
