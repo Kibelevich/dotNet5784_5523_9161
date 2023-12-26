@@ -47,7 +47,6 @@ internal class EngineerImplementation :IEngineer
         DO.Engineer? doEngineer = _dal.Engineer.Read(id);
         if (doEngineer == null)
             throw new BO.BlDoesNotExistException($"Engineer with ID={id} does not exist");
-
         return replaceDoToBo(doEngineer);
     }
 

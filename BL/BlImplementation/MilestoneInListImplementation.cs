@@ -14,8 +14,9 @@ internal class MilestoneInListImplementation : IMilestoneInList
         return new BO.MilestoneInList()
         {
             ID = milestone.ID,
-            alias = milestone.alias,
             description = milestone.description,
+            alias = milestone.alias,
+            status = milestone.status,  
             completionPercentage = milestone.completionPercentage
         };
     }

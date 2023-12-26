@@ -7,7 +7,7 @@ public class Task
     public required string desciption{ get; set; }
     public required string alias { get; set; }
     public IEnumerable<TaskInList?> dependList { get; set; } = new List<TaskInList?>();
-    public IEnumerable<MilestoneInList?> milestone { get; set; } = new List<MilestoneInList?>();
+    public MilestoneInTask? milestone { get; set; }
     public Status? status { get; set; }
     public DateTime createdAt { get; init; }
     public DateTime? baselineStart { get; set; }

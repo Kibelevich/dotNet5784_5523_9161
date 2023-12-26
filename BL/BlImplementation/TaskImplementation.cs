@@ -26,23 +26,55 @@ internal class TaskImplementation : BlApi.ITask
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        DO.Task? doTask = _dal.Task.Read(id);
+        if (doTask == null)
+            throw new BO.BlDoesNotExistException($"Task with ID={id} does not exist");
+        IEnumerable<DO.Dependency?> dependencies = _dal.Dependency.ReadAll((d) => d.dependsOnTask == id);
+        if (dependencies == null)
+            try
+            {
+                _dal.Task.Delete(id);
+            }
+            catch (DO.DalAlreadyExistException ex)
+            {
+                throw new BO.BlAlreadyExistException($"Task with ID={id} already exists", ex);
+            }
+        else throw new BO.BlDeletionImpossibleException($"Impossible to delete this task");
     }
 
     public BO.Task? Read(int id)
     {
-        throw new NotImplementedException();
+        DO.Task? doTask = _dal.Task.Read(id);
+        if (doTask == null)
+            throw new BO.BlDoesNotExistException($"Task with ID={id} does not exist");
+        return replaceDoToBo(doTask);
     }
 
     public IEnumerable<BO.Task?> ReadAll(Func<BO.Task, bool>? filter = null)
     {
-        throw new NotImplementedException();
-
+        if (filter != null)
+            return (from DO.Task doTask in _dal.Task.ReadAll()
+                    let boTask = replaceDoToBo(doTask)
+                    where filter(boTask)
+                    select boTask);
+        return (from DO.Task doTask in _dal.Task.ReadAll()
+                select replaceDoToBo(doTask));
     }
 
-    public void Update(BO.Task item)
+    public void Update(BO.Task boTask)
     {
-        throw new NotImplementedException();
+        if (boTask.alias == "" || boTask.ID > 0)
+            throw new BO.BlIllegalPropertyException($"Illegal property");
+        DO.Task doTask = replaceBoToDo(boTask);
+        try
+        {
+            _dal.Task.Delete(boTask.ID);
+            int id = _dal.Task.Create(doTask);
+        }
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException($"Task with ID={boTask.ID} does not exists", ex);
+        }
     }
 
     DO.Task replaceBoToDo(BO.Task boTask)
@@ -68,6 +100,8 @@ internal class TaskImplementation : BlApi.ITask
     }
     BO.Task replaceDoToBo(DO.Task doTask)
     {
+
+        IBl bl = BlApi.Factory.Get();
         BO.EngineerExperiece? complexityLevel = null;
         if (doTask.complexityLevel != null)
             complexityLevel = (BO.EngineerExperiece)doTask.complexityLevel;
@@ -77,8 +111,9 @@ internal class TaskImplementation : BlApi.ITask
             ID = doTask.ID,
             desciption = doTask.desciption,
             alias = doTask.alias,
-            dependList=taskInLists,
-            milestone=calcMilestone(taskInLists),
+            dependList = taskInLists,
+            milestone = calcMilestone(doTask.ID),
+            status = calcStatus(doTask),
             createdAt = doTask.createdAt,
             start = doTask.start,
             forecastDate = doTask.forecastDate,
@@ -86,7 +121,7 @@ internal class TaskImplementation : BlApi.ITask
             complete = doTask.complete,
             deliverable = doTask.deliverable,
             remarks = doTask.remarks,
-            engineer = doTask.engineer.ID,
+            engineer = bl.EngineerInTask.Read(doTask.engineerId),
             complexityLevel = complexityLevel
         };
     }
@@ -98,12 +133,36 @@ internal class TaskImplementation : BlApi.ITask
             .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.dependsOnTask));
     }
 
-    IEnumerable<BO.MilestoneInList?> calcMilestone(IEnumerable<BO.TaskInList?> dependTask)
+    //IEnumerable<BO.MilestoneInList?> calcMilestone(IEnumerable<BO.TaskInList?> dependTask)
+    //{
+    //    IBl bl = BlApi.Factory.Get();
+    //    return dependTask.Where(task => task != null && _dal.Task.Read(task.ID) != null 
+    //                                    && (_dal.Task.Read(task.ID)!.milestone == true))
+    //        .Select(task=>task==null?null:bl.MilestoneInList.Read(task.ID));
+
+    //}
+
+    BO.MilestoneInTask? calcMilestone(int ID)
     {
         IBl bl = BlApi.Factory.Get();
-        return dependTask.Where(task => task != null && _dal.Task.Read(task.ID) != null 
-                                        && (_dal.Task.Read(task.ID)!.milestone == true))
-            .Select(task=>task==null?null:bl.MilestoneInList.Read(task.ID));
-
+        DO.Task? doMilestone = _dal.Task.ReadAll(task => task.milestone == true)
+               .FirstOrDefault(task => task != null && _dal.Dependency.
+                             Read(depend => depend.dependentTask == task.ID && depend.dependsOnTask == ID) != null);
+        if(doMilestone == null)
+            return null;
+        return bl.MilestoneInTask.Read(doMilestone.ID);
     }
+
+    BO.Status calcStatus(DO.Task doTask)
+    {
+        DateTime now= DateTime.Now;
+        if (doTask.complete < now) return (BO.Status)4;
+        if (doTask.deadline < now) throw new BO.BlDeadlinePassedException($"Deadline passed");
+        if (doTask.forecastDate < now && doTask.deadline > now) return (BO.Status)3;
+        if(doTask.start<now) return (BO.Status)2;
+        if (doTask.deadline < now) return (BO.Status)1;
+        return 0;
+    }
+
+
 }

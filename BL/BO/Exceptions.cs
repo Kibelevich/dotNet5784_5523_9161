@@ -40,5 +40,8 @@ public class FormatException : Exception
 {
     public FormatException(string? message) : base(message) { }
 }
-
+[Serializable]
+public class BlDeadlinePassedException: Exception {
+    public BlDeadlinePassedException(string? message): base(message) { }
+}
 

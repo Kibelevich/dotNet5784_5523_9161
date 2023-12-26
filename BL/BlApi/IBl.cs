@@ -9,5 +9,7 @@ public interface IBl
     public IEngineerInTask EngineerInTask { get; }
     public ITaskInList TaskInList { get; }
     public IMilestoneInList MilestoneInList { get; }
+    public IMilestoneInTask MilestoneInTask { get; }
+
 
 }
