@@ -104,5 +104,6 @@ internal class TaskImplementation : BlApi.ITask
         return dependTask.Where(task => task != null && _dal.Task.Read(task.ID) != null 
                                         && (_dal.Task.Read(task.ID)!.milestone == true))
             .Select(task=>task==null?null:bl.MilestoneInList.Read(task.ID));
+
     }
 }
