@@ -1,6 +1,5 @@
 ﻿
 using BlApi;
-using BO;
 using DalApi;
 
 namespace BlImplementation;
@@ -76,7 +75,8 @@ internal class TaskImplementation : ITask
             ID = doTask.ID,
             desciption = doTask.desciption,
             alias = doTask.alias,
-            milestone,
+            dependList=dependList(doTask.ID),
+            milestone=doTask.milestone?calcMilestone(doTask.ID):null,
             createdAt = doTask.createdAt,
             start = doTask.start,
             forecastDate = doTask.forecastDate,
@@ -89,8 +89,14 @@ internal class TaskImplementation : ITask
         };
     }
 
-    IEnumerable<TaskInList> dependList(int ID)
+    IEnumerable<BO.TaskInList> dependList(int ID)
     {
-        return _dal.Dependency.ReadAll(depend=>depend.dependentTask== ID).Select(depend=>)
+        return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
+            .Select(depend => BO.TaskInList.Read(depend.dependsOnTask));
+    }
+
+    IEnumerable<BO.MilestoneInList> calcMilestone(int id)
+    {
+
     }
 }
