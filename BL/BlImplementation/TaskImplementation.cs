@@ -10,16 +10,14 @@ internal class TaskImplementation : BlApi.ITask
 
     public int Create(BO.Task boTask)
     {
-        if (boTask.alias == "" || boTask.ID > 0)
-            // לשאול האם צריך לבדוק תקינות מזהה
-            // כי הוא מספר רץ
-            throw new BO.BlIllegalPropertyException($"Illegal property");
+        if (boTask.alias == "")
+           throw new BO.BlIllegalPropertyException($"Illegal property");
         DO.Task doTask = replaceBoToDo(boTask);
         int id = _dal.Task.Create(doTask);
         if (boTask.dependList == null)
             return id;
-        IEnumerable<int>  i = (from BO.TaskInList task in boTask.dependList
-             select _dal.Dependency.Create(new DO.Dependency(0, id, task.ID)));
+        IEnumerable<int>  i = from BO.TaskInList task in boTask.dependList
+             select _dal.Dependency.Create(new DO.Dependency(0, id, task.ID));
         return id;
     }
 
@@ -63,7 +61,7 @@ internal class TaskImplementation : BlApi.ITask
 
     public void Update(BO.Task boTask)
     {
-        if (boTask.alias == "" || boTask.ID > 0)
+        if (boTask.alias == "")
             throw new BO.BlIllegalPropertyException($"Illegal property");
         DO.Task doTask = replaceBoToDo(boTask);
         try
@@ -88,7 +86,9 @@ internal class TaskImplementation : BlApi.ITask
           boTask.description,
           boTask.alias,
           milestone,
+          boTask.requiredEffortTime,
           boTask.createdAt,
+          boTask.baselineStart,
           boTask.start,
           boTask.forecastDate,
           boTask.deadline,
@@ -113,8 +113,10 @@ internal class TaskImplementation : BlApi.ITask
             alias = doTask.alias,
             dependList = taskInLists,
             milestone = calcMilestone(doTask.ID),
+            requiredEffortTime = doTask.requiredEffortTime,
             status = calcStatus(doTask),
             createdAt = doTask.createdAt,
+            baselineStart = doTask.baselineStart,
             start = doTask.start,
             forecastDate = doTask.forecastDate,
             deadline = doTask.deadline,

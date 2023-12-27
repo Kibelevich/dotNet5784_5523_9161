@@ -160,16 +160,19 @@ internal class Program
         string _description, _alias;
         string? _remarks, _deliverable;
         DateTime _deadline, _createdAt;
-        Console.WriteLine("Enter description, alias, dead line, deliverable, remarks, engineer ID, complexity level");
+        TimeSpan _requiredEffortTime=TimeSpan.Zero;
+        Console.WriteLine("Enter description, alias, required effort time, dead line, deliverable, remarks, engineer ID, complexity level");
         _description = Console.ReadLine()!;
         _alias = Console.ReadLine()!;
+        TimeSpan.TryParse(Console.ReadLine()!, out _requiredEffortTime);
         _createdAt = DateTime.Now;
         DateTime.TryParse(Console.ReadLine()!, out _deadline);
         _deliverable = Console.ReadLine();
         _remarks = Console.ReadLine();
         int.TryParse(Console.ReadLine()!, out _engineerId);
         EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
-        DO.Task newTask = new(0, _description, _alias, false, _createdAt, null, null, _deadline, null, _deliverable, _remarks, _engineerId, _complexityLevel);
+        Task newTask = new(0, _description, _alias, false, _requiredEffortTime, _createdAt, null, null, null,
+            _deadline, null, _deliverable, _remarks, _engineerId, _complexityLevel);
         return s_dal.Task!.Create(newTask);
     }
     private static void readTask()
@@ -195,7 +198,8 @@ internal class Program
             int ID, _engineerId;
             string? _description, _alias, _remarks, _deliverable;
             bool _milestone;
-            DateTime _deadline, _createdAt, _complete, _start, _forecastDate;
+            DateTime _deadline, _createdAt, _complete, _start, _forecastDate, _baselineStart;
+            TimeSpan _requiredEffortTime=TimeSpan.Zero;
             Console.WriteLine("Enter ID");
             int.TryParse(Console.ReadLine()!, out ID);
             Task task = s_dal.Task!.Read(ID) ??
@@ -205,7 +209,9 @@ internal class Program
             _description = Console.ReadLine();
             _alias = Console.ReadLine();
             bool.TryParse(Console.ReadLine()!, out _milestone);
+            TimeSpan.TryParse(Console.ReadLine()!, out _requiredEffortTime);
             _createdAt = DateTime.Now;
+            DateTime.TryParse(Console.ReadLine()!, out _baselineStart);
             DateTime.TryParse(Console.ReadLine()!, out _start);
             DateTime.TryParse(Console.ReadLine()!, out _forecastDate);
             DateTime.TryParse(Console.ReadLine()!, out _deadline);
@@ -216,6 +222,10 @@ internal class Program
             EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
             if (_description == "") _description = task.description!;
             if (_alias == "") _alias = task.alias!;
+            if (_requiredEffortTime == TimeSpan.Zero)
+                _requiredEffortTime = task.requiredEffortTime;
+            if (_baselineStart == DateTime.MinValue)
+                _baselineStart = Convert.ToDateTime(task.baselineStart);
             if (_start == DateTime.MinValue)
                 _start = Convert.ToDateTime(task.start);
             if (_forecastDate == DateTime.MinValue)
@@ -228,7 +238,8 @@ internal class Program
             if (_remarks == "") _remarks = task.remarks!;
             if (_engineerId == 0) _engineerId = Convert.ToInt32(task.engineerId);
             if (_complexityLevel == 0) _complexityLevel = (EngineerExperiece)task.complexityLevel!;
-            Task newTask = new(ID, _description!, _alias!, _milestone, _createdAt, _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
+            Task newTask = new(ID, _description!, _alias!, _milestone,_requiredEffortTime, _createdAt,_baselineStart,
+                _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
             s_dal.Task!.Update(newTask);
         }
         catch (DalDoesNotExistException e)

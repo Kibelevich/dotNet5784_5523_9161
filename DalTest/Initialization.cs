@@ -81,7 +81,7 @@ public static class Initialization
             DateTime _deadline = _createdAt.AddDays(s_rand.Next(500));
             int _engineerId = engineers.ElementAt(s_rand.Next(40)).ID;
             int _complexityLevel = s_rand.Next(1, 6);
-            Task newTask = new(0, _description, _alias, false, _createdAt, null, null,
+            Task newTask = new(0, _description, _alias, false,span/2, _createdAt,null, null, null,
                 _deadline, null, null, null, _engineerId, (EngineerExperiece)_complexityLevel);
             s_dal.Task!.Create(newTask);
         }

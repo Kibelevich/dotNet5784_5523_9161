@@ -12,13 +12,27 @@ internal class MilestoneImplementation : IMilestone
         if (doTask == null)
             throw new BO.BlDoesNotExistException($"Milestone with ID={id} does not exist");
         return replaceTaskToMilestone(doTask);
-
     }
 
-    public void Update(BO.Milestone item)
+    public void Update(BO.Milestone milestone)
     {
-        throw new NotImplementedException();
+        if (milestone.alias == "")
+            throw new BO.BlIllegalPropertyException($"Illegal property");
+        DO.Task doTask = _dal.Task.Read(milestone.ID)??
+                        throw new BO.BlDoesNotExistException($"Milestone with ID={milestone.ID} does not exists");
+        try
+        {
+            _dal.Task.Delete(milestone.ID);
+            DO.Task updatedTask = doTask
+                with { alias = milestone.alias, description = milestone.description, remarks = milestone.remarks };
+            int id = _dal.Task.Create(updatedTask);
+        }
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException($"Milestone with ID={milestone.ID} does not exists", ex);
+        }
     }
+
 
     BO.Milestone replaceTaskToMilestone(DO.Task task) {
         IBl bl = Factory.Get();
@@ -51,7 +65,7 @@ internal class MilestoneImplementation : IMilestone
     }
     IEnumerable<BO.TaskInList?> dependList(int ID)
     {
-        IBl bl = BlApi.Factory.Get();
+        IBl bl = Factory.Get();
         return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
             .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.dependsOnTask));
     }
@@ -62,4 +76,8 @@ internal class MilestoneImplementation : IMilestone
         return (100*doneTasks)/tasksAmount;
     }
 
+    public void CreateSchedual()
+    {
+        throw new NotImplementedException();
+    }
 }
