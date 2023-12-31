@@ -112,7 +112,7 @@ internal class TaskImplementation : BlApi.ITask
             description = doTask.description,
             alias = doTask.alias,
             dependList = taskInLists,
-            milestone = calcMilestone(doTask.ID),
+            milestone = null,//calcMilestone(doTask.ID)
             requiredEffortTime = doTask.requiredEffortTime,
             status = calcStatus(doTask),
             createdAt = doTask.createdAt,
@@ -144,16 +144,16 @@ internal class TaskImplementation : BlApi.ITask
 
     //}
 
-    BO.MilestoneInTask? calcMilestone(int ID)
-    {
-        IBl bl = BlApi.Factory.Get();
-        DO.Task? doMilestone = _dal.Task.ReadAll(task => task.milestone == true)
-               .FirstOrDefault(task => task != null && _dal.Dependency.
-                             Read(depend => depend.dependentTask == task.ID && depend.dependsOnTask == ID) != null);
-        if(doMilestone == null)
-            return null;
-        return bl.MilestoneInTask.Read(doMilestone.ID);
-    }
+    //BO.MilestoneInTask? calcMilestone(int ID)
+    //{
+    //    IBl bl = BlApi.Factory.Get();
+    //    DO.Task? doMilestone = _dal.Task.ReadAll(task => task.milestone == true)
+    //           .FirstOrDefault(task => task != null && _dal.Dependency.
+    //                         Read(depend => depend.dependentTask == task.ID && depend.dependsOnTask == ID) != null);
+    //    if(doMilestone == null)
+    //        return null;
+    //    return bl.MilestoneInTask.Read(doMilestone.ID);
+    //}
 
     BO.Status calcStatus(DO.Task doTask)
     {

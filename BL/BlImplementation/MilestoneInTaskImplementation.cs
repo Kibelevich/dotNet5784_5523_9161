@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace BlImplementation
+using BlApi;
+using BO;
+
+namespace BlImplementation;
+
+internal class MilestoneInTaskImplementation : IMilestoneInTask
 {
-    internal class MilestoneInTaskImplementation
+    public MilestoneInTask? Read(int ID)
     {
+        IBl bl = Factory.Get();
+        BO.Milestone? milestone = bl.Milestone.Read(ID);
+        if (milestone == null)
+            return null;
+        return new BO.MilestoneInTask()
+        {
+            ID = milestone.ID,
+            alias = milestone.alias
+        };
     }
 }

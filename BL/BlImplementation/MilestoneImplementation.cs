@@ -1,5 +1,5 @@
 ﻿using BlApi;
-using System.Collections.Generic;
+using BO;
 
 namespace BlImplementation;
 
@@ -87,10 +87,21 @@ internal class MilestoneImplementation : IMilestone
     void CreateMilestones()
     {
         IBl bl = Factory.Get();
+        int nextId = 1;
         IEnumerable<(int?, IEnumerable<DO.Dependency>)> list =
-            from dependency in _dal.Dependency.ReadAll()
+            (from dependency in _dal.Dependency.ReadAll()
             group dependency by dependency.dependentTask into dependGroup
             orderby dependGroup.Key
-            select (dependGroup.Key, dependGroup.Select(depend=>depend));
+            select (dependGroup.Key, dependGroup.Select(depend=>depend))).Distinct();
+
+        IEnumerable<int> i = list.Select(task => _dal.Task.Create(new DO.Task(0, $"Milestone number: {nextId}", $"M{nextId}", true, TimeSpan.Zero,
+                     DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, ""
+                     , "", null, null));
+        var i = i;
     }
+
+    //int CreateMilestone((int? ID, IEnumerable<DO.Dependency> dependencies) task,int nextId)
+    //{
+        
+    //}
 }
