@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using System.Collections.Generic;
 
 namespace BlImplementation;
 
@@ -18,13 +19,14 @@ internal class MilestoneImplementation : IMilestone
     {
         if (milestone.alias == "")
             throw new BO.BlIllegalPropertyException($"Illegal property");
-        DO.Task doTask = _dal.Task.Read(milestone.ID)??
+        DO.Task doTask = _dal.Task.Read(milestone.ID) ??
                         throw new BO.BlDoesNotExistException($"Milestone with ID={milestone.ID} does not exists");
         try
         {
             _dal.Task.Delete(milestone.ID);
             DO.Task updatedTask = doTask
-                with { alias = milestone.alias, description = milestone.description, remarks = milestone.remarks };
+                with
+            { alias = milestone.alias, description = milestone.description, remarks = milestone.remarks };
             int id = _dal.Task.Create(updatedTask);
         }
         catch (DO.DalDoesNotExistException ex)
@@ -34,7 +36,8 @@ internal class MilestoneImplementation : IMilestone
     }
 
 
-    BO.Milestone replaceTaskToMilestone(DO.Task task) {
+    BO.Milestone replaceTaskToMilestone(DO.Task task)
+    {
         IBl bl = Factory.Get();
         IEnumerable<BO.TaskInList?> taskInLists = dependList(task.ID);
         return new BO.Milestone()
@@ -73,11 +76,21 @@ internal class MilestoneImplementation : IMilestone
     {
         int tasksAmount = tasksInList.Count();
         int doneTasks = tasksInList.Count(t => t != null && t.status == (BO.Status)4);
-        return (100*doneTasks)/tasksAmount;
+        return (100 * doneTasks) / tasksAmount;
     }
 
     public void CreateSchedual()
     {
-        throw new NotImplementedException();
+
+    }
+
+    void CreateMilestones()
+    {
+        IBl bl = Factory.Get();
+        IEnumerable<(int?, IEnumerable<DO.Dependency>)> list =
+            from dependency in _dal.Dependency.ReadAll()
+            group dependency by dependency.dependentTask into dependGroup
+            orderby dependGroup.Key
+            select (dependGroup.Key, dependGroup.Select(depend=>depend));
     }
 }
