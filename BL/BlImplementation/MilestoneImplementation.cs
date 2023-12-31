@@ -1,5 +1,5 @@
 ﻿using BlApi;
-using System.Collections.Generic;
+using Microsoft.VisualBasic.FileIO;
 
 namespace BlImplementation;
 
@@ -79,18 +79,49 @@ internal class MilestoneImplementation : IMilestone
         return (100 * doneTasks) / tasksAmount;
     }
 
-    public void CreateSchedual()
+    public void CreateSchedual(DateTime startProject, DateTime endProject)
     {
+        CreateMilestones();
+
 
     }
 
     void CreateMilestones()
     {
         IBl bl = Factory.Get();
-        IEnumerable<(int?, IEnumerable<DO.Dependency>)> list =
-            from dependency in _dal.Dependency.ReadAll()
+        int nextId = 1;
+        IEnumerable<DO.>
+        _dal.Task.ReadAll(task => _dal.Dependency.ReadAll(depend => depend.dependentTask == task.ID) == null);
+
+        IEnumerable<(int? key, IEnumerable<DO.Dependency> dependencies)> list =
+            (from dependency in _dal.Dependency.ReadAll()
             group dependency by dependency.dependentTask into dependGroup
             orderby dependGroup.Key
-            select (dependGroup.Key, dependGroup.Select(depend=>depend));
+            select (dependGroup.Key, dependGroup.Select(depend=>depend)));
+        IEnumerable<(IEnumerable<int?> keys, IEnumerable<DO.Dependency> dependencies)> list2=
+            from t in list
+            group t by t.dependencies into dependGroup
+            select (dependGroup.Select(depend => depend.key), dependGroup.)
+        IEnumerable<int> milestoneIDs = list.Select(task => CreateMilestone(task.key,task.dependencies, nextId++));
     }
+
+    int CreateMilestone(int? key, IEnumerable<DO.Dependency> dependencies,int nextId)
+    {
+        int id = _dal.Task.Create(new DO.Task(0, $"Milestone number: {nextId}", $"M{nextId}", true,
+            TimeSpan.Zero, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue,
+            DateTime.MinValue, "", "", null, null));
+        IEnumerable<int> dependIDs = from DO.Dependency dependTask in dependencies
+                                     select _dal.Dependency.Create(dependTask with { dependentTask=id});
+        var i = from DO.Dependency dependTask in dependencies
+                where dependTask.dependentTask == key
+                select DeleteDependency(dependTask.ID);
+        _dal.Dependency.Create(new DO.Dependency(0, key, id));
+        return id;
+    }
+    int DeleteDependency( int id)
+    {
+        _dal.Dependency.Delete(id);
+        return id;
+    }
+  
 }

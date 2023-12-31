@@ -54,13 +54,13 @@ internal class EngineerImplementation :IEngineer
     {
         if (filter != null)
         {
-            return (from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
-                    let boEngineer = replaceDoToBo(doEngineer)
-                    where filter(boEngineer)
-                    select boEngineer);
+            return from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
+                   let boEngineer = replaceDoToBo(doEngineer)
+                   where filter(boEngineer)
+                   select boEngineer;
         }
-        return (from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
-                select replaceDoToBo(doEngineer));
+        return from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
+               select replaceDoToBo(doEngineer);
     }
 
     public void Update(BO.Engineer boEngineer)
