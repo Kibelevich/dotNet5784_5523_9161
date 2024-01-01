@@ -1,5 +1,4 @@
 ﻿using BlApi;
-using System.Security.Cryptography;
 
 namespace BlImplementation;
 
@@ -102,7 +101,7 @@ internal class MilestoneImplementation : IMilestone
             (from dependency in _dal.Dependency.ReadAll()
             group dependency by dependency.dependentTask into dependGroup
             orderby dependGroup.Key
-            select (dependGroup.Key, dependGroup.Select(depend=>depend));
+            select (dependGroup.Key, dependGroup.Select(depend=>depend)));
         IEnumerable<int> milestoneIDs = list
             .Select(task => CreateMilestone(task.key, task.dependencies, nextId++));
         _dal.Task.ReadAll(task => _dal.Dependency.ReadAll(depend => depend.dependsOnTask == task.ID) == null)
@@ -172,19 +171,25 @@ internal class MilestoneImplementation : IMilestone
             baselineStart = firstMilestone.baselineStart,
             start=firstMilestone.start,
             forecastEndDate=firstMilestone.forecastEndDate,
-            deadline= startProject,
+            deadline= endProject,
             complete=firstMilestone.complete,
             completionPercentage=firstMilestone.completionPercentage,
             remarks=firstMilestone.remarks,
             dependencies=firstMilestone.dependencies
         });
-        IEnumerable<BO.Milestone> milestonses = bl.Milestone.ReadAll();
-        var i =from milestone in milestonses
-               where milestone.alias!="START"
-               let 
+        IEnumerable<BO.Milestone> milestonses = bl.Milestone.ReadAll().Reverse();
+        var i = from milestone in milestonses
+                where milestone.alias != "START"
+                let minTime= milestone.deadline - milestone.dependencies
+                    .Max(depend=>depend != null ?_dal.Task.Read(depend.ID)!.requiredEffortTime:TimeSpan.Zero)
+                select (milestone.dependencies.Select(depend =>
+                {
+                    DO.Task? task = depend == null ? null : _dal.Task.Read(depend.ID);
+                    if (task != null)
+                        _dal.Task.Update(task with { deadline = milestone.deadline });
+                    return task;
+                }));                  
     }
-
-    DateTime max()
 
     public void CreateSchedual()
     {

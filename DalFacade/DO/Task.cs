@@ -38,6 +38,7 @@ public record Task(
     EngineerExperiece? complexityLevel
     )
 {
+
     public Task() : this(0,"","",false,TimeSpan.Zero, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue,
         DateTime.MinValue, DateTime.MinValue, DateTime.MinValue,"", "", 0,
         (EngineerExperiece)0) { } //empty ctor 
@@ -46,7 +47,7 @@ public record Task(
     {
         return "Task:  ID: " + ID + "  description: " + description + "  alias: " + alias + "  milestone: " + milestone
            + "  required effort time: " + requiredEffortTime + "  created at: " + createdAt + "  baseline start: " + baselineStart
-           + "  start: " + start + "  forecast end date: " + forecastEndDate + "  dead line: " + deadline
+           + "  start: " + start + "  forecast date: " + forecastEndDate + "  dead line: " + deadline
            + "  complete: " + complete + "  deliverable: " + deliverable + "  remarks: " + remarks
            + "  engineer id: " + engineerId + "  complexity level: " + complexityLevel + "\n";
     }
