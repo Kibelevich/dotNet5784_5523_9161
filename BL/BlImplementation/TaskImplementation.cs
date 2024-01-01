@@ -90,7 +90,7 @@ internal class TaskImplementation : BlApi.ITask
           boTask.createdAt,
           boTask.baselineStart,
           boTask.start,
-          boTask.forecastDate,
+          boTask.forecastEndDate,
           boTask.deadline,
           boTask.complete,
           boTask.deliverable,
@@ -118,7 +118,7 @@ internal class TaskImplementation : BlApi.ITask
             createdAt = doTask.createdAt,
             baselineStart = doTask.baselineStart,
             start = doTask.start,
-            forecastDate = doTask.forecastDate,
+            forecastEndDate = doTask.forecastEndDate,
             deadline = doTask.deadline,
             complete = doTask.complete,
             deliverable = doTask.deliverable,
@@ -160,7 +160,7 @@ internal class TaskImplementation : BlApi.ITask
         DateTime now= DateTime.Now;
         if (doTask.complete < now) return (BO.Status)4;
         if (doTask.deadline < now) throw new BO.BlDeadlinePassedException($"Deadline passed");
-        if (doTask.forecastDate < now && doTask.deadline > now) return (BO.Status)3;
+        if (doTask.forecastEndDate < now && doTask.deadline > now) return (BO.Status)3;
         if(doTask.start<now) return (BO.Status)2;
         if (doTask.deadline < now) return (BO.Status)1;
         return 0;

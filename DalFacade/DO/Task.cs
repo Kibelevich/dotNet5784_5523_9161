@@ -12,7 +12,7 @@ namespace DO;
 /// <param name="createdAt">The date of creating the task</param>
 /// <param name="baselineStart">Baseline start date of the task</param>
 /// <param name="start">Start date of the task</param>
-/// <param name="forecastDate">Estimated completion date of the task</param>
+/// <param name="forecastEndDate">Estimated completion date of the task</param>
 /// <param name="deadline">Last date for completing the task</param>
 /// <param name="complete">Actual assignment completion date</param>
 /// <param name="deliverable">A string describing the product</param>
@@ -29,7 +29,7 @@ public record Task(
     DateTime createdAt,
     DateTime? baselineStart,
     DateTime? start,
-    DateTime? forecastDate,
+    DateTime? forecastEndDate,
     DateTime deadline,
     DateTime? complete,
     string? deliverable,
@@ -46,7 +46,7 @@ public record Task(
     {
         return "Task:  ID: " + ID + "  description: " + description + "  alias: " + alias + "  milestone: " + milestone
            + "  required effort time: " + requiredEffortTime + "  created at: " + createdAt + "  baseline start: " + baselineStart
-           + "  start: " + start + "  forecast date: " + forecastDate + "  dead line: " + deadline
+           + "  start: " + start + "  forecast end date: " + forecastEndDate + "  dead line: " + deadline
            + "  complete: " + complete + "  deliverable: " + deliverable + "  remarks: " + remarks
            + "  engineer id: " + engineerId + "  complexity level: " + complexityLevel + "\n";
     }

@@ -198,7 +198,7 @@ internal class Program
             int ID, _engineerId;
             string? _description, _alias, _remarks, _deliverable;
             bool _milestone;
-            DateTime _deadline, _createdAt, _complete, _start, _forecastDate, _baselineStart;
+            DateTime _deadline, _createdAt, _complete, _start, _forecastEndDate, _baselineStart;
             TimeSpan _requiredEffortTime=TimeSpan.Zero;
             Console.WriteLine("Enter ID");
             int.TryParse(Console.ReadLine()!, out ID);
@@ -213,7 +213,7 @@ internal class Program
             _createdAt = DateTime.Now;
             DateTime.TryParse(Console.ReadLine()!, out _baselineStart);
             DateTime.TryParse(Console.ReadLine()!, out _start);
-            DateTime.TryParse(Console.ReadLine()!, out _forecastDate);
+            DateTime.TryParse(Console.ReadLine()!, out _forecastEndDate);
             DateTime.TryParse(Console.ReadLine()!, out _deadline);
             DateTime.TryParse(Console.ReadLine()!, out _complete);
             _deliverable = Console.ReadLine();
@@ -228,8 +228,8 @@ internal class Program
                 _baselineStart = Convert.ToDateTime(task.baselineStart);
             if (_start == DateTime.MinValue)
                 _start = Convert.ToDateTime(task.start);
-            if (_forecastDate == DateTime.MinValue)
-                _forecastDate = Convert.ToDateTime(task.forecastDate);
+            if (_forecastEndDate == DateTime.MinValue)
+                _forecastEndDate = Convert.ToDateTime(task.forecastEndDate);
             if (_deadline == DateTime.MinValue)
                 _deadline = task.deadline;
             if (_complete == DateTime.MinValue)
@@ -239,7 +239,7 @@ internal class Program
             if (_engineerId == 0) _engineerId = Convert.ToInt32(task.engineerId);
             if (_complexityLevel == 0) _complexityLevel = (EngineerExperiece)task.complexityLevel!;
             Task newTask = new(ID, _description!, _alias!, _milestone,_requiredEffortTime, _createdAt,_baselineStart,
-                _start, _forecastDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
+                _start, _forecastEndDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
             s_dal.Task!.Update(newTask);
         }
         catch (DalDoesNotExistException e)
