@@ -99,7 +99,7 @@ internal class MilestoneImplementation : IMilestone
         _dal.Task.ReadAll(task => _dal.Dependency.ReadAll(depend => depend.dependentTask == task.ID) == null)
             .Where(task => task != null).Select(task => CreateStartMilestone(task!.ID));
         IEnumerable <(int? key, IEnumerable<DO.Dependency> dependencies)> list =
-            from dependency in _dal.Dependency.ReadAll()
+            (from dependency in _dal.Dependency.ReadAll()
             group dependency by dependency.dependentTask into dependGroup
             orderby dependGroup.Key
             select (dependGroup.Key, dependGroup.Select(depend=>depend));
