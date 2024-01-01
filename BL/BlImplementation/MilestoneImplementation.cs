@@ -169,6 +169,7 @@ internal class MilestoneImplementation : IMilestone
             description = firstMilestone.description,
             status = firstMilestone.status,
             createdAt = firstMilestone.createdAt,
+            baselineStart = firstMilestone.baselineStart,
             start=firstMilestone.start,
             forecastEndDate=firstMilestone.forecastEndDate,
             deadline= startProject,

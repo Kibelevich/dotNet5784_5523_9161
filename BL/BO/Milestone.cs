@@ -8,6 +8,7 @@ public class Milestone
     public required string alias { get; set; }
     public Status? status { get; set; }
     public DateTime createdAt { get; init; }
+    public DateTime baselineStart { get; set; }
     public DateTime? start { get; set; }
     public DateTime? forecastEndDate { get; set; }
     public DateTime deadline { get; init; }
