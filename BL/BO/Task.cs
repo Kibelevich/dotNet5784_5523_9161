@@ -20,4 +20,6 @@ public class Task
     public string? remarks { get; set; }
     public EngineerInTask? engineer { get; set; }
     public EngineerExperiece? complexityLevel { get; set; }
+    public override string ToString() => Tools.ToStringProperty(this);
+
 }

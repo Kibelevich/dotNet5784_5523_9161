@@ -1,4 +1,5 @@
-﻿namespace BO;
+﻿
+namespace BO;
 
 public class Engineer
 {
@@ -8,5 +9,5 @@ public class Engineer
     public EngineerExperiece level { get; set; }
     public  double cost { get; set; }
     public TaskInEngineer? currentTask { get; set; }
-    //public override string ToString() => this.ToStringProperty();
+    public override string ToString() => Tools.ToStringProperty(this);
 }

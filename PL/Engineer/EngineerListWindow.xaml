@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Engineer"
         mc:Ignorable="d"
-        Title="EngineerListWindow" Height="450" Width="800">
+        Title="EngineerListWindow" Height="450" Width="800"
+    DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -19,15 +20,17 @@
             </Grid.ColumnDefinitions>
             <!-- filter selection  -->
             <Label Grid.Column="0" Content="select" HorizontalAlignment="Left" Margin="112,-5,0,0" VerticalAlignment="Top"/>
-            <ComboBox Grid.Column="1" HorizontalAlignment="Left" Width="400"/>
+            <ComboBox SelectedValue="{Binding Level, Mode=TwoWay}" 
+                      ItemsSource="{Binding Source={StaticResource EngineerExperieceCollectionKey }}" 
+                      Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="cbEngineerExperienceSelector_SelectionChanged"/>
         </Grid>
-        <ListView Grid.Row="1">
+        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        <Button Click="btnAddEngineer_Click" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
     </Grid>
 </Window>

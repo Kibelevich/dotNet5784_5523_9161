@@ -106,7 +106,7 @@ public static class Initialization
     // inits the lists with random instances
     public static void Do()
     {
-        s_dal =Factory.Get;
+        s_dal = Factory.Get;
         createEngineer();
         createTask();
         createDependency();

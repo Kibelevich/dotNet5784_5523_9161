@@ -7,6 +7,7 @@ public interface IBl
     public ITask Task { get; }
     public IMilestone Milestone { get; }
     public IEngineerInTask EngineerInTask { get; }
+    public IEngineerInList EngineerInList { get; }
     public ITaskInList TaskInList { get; }
     public IMilestoneInList MilestoneInList { get; }
     public IMilestoneInTask MilestoneInTask { get; }
