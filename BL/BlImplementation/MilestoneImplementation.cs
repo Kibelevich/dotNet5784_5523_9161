@@ -86,6 +86,11 @@ internal class MilestoneImplementation : IMilestone
         return (100 * doneTasks) / tasksAmount;
     }
 
+    public void CreateSchedual()
+    {
+        throw new NotImplementedException();
+    }
+
     //public void CreateSchedual(DateTime startProject, DateTime endProject)
     //{
     //    CreateMilestones();
