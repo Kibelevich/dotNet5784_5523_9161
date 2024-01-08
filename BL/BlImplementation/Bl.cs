@@ -1,7 +1,9 @@
 ﻿
 using BlApi;
 namespace BlImplementation;
-
+/// <summary>
+/// A business layer object
+/// </summary>
 internal class Bl : IBl
 {
     public IEngineer Engineer =>  new EngineerImplementation();

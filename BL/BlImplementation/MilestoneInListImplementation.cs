@@ -2,6 +2,9 @@
 
 
 namespace BlImplementation;
+/// <summary>
+/// The implementation of milestoneInList's CRUD methods in BL
+/// </summary>
 
 internal class MilestoneInListImplementation : IMilestoneInList
 {

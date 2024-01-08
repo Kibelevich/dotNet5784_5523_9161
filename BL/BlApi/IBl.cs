@@ -1,6 +1,9 @@
 ﻿
 namespace BlApi;
 
+/// <summary>
+/// A business layer object
+/// </summary>
 public interface IBl
 {
     public IEngineer Engineer { get; }

@@ -24,10 +24,10 @@
                       ItemsSource="{Binding Source={StaticResource EngineerExperieceCollectionKey }}" 
                       Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="cbEngineerExperienceSelector_SelectionChanged"/>
         </Grid>
-        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" >
-            <ListView.View>
+        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" MouseDoubleClick="lvUpdateEngineer_DoubleClick">
+            <ListView.View >
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn />
                 </GridView>
             </ListView.View>
         </ListView>

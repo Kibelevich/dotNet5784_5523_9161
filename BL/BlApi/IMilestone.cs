@@ -1,6 +1,10 @@
 ﻿
 namespace BlApi;
 
+/// <summary>
+/// Interface of milestone in BL
+/// </summary>
+
 public interface IMilestone
 {
     public BO.Milestone? Read(int id); //Reads entity object by its ID 

@@ -21,33 +21,52 @@ namespace PL.Engineer;
 public partial class EngineerWindow : Window
 {
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-    public ObservableCollection<BO.Engineer> Engineer
+    public BO.Engineer Engineer
     {
-        get { return (ObservableCollection<BO.Engineer>)GetValue(EngineerProperty); }
+        get { return (BO.Engineer)GetValue(EngineerProperty); }
         set { SetValue(EngineerProperty, value); }
     }
 
     public static readonly DependencyProperty EngineerProperty =
         DependencyProperty.Register("Engineer", typeof(BO.Engineer), typeof(EngineerWindow), new PropertyMetadata(null));
 
-    public EngineerWindow( int ID=0)
+    public EngineerWindow(int ID = 0)
     {
         InitializeComponent();
-        BO.Engineer? engineer;
         if (ID == 0)
         {
-           engineer = new BO.Engineer() { ID = 0, name = "", email = "", level = 0, cost = 0, currentTask = null };
+            Engineer = new BO.Engineer() { ID = 0, name = "", email = "", level = 0, cost = 0, currentTask = null };
         }
         else
         {
-            engineer = s_bl.Engineer.Read(ID);
+            try
+            {
+                Engineer = s_bl.Engineer.Read(ID) ?? throw new Exception("we need to know what exception to throw");////////////////
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 
-    private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+    public void btnAddUpdate_Click(object sender, RoutedEventArgs e)
     {
-
+        try
+        {
+            if ((sender as Button)?.Content.ToString() == "ADD")
+                s_bl.Engineer.Create(Engineer);
+            else
+                s_bl.Engineer.Update(Engineer);
+            Close();
+        }
+        catch (BO.BlAlreadyExistException ex)
+        { MessageBox.Show(ex.Message); }
+        catch (BO.BlIllegalPropertyException ex)
+        { MessageBox.Show(ex.Message); }
+        catch (BO.BlDoesNotExistException ex)
+        { MessageBox.Show(ex.Message); }
+        catch (Exception ex)
+        { MessageBox.Show(ex.Message); }
     }
-
-
 }

@@ -3,8 +3,11 @@ namespace Dal;
 using DalApi;
 using DO;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Linq;
+
+/// <summary>
+/// The implementation of engineer's CRUD methods in DAL
+/// </summary>
 
 internal class EngineerImplementation : IEngineer
 {
@@ -13,6 +16,7 @@ internal class EngineerImplementation : IEngineer
     /// </summary>
     /// <param name="item">the object to add</param>
     /// <returns>the object's id</returns>
+    /// <exception cref="DalAlreadyExistException">if the object alredy exists</exception>
     public int Create(Engineer item)
     {
         if(DataSource.Engineers.Any(engineer => engineer.ID == item.ID))
@@ -25,7 +29,7 @@ internal class EngineerImplementation : IEngineer
     /// Deletes an object by its Id
     /// </summary>
     /// <param name="id">the object's id to delete</param>
-    /// <exception cref="Exception">if the object not found</exception>
+    /// <exception cref="DalDoesNotExistException">if the object not found</exception>
     public void Delete(int id)
     {
         Engineer engineer = DataSource.Engineers.FirstOrDefault(ele => ele.ID == id)??
@@ -37,7 +41,7 @@ internal class EngineerImplementation : IEngineer
     /// Reads entity object by its ID 
     /// </summary>
     /// <param name="id">the object's id to read</param>
-    /// <returns></returns>
+    /// <returns>The entity or null if not found</returns>
     public Engineer? Read(int id)
     {
         Engineer? eng = DataSource.Engineers.FirstOrDefault(ele => ele.ID == id);
@@ -57,7 +61,8 @@ internal class EngineerImplementation : IEngineer
     /// <summary>
     /// Reads all entity objects
     /// </summary>
-    /// <returns>List of all objects</returns>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
+    /// <returns>Collection of all objects</returns>
     public IEnumerable<Engineer> ReadAll(Func<Engineer, bool>? filter = null)
     {
         if(filter != null)
@@ -69,8 +74,7 @@ internal class EngineerImplementation : IEngineer
     /// Updates entity object
     /// </summary>
     /// <param name="item">The object to update</param>
-    /// <exception cref="Exception">if object not found</exception>
-    /// 
+    /// <exception cref="DalDoesNotExistException">if object not found</exception>
     public void Update(Engineer item)
     {
         Engineer engineer = DataSource.Engineers.FirstOrDefault(ele => ele.ID == item.ID) ??

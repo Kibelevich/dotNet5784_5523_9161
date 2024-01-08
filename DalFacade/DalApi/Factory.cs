@@ -2,8 +2,14 @@
 using static Config;
 namespace DalApi;
 
+/// <summary>
+///  Class for creating a single DAL object
+/// </summary>
 public static class Factory
 {
+    /// <summary>
+    /// Get the single DAL object
+    /// </summary>
     public static IDal Get
     {
         get

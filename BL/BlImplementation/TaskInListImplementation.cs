@@ -1,6 +1,10 @@
 ﻿using BlApi;
 namespace BlImplementation;
 
+/// <summary>
+/// The implementation of taskInList's CRUD methods in BL
+/// </summary>
+
 internal class TaskInListImplementation : ITaskInList
 {
     private static DalApi.IDal _dal = DalApi.Factory.Get;

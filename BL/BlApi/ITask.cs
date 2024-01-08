@@ -1,6 +1,10 @@
 ﻿
 namespace BlApi;
 
+/// <summary>
+/// Interface of task in BL
+/// </summary>
+
 public interface ITask
 {
     public int Create(BO.Task item); //Creates new entity object

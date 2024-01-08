@@ -18,6 +18,7 @@ public record Dependency(
 
     public DateTime RegistrationDate => DateTime.Now; //get only
 
+    // ToString function
     public override string ToString()
     {
         return "ID: " + ID + "  pending task: " + dependentTask + "  previous task: " + dependsOnTask + "\n";

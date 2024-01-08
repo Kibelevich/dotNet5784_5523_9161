@@ -1,5 +1,9 @@
 ﻿namespace Dal;
 using DalApi;
+
+/// <summary>
+///  A data layer object
+/// </summary>
 sealed internal class DalList : IDal
 {
     public static IDal Instance { get; } = new DalList();

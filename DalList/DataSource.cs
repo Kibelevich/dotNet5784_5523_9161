@@ -1,12 +1,17 @@
 ﻿namespace Dal;
 using DO;
 
-
+/// <summary>
+/// Data source for DalList 
+/// </summary>
 internal static class DataSource
 {
+    //Lists of the entities
     internal static List<Engineer> Engineers = new();
     internal static List<Task> Tasks = new();
     internal static List<Dependency> Dependencies = new();
+
+    //Running numbers for entities
     internal static class Config
     {
         internal const int startId = 1;

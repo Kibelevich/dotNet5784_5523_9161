@@ -1,9 +1,12 @@
 ﻿
 
 namespace DalTest;
-using Dal;
 using DalApi;
 using DO;
+
+/// <summary>
+/// The main program for checking the DAL
+/// </summary>
 internal class Program
 {
     static readonly IDal s_dal = Factory.Get;

@@ -2,11 +2,21 @@
 
 namespace BlImplementation;
 
+/// <summary>
+/// The implementation of milestone's CRUD methods in BL
+/// </summary>
+
 internal class MilestoneImplementation : IMilestone
 {
     private DalApi.IDal _dal = DalApi.Factory.Get;
     private IBl bl = Factory.Get();
 
+    /// <summary>
+    /// Reads entity object by its ID 
+    /// </summary>
+    /// <param name="id">the object's id to read</param>
+    /// <returns>The entity or null if not found</returns>
+    /// <exception cref="BO.BlDoesNotExistException">if the entity does not exist</exception>
     public BO.Milestone? Read(int id)
     {
         DO.Task? doTask = _dal.Task.Read(id);
@@ -15,15 +25,31 @@ internal class MilestoneImplementation : IMilestone
         return replaceTaskToMilestone(doTask);
     }
 
+    /// <summary>
+    /// Reads entity object by its ID 
+    /// </summary>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
+    /// <returns>The entity or null if not found</returns>
     public BO.Milestone? Read(Func<BO.Milestone,bool> filter)
     {
        return bl.Milestone.ReadAll().FirstOrDefault(filter);
     }
+
+    /// <summary>
+    /// Reads all entity objects
+    /// </summary>
+    /// <returns>Collection of all objects</returns>
     public IEnumerable<BO.Milestone> ReadAll()
     {
         return _dal.Task.ReadAll().Where(task => task != null && task.milestone).Select(task => replaceTaskToMilestone(task!));
     }
 
+    /// <summary>
+    /// Updates entity object
+    /// </summary>
+    /// <param name="milestone">The object to update</param>
+    /// <exception cref="BO.BlIllegalPropertyException">if the properties are illegal</exception>
+    /// <exception cref="BO.BlDoesNotExistException">if object not found</exception>
     public void Update(BO.Milestone milestone)
     {
         if (milestone.alias == "")
@@ -44,7 +70,11 @@ internal class MilestoneImplementation : IMilestone
         }
     }
 
-
+    /// <summary>
+    /// Replace the entity from task object to milestone object
+    /// </summary>
+    /// <param name="task">the task object to replace</param>
+    /// <returns>the milestone object</returns>
     BO.Milestone replaceTaskToMilestone(DO.Task task)
     {
         IEnumerable<BO.TaskInList?> taskInLists = dependList(task.ID);
@@ -64,6 +94,12 @@ internal class MilestoneImplementation : IMilestone
             dependencies = taskInLists
         };
     }
+    /// <summary>
+    /// Calculets the status of the task
+    /// </summary>
+    /// <param name="doTask">The task for calculation</param>
+    /// <returns></returns>
+    /// <exception cref="BO.BlDeadlinePassedException">if the dead line passed</exception>
     BO.Status calcStatus(DO.Task doTask)
     {
         DateTime now = DateTime.Now;
@@ -74,11 +110,23 @@ internal class MilestoneImplementation : IMilestone
         if (doTask.deadline < now) return (BO.Status)1;
         return 0;
     }
+
+    /// <summary>
+    /// Calculates the dependencies list
+    /// </summary>
+    /// <param name="ID">the task's id</param>
+    /// <returns>the list of dependencies</returns>
     IEnumerable<BO.TaskInList?> dependList(int ID)
     {
         return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
             .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.dependsOnTask));
     }
+
+    /// <summary>
+    /// Calculets the completion percentage of the milestone
+    /// </summary>
+    /// <param name="tasksInList">dependenies' list</param>
+    /// <returns>The completion percentage</returns>
     int? calcCompletionPercentage(IEnumerable<BO.TaskInList?> tasksInList)
     {
         int tasksAmount = tasksInList.Count();

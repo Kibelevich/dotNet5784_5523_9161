@@ -4,10 +4,20 @@ using DalApi;
 
 namespace BlImplementation;
 
+/// <summary>
+/// The implementation of task's CRUD methods in BL
+/// </summary>
+
 internal class TaskImplementation : BlApi.ITask
 {
     private IDal _dal = DalApi.Factory.Get;
 
+    /// <summary>
+    /// Creates new entity object
+    /// </summary>
+    /// <param name="boTask">the object to add</param>
+    /// <returns>the object's id</returns>
+    /// <exception cref="BO.BlIllegalPropertyException">if the properties are illegal</exception>
     public int Create(BO.Task boTask)
     {
         if (boTask.alias == "")
@@ -21,7 +31,12 @@ internal class TaskImplementation : BlApi.ITask
         return id;
     }
 
-
+    /// <summary>
+    /// Deletes an object by its Id
+    /// </summary>
+    /// <param name="id">the object's id to delete</param>
+    /// <exception cref="BO.BlDoesNotExistException">if the entity does not exist</exception>
+    /// <exception cref="BO.BlDeletionImpossibleException">if it's impossible to delete the entity</exception>
     public void Delete(int id)
     {
         DO.Task? doTask = _dal.Task.Read(id);
@@ -33,13 +48,19 @@ internal class TaskImplementation : BlApi.ITask
             {
                 _dal.Task.Delete(id);
             }
-            catch (DO.DalAlreadyExistException ex)
+            catch (DO.DalDoesNotExistException ex)
             {
-                throw new BO.BlAlreadyExistException($"Task with ID={id} already exists", ex);
+                throw new BO.BlDoesNotExistException($"Task with ID={id} already exists", ex);
             }
         else throw new BO.BlDeletionImpossibleException($"Impossible to delete this task");
     }
 
+    /// <summary>
+    /// Reads entity object by its ID 
+    /// </summary>
+    /// <param name="id">the object's id to read</param>
+    /// <returns>The entity or null if not found</returns>
+    /// <exception cref="BO.BlDoesNotExistException">if the entity does not exist</exception>
     public BO.Task? Read(int id)
     {
         DO.Task? doTask = _dal.Task.Read(id);
@@ -48,6 +69,11 @@ internal class TaskImplementation : BlApi.ITask
         return replaceDoToBo(doTask);
     }
 
+    /// <summary>
+    /// Reads all entity objects
+    /// </summary>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
+    /// <returns>Collection of all objects</returns>
     public IEnumerable<BO.Task?> ReadAll(Func<BO.Task, bool>? filter = null)
     {
         if (filter != null)
@@ -59,6 +85,12 @@ internal class TaskImplementation : BlApi.ITask
                 select replaceDoToBo(doTask));
     }
 
+    /// <summary>
+    /// Updates entity object
+    /// </summary>
+    /// <param name="boTask">The object to update</param>
+    /// <exception cref="BO.BlIllegalPropertyException">if the properties are illegal</exception>
+    /// <exception cref="BO.BlDoesNotExistException">if object not found</exception>
     public void Update(BO.Task boTask)
     {
         if (boTask.alias == "")
@@ -75,6 +107,11 @@ internal class TaskImplementation : BlApi.ITask
         }
     }
 
+    /// <summary>
+    /// Replace the entity from BL object to DAL object
+    /// </summary>
+    /// <param name="boTask">the BL object to replace</param>
+    /// <returns>the DAL object</returns>
     DO.Task replaceBoToDo(BO.Task boTask)
     {
         bool milestone = boTask.milestone == null ? false : true;
@@ -98,6 +135,12 @@ internal class TaskImplementation : BlApi.ITask
           boTask.engineer?.ID,
           complexityLevel);
     }
+
+    /// <summary>
+    /// Replace the entity from DAL object to BL object
+    /// </summary>
+    /// <param name="doTask">the DAL object to replace</param>
+    /// <returns>the BL object</returns>
     BO.Task replaceDoToBo(DO.Task doTask)
     {
 

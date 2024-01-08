@@ -5,6 +5,9 @@ using DalApi;
 using System.Collections.Generic;
 using System.Linq;
 
+/// <summary>
+/// The implementation of task's CRUD methods in DAL
+/// </summary>
 internal class TaskImplementation : ITask
 {
     /// <summary>
@@ -39,7 +42,7 @@ internal class TaskImplementation : ITask
     /// Reads entity object by its ID 
     /// </summary>
     /// <param name="id">the object's id to read</param>
-    /// <returns></returns>
+    /// <returns>The entity or null if not found</returns>
     public Task? Read(int id)
     {
         Task? task = DataSource.Tasks.FirstOrDefault(ele => ele.ID == id);

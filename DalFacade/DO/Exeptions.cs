@@ -1,5 +1,10 @@
 ﻿
 namespace DO;
+
+/// <summary>
+/// DAL exceptions
+/// /// </summary>
+
 [Serializable]
 public class DalDoesNotExistException : Exception
 {

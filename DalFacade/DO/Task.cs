@@ -43,6 +43,8 @@ public record Task(
         DateTime.MinValue, DateTime.MinValue, DateTime.MinValue,"", "", 0,
         (EngineerExperiece)0) { } //empty ctor 
     public DateTime RegistrationDate => DateTime.Now; //get only
+
+    // ToString function
     public override string ToString()
     {
         return "Task:  ID: " + ID + "  description: " + description + "  alias: " + alias + "  milestone: " + milestone

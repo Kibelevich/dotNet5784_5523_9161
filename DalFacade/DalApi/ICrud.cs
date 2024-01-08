@@ -1,7 +1,10 @@
 ﻿
-using DO;
 
 namespace DalApi;
+/// <summary>
+/// A general interface to define the CRUD methods  in DAL
+/// </summary>
+/// <typeparam name="T">The entity type </typeparam>
 public interface ICrud<T> where T : class
 {
     int Create(T item); //Creates new entity object

@@ -5,6 +5,10 @@ using BO;
 
 namespace BlImplementation;
 
+/// <summary>
+/// The implementation of milestoneInTask's CRUD methods in BL
+/// </summary>
+
 internal class MilestoneInTaskImplementation : IMilestoneInTask
 {
     public MilestoneInTask? Read(int ID)

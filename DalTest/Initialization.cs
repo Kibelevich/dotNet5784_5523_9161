@@ -2,9 +2,13 @@
 using DalApi;
 using DO;
 
+
+/// <summary>
+/// Initilize the entities' lists with random properties
+/// </summary>
 public static class Initialization
 {
-    private static IDal? s_dal;
+    private static IDal? s_dal; 
     private static readonly Random s_rand = new Random();
 
     // inits the engineer's list with random instances

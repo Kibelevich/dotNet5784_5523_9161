@@ -1,6 +1,9 @@
 ﻿
 namespace BlApi;
 
+/// <summary>
+/// Interface of Engineer in BL
+/// </summary>
 public interface IEngineer
 {
     public int Create(BO.Engineer item); //Creates new entity object

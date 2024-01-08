@@ -4,6 +4,10 @@ using DO;
 using DalApi;
 using System.Collections.Generic;
 
+
+/// <summary>
+/// The implementation of dependency's CRUD methods in DAL
+/// </summary>
 internal class DependencyImplementation : IDependency
 {
     /// <summary>
@@ -37,7 +41,7 @@ internal class DependencyImplementation : IDependency
     /// Reads entity object by its ID 
     /// </summary>
     /// <param name="id">the object's id to read</param>
-    /// <returns></returns>
+    /// <returns>The entity or null if not found</returns>
     public Dependency? Read(int id)
     {
         Dependency? dependency = DataSource.Dependencies.FirstOrDefault(ele => ele.ID == id);
@@ -68,7 +72,12 @@ internal class DependencyImplementation : IDependency
         DataSource.Dependencies.Add(item);
     }
 
-
+    /// <summary>
+    /// Checks if the dependency exists
+    /// </summary>
+    /// <param name="_dependentTask"> Tha current task </param>
+    /// <param name="_dependsOnTask"> The previous task </param>
+    /// <returns>True if the task id depend and false if not </returns>
     public bool isDepend(int _dependentTask, int _dependsOnTask)
     {
         return DataSource.Dependencies.

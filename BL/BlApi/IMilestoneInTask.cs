@@ -1,6 +1,9 @@
 ﻿
 
 namespace BlApi;
+/// <summary>
+/// Interface of milestone in task in BL
+/// </summary>
 
 public interface IMilestoneInTask
 {
