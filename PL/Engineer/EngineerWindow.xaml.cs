@@ -30,9 +30,18 @@ public partial class EngineerWindow : Window
     public static readonly DependencyProperty EngineerProperty =
         DependencyProperty.Register("Engineer", typeof(BO.Engineer), typeof(EngineerWindow), new PropertyMetadata(null));
 
-    public EngineerWindow()
+    public EngineerWindow( int ID=0)
     {
         InitializeComponent();
+        BO.Engineer? engineer;
+        if (ID == 0)
+        {
+           engineer = new BO.Engineer() { ID = 0, name = "", email = "", level = 0, cost = 0, currentTask = null };
+        }
+        else
+        {
+            engineer = s_bl.Engineer.Read(ID);
+        }
     }
 
     private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
