@@ -33,21 +33,9 @@ public partial class EngineerWindow : Window
     public EngineerWindow(int ID = 0)
     {
         InitializeComponent();
-        if (ID == 0)
-        {
-            Engineer = new BO.Engineer() { ID = 0, name = "", email = "", level = 0, cost = 0, currentTask = null };
-        }
-        else
-        {
-            try
-            {
-                Engineer = s_bl.Engineer.Read(ID) ?? throw new Exception("we need to know what exception to throw");//////////////
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+        Engineer = (ID == 0) ?
+            new BO.Engineer() { ID = 0, name = "", email = "", level = 0, cost = 0, currentTask = null }:
+            s_bl.Engineer.Read(ID)!;
     }
 
     public void btnAddUpdate_Click(object sender, RoutedEventArgs e)
