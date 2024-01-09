@@ -22,8 +22,8 @@ internal class EngineerImplementation :IEngineer
     public int Create(BO.Engineer boEngineer)
     {
         if (boEngineer.ID <= 0 || boEngineer.name == "" || boEngineer.cost < 0 || !Regex.IsMatch(boEngineer.email, @"(@)(.+)$")
-            || boEngineer.currentTask != null && _dal.Task.Read(boEngineer.currentTask.ID) == null
-            || _dal.Task.Read(boEngineer.currentTask!.ID)!.alias != boEngineer.currentTask.alias)
+            || boEngineer.currentTask != null && (_dal.Task.Read(boEngineer.currentTask.ID) == null
+            || _dal.Task.Read(boEngineer.currentTask!.ID)!.alias != boEngineer.currentTask.alias))
             throw new BO.BlIllegalPropertyException($"Illegal property");
         DO.Engineer doEngineer = replaceBoToDo(boEngineer);
         try

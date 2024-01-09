@@ -41,7 +41,7 @@ public partial class EngineerWindow : Window
         {
             try
             {
-                Engineer = s_bl.Engineer.Read(ID) ?? throw new Exception("we need to know what exception to throw");////////////////
+                Engineer = s_bl.Engineer.Read(ID) ?? throw new Exception("we need to know what exception to throw");//////////////
             }
             catch (Exception ex)
             {
@@ -55,9 +55,15 @@ public partial class EngineerWindow : Window
         try
         {
             if ((sender as Button)?.Content.ToString() == "ADD")
+            {
                 s_bl.Engineer.Create(Engineer);
+                MessageBox.Show("The engineer was successfully added");
+            }
             else
+            {
                 s_bl.Engineer.Update(Engineer);
+                MessageBox.Show("The engineer has been updated successfully");
+            }
             Close();
         }
         catch (BO.BlAlreadyExistException ex)

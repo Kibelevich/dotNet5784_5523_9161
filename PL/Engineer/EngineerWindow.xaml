@@ -12,7 +12,6 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="500"/>
             <RowDefinition Height="50"/>
-
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Content="ENGINEER"/>
         <Grid Grid.Row="1">
