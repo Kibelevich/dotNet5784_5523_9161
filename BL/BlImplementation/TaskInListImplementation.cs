@@ -9,6 +9,11 @@ internal class TaskInListImplementation : ITaskInList
 {
     private static DalApi.IDal _dal = DalApi.Factory.Get;
 
+    /// <summary>
+    /// Reads entity object by its ID 
+    /// </summary>
+    /// <param name="id">the object's id to read</param>
+    /// <returns>The entity or null if not found</returns>
     public BO.TaskInList? Read(int? id)
     {
         if (id == null)
@@ -25,6 +30,13 @@ internal class TaskInListImplementation : ITaskInList
         };
     }
 
+
+    /// <summary>
+    /// Calculates the task's status according to the dates
+    /// </summary>
+    /// <param name="doTask">The task to calculate for</param>
+    /// <returns>The task's status </returns>
+    /// <exception cref="BO.BlDeadlinePassedException">If the dead line passed</exception>
     BO.Status calcStatus(DO.Task doTask)
     {
         DateTime now = DateTime.Now;

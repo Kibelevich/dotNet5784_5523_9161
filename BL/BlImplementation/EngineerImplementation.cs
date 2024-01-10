@@ -21,10 +21,23 @@ internal class EngineerImplementation :IEngineer
     /// <exception cref="BO.BlAlreadyExistException">if the entity alredy exists</exception>
     public int Create(BO.Engineer boEngineer)
     {
-        if (boEngineer.ID <= 0 || boEngineer.name == "" || boEngineer.cost < 0 || !Regex.IsMatch(boEngineer.email, @"(@)(.+)$")
-            || boEngineer.currentTask != null && (_dal.Task.Read(boEngineer.currentTask.ID) == null
-            || _dal.Task.Read(boEngineer.currentTask!.ID)!.alias != boEngineer.currentTask.alias))
+        if (boEngineer.ID <= 0 || boEngineer.name == "" || boEngineer.cost < 0 || !Regex.IsMatch(boEngineer.email, @"(@)(.+)$"))
             throw new BO.BlIllegalPropertyException($"Illegal property");
+        if (boEngineer.currentTask != null)
+        {
+            if (_dal.Task.Read(boEngineer.currentTask.ID) == null
+                || _dal.Task.Read(boEngineer.currentTask.ID)!.alias != boEngineer.currentTask.alias)
+                throw new BO.BlIllegalPropertyException($"Illegal property");
+            try
+            {
+                DO.Task taskToUpdate = _dal.Task.Read(boEngineer.currentTask.ID)! with { engineerId = boEngineer.ID };
+                _dal.Task.Update(taskToUpdate);
+            }
+            catch (DO.DalDoesNotExistException ex)
+            {
+                throw new BO.BlDoesNotExistException($"Task with ID={boEngineer.currentTask.ID} does not exists", ex);
+            }
+        }
         DO.Engineer doEngineer = replaceBoToDo(boEngineer);
         try
         {
@@ -67,7 +80,7 @@ internal class EngineerImplementation :IEngineer
     /// <param name="id">the object's id to read</param>
     /// <returns>The entity or null if not found</returns>
     /// <exception cref="BO.BlDoesNotExistException">if the entity does not exist</exception>
-    public BO.Engineer? Read(int id)
+    public BO.Engineer Read(int id)
     {
         DO.Engineer? doEngineer = _dal.Engineer.Read(id);
         if (doEngineer == null)
@@ -117,7 +130,6 @@ internal class EngineerImplementation :IEngineer
             {
                 throw new BO.BlDoesNotExistException($"Task with ID={boEngineer.currentTask.ID} does not exists", ex);
             }
-
         }
         DO.Engineer doEngineer = replaceBoToDo(boEngineer);
         try

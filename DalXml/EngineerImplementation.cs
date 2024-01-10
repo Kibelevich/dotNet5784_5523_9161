@@ -5,6 +5,9 @@ using DO;
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// The implementation of engineer's CRUD methods in DAL
+/// </summary>
 internal class EngineerImplementation : IEngineer
 {
     const string engineerFile = "engineers";

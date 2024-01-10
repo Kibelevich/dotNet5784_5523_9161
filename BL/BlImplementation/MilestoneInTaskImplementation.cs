@@ -1,7 +1,6 @@
 ﻿
 
 using BlApi;
-using BO;
 
 namespace BlImplementation;
 
@@ -11,7 +10,13 @@ namespace BlImplementation;
 
 internal class MilestoneInTaskImplementation : IMilestoneInTask
 {
-    public MilestoneInTask? Read(int ID)
+
+    /// <summary>
+    /// Reads entity object by its ID 
+    /// </summary>
+    /// <param name="ID">the object's id to read</param>
+    /// <returns>The entity or null if not found</returns>
+    public BO.MilestoneInTask? Read(int ID)
     {
         IBl bl = Factory.Get();
         BO.Milestone? milestone = bl.Milestone.Read(ID);

@@ -6,6 +6,10 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
+
+/// <summary>
+/// A class that contains tools to help with XML 
+/// </summary>
 static class XMLTools
 {
     const string s_xml_dir = @"..\xml\";

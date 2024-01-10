@@ -2,7 +2,7 @@
 using DalApi;
 
 /// <summary>
-///  A data layer object
+///  A data layer object using lists
 /// </summary>
 sealed internal class DalList : IDal
 {

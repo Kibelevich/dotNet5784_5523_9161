@@ -1,6 +1,10 @@
 ﻿
 namespace BO;
 
+
+/// <summary>
+/// Engineer Entity represents an engineer with all its properties in the business layer
+/// </summary>
 public class Engineer
 {
     public int ID { get; init; }

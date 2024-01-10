@@ -5,6 +5,9 @@ using DO;
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// The implementation of task's CRUD methods in DAL
+/// </summary>
 internal class TaskImplementation : ITask
 {
     const string taskFile = "tasks";

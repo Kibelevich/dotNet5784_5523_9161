@@ -1,6 +1,9 @@
 ﻿
 namespace BO;
 
+/// <summary>
+/// Engineer in task entity represents an engineer with part of properties in the business layer
+/// </summary>
 public class EngineerInTask
 {
     public int ID { get; init; }

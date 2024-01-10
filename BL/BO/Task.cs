@@ -1,6 +1,9 @@
 ﻿
 namespace BO;
 
+/// <summary>
+/// Taskn entity represents a task with all its properties in the business layer
+/// </summary>
 public class Task
 {
     public int ID { get; init; }

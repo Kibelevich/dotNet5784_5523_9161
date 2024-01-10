@@ -1,6 +1,10 @@
 ﻿
 namespace BO;
 
+
+/// <summary>
+/// Milestone entity represents a milestone with all its properties in the business layer
+/// </summary>
 public class Milestone
 {
     public int ID { get; init; }

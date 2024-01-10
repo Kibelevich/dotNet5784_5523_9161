@@ -61,7 +61,7 @@ internal class TaskImplementation : BlApi.ITask
     /// <param name="id">the object's id to read</param>
     /// <returns>The entity or null if not found</returns>
     /// <exception cref="BO.BlDoesNotExistException">if the entity does not exist</exception>
-    public BO.Task? Read(int id)
+    public BO.Task Read(int id)
     {
         DO.Task? doTask = _dal.Task.Read(id);
         if (doTask == null)
@@ -171,6 +171,12 @@ internal class TaskImplementation : BlApi.ITask
         };
     }
 
+
+    /// <summary>
+    /// Finds all tasks that depend on the current task 
+    /// </summary>
+    /// <param name="ID">The id of the current task</param>
+    /// <returns>The list of pending tasks</returns>
     IEnumerable<BO.TaskInList?> dependList(int ID)
     {
         IBl bl = BlApi.Factory.Get();
@@ -198,6 +204,13 @@ internal class TaskImplementation : BlApi.ITask
     //    return bl.MilestoneInTask.Read(doMilestone.ID);
     //}
 
+
+    /// <summary>
+    /// Calculates the task's status according to the dates
+    /// </summary>
+    /// <param name="doTask">The task to calculate for</param>
+    /// <returns>The task's status </returns>
+    /// <exception cref="BO.BlDeadlinePassedException">If the dead line passed</exception>
     BO.Status calcStatus(DO.Task doTask)
     {
         DateTime now= DateTime.Now;

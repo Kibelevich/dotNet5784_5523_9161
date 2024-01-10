@@ -6,10 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
+/// <summary>
+/// The implementation of dependency's CRUD methods in DAL
+/// </summary>
 internal class DependencyImplementation : IDependency
 {
     const string dependencyFile = "dependencies";
 
+    /// <summary>
+    /// Gets a dependency from xml
+    /// </summary>
+    /// <param name="dependency">The dependency to get</param>
+    /// <returns>The dependency from xml </returns>
     static Dependency? getDependency(XElement? dependency)
     {
         if (dependency == null)
@@ -22,7 +30,12 @@ internal class DependencyImplementation : IDependency
         };
     }
 
-
+    /// <summary>
+    /// Creates a dependency in xml
+    /// </summary>
+    /// <param name="dependency">The dependency to create</param>
+    /// <param name="id">Dependency's id</param>
+    /// <returns>Dependencies of type Xelement</returns>
     static IEnumerable<XElement> createDependencyElement(Dependency dependency, int? id = null)
     {
         id = id is not null ? id : dependency.ID;

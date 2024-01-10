@@ -34,7 +34,7 @@ public partial class EngineerWindow : Window
     {
         InitializeComponent();
         Engineer = (ID == 0) ?
-            new BO.Engineer() { ID = 0, name = "", email = "", level = 0, cost = 0, currentTask = null }:
+            new BO.Engineer() { ID = 0, name = "", email = "", level = 0, cost = 0, currentTask = new BO.TaskInEngineer { ID = 0, alias = "" } } :
             s_bl.Engineer.Read(ID)!;
     }
 

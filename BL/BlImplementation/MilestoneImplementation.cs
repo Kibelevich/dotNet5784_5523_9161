@@ -17,7 +17,7 @@ internal class MilestoneImplementation : IMilestone
     /// <param name="id">the object's id to read</param>
     /// <returns>The entity or null if not found</returns>
     /// <exception cref="BO.BlDoesNotExistException">if the entity does not exist</exception>
-    public BO.Milestone? Read(int id)
+    public BO.Milestone Read(int id)
     {
         DO.Task? doTask = _dal.Task.Read(id);
         if (doTask == null)
@@ -29,10 +29,13 @@ internal class MilestoneImplementation : IMilestone
     /// Reads entity object by its ID 
     /// </summary>
     /// <param name="filter">A boolean function that is a condition for returning a value</param>
-    /// <returns>The entity or null if not found</returns>
-    public BO.Milestone? Read(Func<BO.Milestone,bool> filter)
+    /// <returns>Returns the entity that establishes the condition </returns>
+    /// <exception cref="BO.BlDoesNotExistException">if the entity does not exist</exception>
+    public BO.Milestone Read(Func<BO.Milestone,bool> filter)
     {
-       return bl.Milestone.ReadAll().FirstOrDefault(filter);
+        BO.Milestone milestone = bl.Milestone.ReadAll().FirstOrDefault(filter)??
+          throw new BO.BlDoesNotExistException($"There is no milestone with such a condition");
+        return milestone;
     }
 
     /// <summary>

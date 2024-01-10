@@ -1,6 +1,9 @@
 ﻿
 namespace BO;
 
+/// <summary>
+/// Milestone in list entity represents a milestone with part of properties in the business layer
+/// </summary>
 public class MilestoneInList
 {
     public int ID { get; init; }

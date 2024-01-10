@@ -8,6 +8,11 @@ namespace BlImplementation;
 
 internal class MilestoneInListImplementation : IMilestoneInList
 {
+    /// <summary>
+    /// Reads entity object by its ID 
+    /// </summary>
+    /// <param name="ID">the object's id to read</param>
+    /// <returns>The entity or null if not found</returns>
     public BO.MilestoneInList? Read(int ID)
     {
         IBl bl = Factory.Get();

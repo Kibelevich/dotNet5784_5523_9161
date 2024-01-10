@@ -1,6 +1,13 @@
 ﻿
 namespace BO;
 
+
+/// <summary>
+/// BL exceptions
+/// </summary>
+
+
+
 [Serializable]
 public class BlDoesNotExistException : Exception
 {
