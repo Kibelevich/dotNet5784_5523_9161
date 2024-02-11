@@ -67,7 +67,7 @@ internal class DependencyImplementation : IDependency
     /// Deletes an object by its Id
     /// </summary>
     /// <param name="id">the object's id to delete</param>
-    /// <exception cref="Exception">if the object not found</exception>
+    /// <exception cref="DalDoesNotExistException">if the object does not exist</exception>
     public void Delete(int id)
     {
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
@@ -78,6 +78,12 @@ internal class DependencyImplementation : IDependency
         XMLTools.SaveListToXMLElement(Dependencies, dependencyFile);
     }
 
+    /// <summary>
+    /// Checks if the dependency already exists
+    /// </summary>
+    /// <param name="_dependentTask"> The current task </param>
+    /// <param name="_dependsOnTask"> The previous task </param>
+    /// <returns>True if the task id depend and false if not </returns>
     public bool isDepend(int _dependentTask, int _dependsOnTask)
     {
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
@@ -89,8 +95,8 @@ internal class DependencyImplementation : IDependency
     /// <summary>
     /// Reads entity object by its ID 
     /// </summary>
-    /// <param name="id">the object's id to read</param>
-    /// <returns></returns>
+    /// <param name="id">The object's id to read</param>
+    /// <returns>The entity or null if not found</returns>
     public Dependency? Read(int id)
     {
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
@@ -116,7 +122,7 @@ internal class DependencyImplementation : IDependency
     /// Updates entity object
     /// </summary>
     /// <param name="item">The object to update</param>
-    /// <exception cref="Exception">if object not found</exception>
+    /// <exception cref="DalDoesNotExistException">if object not found</exception>
     public void Update(Dependency item)
     {
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);

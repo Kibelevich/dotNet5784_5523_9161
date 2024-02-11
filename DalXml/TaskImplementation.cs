@@ -29,8 +29,8 @@ internal class TaskImplementation : ITask
     /// <summary>
     /// Deletes an object by its Id
     /// </summary>
-    /// <param name="id">the object's id to delete</param>
-    /// <exception cref="Exception">if the object not found</exception>
+    /// <param name="id">The object's id to delete</param>
+    /// <exception cref="DalDoesNotExistException">If the object not found</exception>
     public void Delete(int id)
     {
         List<Task> Tasks = XMLTools.LoadListFromXMLSerializer<Task>(taskFile);
@@ -46,8 +46,8 @@ internal class TaskImplementation : ITask
     /// <summary>
     /// Reads entity object by its ID 
     /// </summary>
-    /// <param name="id">the object's id to read</param>
-    /// <returns></returns>
+    /// <param name="id">The object's id to read</param>
+    /// <returns>The object or null if not found</returns>
     public Task? Read(int id)
     {
         List<Task> Tasks = XMLTools.LoadListFromXMLSerializer<Task>(taskFile);
@@ -82,7 +82,7 @@ internal class TaskImplementation : ITask
     /// Updates entity object
     /// </summary>
     /// <param name="item">The object to update</param>
-    /// <exception cref="Exception">if object not found</exception>
+    /// <exception cref="DalDoesNotExistException">If object not found</exception>
     public void Update(Task item)
     {
         List<Task> Tasks = XMLTools.LoadListFromXMLSerializer<Task>(taskFile);

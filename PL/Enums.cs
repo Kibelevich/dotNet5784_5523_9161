@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PL;
 
+/// <summary>
+/// Enum for the engineerExperience
+/// </summary>
 internal class EngineerExperieceCollection:IEnumerable
 {
     static readonly IEnumerable<BO.EngineerExperiece> s_enums =

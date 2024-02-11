@@ -15,8 +15,9 @@ internal class EngineerImplementation : IEngineer
     /// <summary>
     /// Creates new entity object
     /// </summary>
-    /// <param name="item">the object to add</param>
-    /// <returns>the object's id</returns>
+    /// <param name="item">The object to add</param>
+    /// <returns>The object's id</returns>
+    /// <exception cref="DalAlreadyExistException">If the object already exists</exception>
     public int Create(Engineer item)
     {
         List<Engineer> Engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(engineerFile);
@@ -31,8 +32,8 @@ internal class EngineerImplementation : IEngineer
     /// <summary>
     /// Deletes an object by its Id
     /// </summary>
-    /// <param name="id">the object's id to delete</param>
-    /// <exception cref="Exception">if the object not found</exception>
+    /// <param name="id">The object's id to delete</param>
+    /// <exception cref="DalDoesNotExistException">If the object not found</exception>
     public void Delete(int id)
     {
         List<Engineer> Engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(engineerFile);
@@ -45,8 +46,8 @@ internal class EngineerImplementation : IEngineer
     /// <summary>
     /// Reads entity object by its ID 
     /// </summary>
-    /// <param name="id">the object's id to read</param>
-    /// <returns></returns>
+    /// <param name="id">The object's id to read</param>
+    /// <returns>The object or null if not found</returns>
     public Engineer? Read(int id)
     {
         List<Engineer> Engineers = XMLTools.LoadListFromXMLSerializer<Engineer>(engineerFile);
@@ -66,8 +67,9 @@ internal class EngineerImplementation : IEngineer
     }
 
     /// <summary>
-    /// Reads all entity objects
+    ///  Reads all entity objects
     /// </summary>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
     /// <returns>List of all objects</returns>
     public IEnumerable<Engineer> ReadAll(Func<Engineer, bool>? filter = null)
     {
@@ -81,7 +83,7 @@ internal class EngineerImplementation : IEngineer
     /// Updates entity object
     /// </summary>
     /// <param name="item">The object to update</param>
-    /// <exception cref="Exception">if object not found</exception>
+    /// <exception cref="DalDoesNotExistException">If object not found</exception>
     /// 
     public void Update(Engineer item)
     {

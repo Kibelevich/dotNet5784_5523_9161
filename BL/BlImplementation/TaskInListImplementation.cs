@@ -30,6 +30,37 @@ internal class TaskInListImplementation : ITaskInList
         };
     }
 
+    /// <summary>
+    /// Reads all entity objects by condition
+    /// </summary>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
+    /// <returns>Collection of all objects</returns>
+    public IEnumerable<BO.TaskInList?> ReadAll(Func<BO.TaskInList, bool>? filter = null)
+    {
+        if (filter != null)
+        {
+            return from DO.Task doTask in _dal.Task.ReadAll()
+                   let boTaskInList = new BO.TaskInList()
+                   {
+                       ID = doTask.ID,
+                       description = doTask.description,
+                       alias = doTask.alias,
+                       status = calcStatus(doTask),
+                       complexityLevel = (doTask.complexityLevel == null) ? (BO.EngineerExperiece)doTask.complexityLevel! : null
+                   }
+                   where filter(boTaskInList)
+                   select boTaskInList;
+        }
+        return from DO.Task doTask in _dal.Task.ReadAll()
+               select new BO.TaskInList()
+               {
+                   ID = doTask.ID,
+                   description = doTask.description,
+                   alias = doTask.alias,
+                   status = calcStatus(doTask),
+                   complexityLevel = (doTask.complexityLevel == null) ? (BO.EngineerExperiece)doTask.complexityLevel! : null
+               };
+    }
 
     /// <summary>
     /// Calculates the task's status according to the dates
@@ -47,5 +78,4 @@ internal class TaskInListImplementation : ITaskInList
         if (doTask.deadline < now) return (BO.Status)1;
         return 0;
     }
-
 }

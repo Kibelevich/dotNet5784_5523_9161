@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
-using PL.Engineer;
-
 
 namespace PL;
 
+
+/// <summary>
+/// Converts ID to add or update
+/// </summary>
 class ConvertIdToContent : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -23,6 +21,9 @@ class ConvertIdToContent : IValueConverter
     }
 }
 
+/// <summary>
+/// Converts ID to enabled or disabled
+/// </summary>
 class ConvertIdToIsEnabled : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -35,6 +36,4 @@ class ConvertIdToIsEnabled : IValueConverter
         throw new NotImplementedException();
     }
 }
-
-
 

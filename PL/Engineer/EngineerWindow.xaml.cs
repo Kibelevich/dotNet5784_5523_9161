@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Engineer;
 
@@ -20,16 +9,27 @@ namespace PL.Engineer;
 /// </summary>
 public partial class EngineerWindow : Window
 {
+    // Logic entity
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+
+    /// <summary>
+    ///  A logical entity of engineer
+    /// </summary>
     public BO.Engineer Engineer
     {
         get { return (BO.Engineer)GetValue(EngineerProperty); }
         set { SetValue(EngineerProperty, value); }
     }
 
+    /// <summary>
+    /// Dependency property of the engineer 
+    /// </summary>
     public static readonly DependencyProperty EngineerProperty =
         DependencyProperty.Register("Engineer", typeof(BO.Engineer), typeof(EngineerWindow), new PropertyMetadata(null));
 
+    /// <summary>
+    /// Loading the engineer
+    /// </summary>
     public EngineerWindow(int ID = 0)
     {
         InitializeComponent();
@@ -38,6 +38,11 @@ public partial class EngineerWindow : Window
             s_bl.Engineer.Read(ID)!;
     }
 
+    /// <summary>
+    /// Adds or updates the selection engineer
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     public void btnAddUpdate_Click(object sender, RoutedEventArgs e)
     {
         try

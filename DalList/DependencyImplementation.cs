@@ -51,6 +51,7 @@ internal class DependencyImplementation : IDependency
     /// <summary>
     /// Reads all entity objects
     /// </summary>
+    /// <param name="filter">A boolean function that is a condition for returning a value</param>
     /// <returns>List of all objects</returns>
     public IEnumerable<Dependency> ReadAll(Func<Dependency, bool>? filter = null)
     {
@@ -73,9 +74,9 @@ internal class DependencyImplementation : IDependency
     }
 
     /// <summary>
-    /// Checks if the dependency exists
+    /// Checks if the dependency already exists
     /// </summary>
-    /// <param name="_dependentTask"> Tha current task </param>
+    /// <param name="_dependentTask"> The current task </param>
     /// <param name="_dependsOnTask"> The previous task </param>
     /// <returns>True if the task id depend and false if not </returns>
     public bool isDepend(int _dependentTask, int _dependsOnTask)

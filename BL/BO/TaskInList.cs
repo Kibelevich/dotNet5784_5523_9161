@@ -11,6 +11,7 @@ public class TaskInList
     public required string description { get; set; }
     public required string alias { get; set; }
     public Status? status { get; set; }
+    public EngineerExperiece? complexityLevel { get; set; }
     public override string ToString() => Tools.ToStringProperty(this);
 
 }

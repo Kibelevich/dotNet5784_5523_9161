@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
+﻿using System.Windows;
 using PL.Engineer;
+using PL.Task;
+
 
 namespace PL;
 
@@ -16,13 +10,23 @@ namespace PL;
 /// </summary>
 public partial class MainWindow : Window
 {
+    /// <summary>
+    /// Main window - init
+    /// </summary>
     public MainWindow()
     {
         InitializeComponent();
     }
+
+
     private void btnEngineers_Click(object sender, RoutedEventArgs e)
     {
         new EngineerListWindow().Show();
+    }
+
+    private void btnTask_Click(object sender, RoutedEventArgs e)
+    {
+        new TaskListWindow().Show();
     }
 
     private void btnInitDB_Click(object sender, RoutedEventArgs e)
