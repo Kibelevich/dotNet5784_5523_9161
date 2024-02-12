@@ -20,9 +20,9 @@
             </Grid.ColumnDefinitions>
             <!-- filter selection  -->
             <Label Grid.Column="0" Content="select" HorizontalAlignment="Left" Margin="112,-5,0,0" VerticalAlignment="Top"/>
-            <ComboBox SelectedValue="{Binding Level, Mode=TwoWay}" 
-                      ItemsSource="{Binding Source={StaticResource EngineerExperieceCollectionKey }}" 
-                      Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="cbTaskExperienceSelector_SelectionChanged"/>
+            <ComboBox SelectedValue="{Binding Status, Mode=TwoWay}" 
+                      ItemsSource="{Binding Source={StaticResource StatusCollectionKey }}" 
+                      Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="cbStatusSelector_SelectionChanged"/>
         </Grid>
         <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding TaskList}" MouseDoubleClick="lvUpdateTask_DoubleClick">
             <ListView.View >

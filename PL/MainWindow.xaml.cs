@@ -18,13 +18,22 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-
+    /// <summary>
+    /// Show engineers window 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void btnEngineers_Click(object sender, RoutedEventArgs e)
     {
         new EngineerListWindow().Show();
     }
 
-    private void btnTask_Click(object sender, RoutedEventArgs e)
+    /// <summary>
+    /// Show tasks window 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void btnTasks_Click(object sender, RoutedEventArgs e)
     {
         new TaskListWindow().Show();
     }

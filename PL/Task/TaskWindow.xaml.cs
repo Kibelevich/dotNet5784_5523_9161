@@ -52,7 +52,7 @@ public partial class TaskWindow : Window
                 deliverable = null,
                 remarks = null,
                 engineer = null,
-                complexityLevel = null
+                complexityLevel = 0
             } :
             s_bl.Task.Read(ID)!;
     }

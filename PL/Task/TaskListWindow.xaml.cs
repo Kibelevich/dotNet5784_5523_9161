@@ -6,7 +6,7 @@ using System.Windows.Controls;
 namespace PL.Task;
 
 /// <summary>
-/// Interaction logic for TaskListWindow.xaml
+/// Interaction logic for taskListWindow.xaml
 /// </summary>
 public partial class TaskListWindow : Window
 {
@@ -14,10 +14,10 @@ public partial class TaskListWindow : Window
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
     // Filtration Task level
-    public BO.EngineerExperiece Level { get; set; } = BO.EngineerExperiece.All;
+    public BO.Status Status { get; set; } = BO.Status.All;
 
     /// <summary>
-    ///  A logical list of Tasks
+    ///  A logical list of tasks
     /// </summary>
     public ObservableCollection<BO.TaskInList> TaskList
     {
@@ -26,13 +26,13 @@ public partial class TaskListWindow : Window
     }
 
     /// <summary>
-    /// Dependency property of the logical Task list
+    /// Dependency property of the logical task list
     /// </summary>
     public static readonly DependencyProperty TaskListProperty =
         DependencyProperty.Register("TaskList", typeof(ObservableCollection<BO.TaskInList>), typeof(TaskListWindow), new PropertyMetadata(null));
 
     /// <summary>
-    /// Loading the list of Tasks
+    /// Loading the list of tasks
     /// </summary>
     public TaskListWindow()
     {
@@ -46,16 +46,17 @@ public partial class TaskListWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void cbTaskExperienceSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void cbStatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var temp = Level == BO.EngineerExperiece.All ?
+        var temp = Status == BO.Status.All ?
             s_bl?.TaskInList.ReadAll() :
-            s_bl?.TaskInList.ReadAll(item => item.complexityLevel == Level);
+            s_bl?.TaskInList.ReadAll(item =>
+            item.status == Status);
         TaskList = temp == null ? new() : new(temp!);
     }
 
     /// <summary>
-    /// Add Task to the list of Tasks
+    /// Add Task to the list of tasks
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -67,7 +68,7 @@ public partial class TaskListWindow : Window
     }
 
     /// <summary>
-    /// Updates the Task
+    /// Updates the task
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

@@ -46,7 +46,6 @@ internal class TaskInListImplementation : ITaskInList
                        description = doTask.description,
                        alias = doTask.alias,
                        status = calcStatus(doTask),
-                       complexityLevel = (doTask.complexityLevel == null) ? (BO.EngineerExperiece)doTask.complexityLevel! : null
                    }
                    where filter(boTaskInList)
                    select boTaskInList;
@@ -58,7 +57,6 @@ internal class TaskInListImplementation : ITaskInList
                    description = doTask.description,
                    alias = doTask.alias,
                    status = calcStatus(doTask),
-                   complexityLevel = (doTask.complexityLevel == null) ? (BO.EngineerExperiece)doTask.complexityLevel! : null
                };
     }
 

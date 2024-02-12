@@ -17,6 +17,6 @@
         <!-- Button to show the tasks -->
         <Button Click="btnTasks_Click" Height="60" Width="150" Grid.Column="1" Content="Handle Tasks"></Button>
         <!-- Button to initialize DB -->
-        <Button Click="btnInitDB_Click" Height="60" Width="150" Grid.Column="1" Content="Init DB"></Button>
+        <Button Click="btnInitDB_Click" Height="60" Width="150" Grid.Column="2" Content="Init DB"></Button>
     </Grid>
 </Window>

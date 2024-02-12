@@ -93,13 +93,16 @@ internal class TaskImplementation : BlApi.ITask
     /// <exception cref="BO.BlDoesNotExistException">if object not found</exception>
     public void Update(BO.Task boTask)
     {
-        if (boTask.alias == "")
+        if (boTask.alias == "" || boTask.engineer != null &&
+            (_dal.Engineer.Read(boTask.engineer.ID) == null
+                || _dal.Engineer.Read(boTask.engineer.ID)!.name != boTask.engineer.name))
             throw new BO.BlIllegalPropertyException($"Illegal property");
         DO.Task doTask = replaceBoToDo(boTask);
         try
         {
-            _dal.Task.Delete(boTask.ID);
-            int id = _dal.Task.Create(doTask);
+            //_dal.Task.Delete(boTask.ID);
+            //int id = _dal.Task.Create(doTask);
+            _dal.Task.Update(doTask);
         }
         catch (DO.DalDoesNotExistException ex)
         {

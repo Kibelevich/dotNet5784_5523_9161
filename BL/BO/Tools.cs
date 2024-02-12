@@ -17,8 +17,8 @@ public static class Tools
     /// <returns>The object converted to a string representation</returns>
     public static string ToStringProperty<T>(T item)
     {
-        string result = item!.GetType().ToString() + ": ";
-        foreach (PropertyInfo prop in item.GetType().GetProperties())
+        string result = "";
+        foreach (PropertyInfo prop in item!.GetType().GetProperties())
         {
             result += prop.Name;
             result += " ";
