@@ -111,8 +111,6 @@ internal class TaskImplementation : BlApi.ITask
             DO.Task doTask = ReplaceBoToDo(boTask);
         try
         {
-            //_dal.Task.Delete(boTask.ID);
-            //int id = _dal.Task.Create(doTask);
             _dal.Task.Update(doTask);
         }
         catch (DO.DalDoesNotExistException ex)
