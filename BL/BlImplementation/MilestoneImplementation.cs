@@ -107,10 +107,9 @@ internal class MilestoneImplementation : IMilestone
     {
         DateTime now = DateTime.Now;
         if (doTask.Complete < now) return (BO.Status)4;
-        if (doTask.Deadline < now) throw new BO.BlDeadlinePassedException($"Deadline passed");
         if (doTask.ForecastEndDate < now && doTask.Deadline > now) return (BO.Status)3;
-        if (doTask.Start < now) return (BO.Status)2;
-        if (doTask.Deadline < now) return (BO.Status)1;
+        if (doTask.Start <= now) return (BO.Status)2;
+        if (doTask.BaselineStart != null) return (BO.Status)1;
         return 0;
     }
 

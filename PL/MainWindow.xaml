@@ -6,6 +6,18 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#ffcccc"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontFamily" Value="LilyUPC"/>
+            <Setter Property="FontSize" Value="30"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -13,10 +25,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <!-- Button to show the engineers -->
-        <Button Click="btnEngineers_Click" Height="60" Width="150" Grid.Column="0" Content="Handle Engineers"></Button>
+        <Button Click="btnEngineers_Click" Grid.Column="0" Content="Handle Engineers"></Button>
         <!-- Button to show the tasks -->
-        <Button Click="btnTasks_Click" Height="60" Width="150" Grid.Column="1" Content="Handle Tasks"></Button>
+        <Button Click="btnTasks_Click" Grid.Column="1" Content="Handle Tasks"></Button>
         <!-- Button to initialize DB -->
-        <Button Click="btnInitDB_Click" Height="60" Width="150" Grid.Column="2" Content="Init DB"></Button>
+        <Button Click="btnInitDB_Click" Grid.Column="2" Content="Init DB"></Button>
     </Grid>
 </Window>

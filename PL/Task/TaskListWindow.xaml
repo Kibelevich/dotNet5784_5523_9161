@@ -7,12 +7,25 @@
         mc:Ignorable="d"
         Title="TaskListWindow" Height="450" Width="800"
     DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#ffcccc"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontFamily" Value="LilyUPC"/>
+            <Setter Property="FontSize" Value="30"/>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        
         <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -24,6 +37,7 @@
                       ItemsSource="{Binding Source={StaticResource StatusCollectionKey }}" 
                       Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="CbStatusSelector_SelectionChanged"/>
         </Grid>
+        
         <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding TaskList}" MouseDoubleClick="LvUpdateTask_DoubleClick">
             <ListView.View >
                 <GridView>
@@ -31,6 +45,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        
         <Button Click="BtnAddTask_Click" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        
     </Grid>
 </Window>

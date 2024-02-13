@@ -7,16 +7,43 @@
         mc:Ignorable="d"
         Title="TaskWindow" Height="900" Width="800"
         DataContext="{Binding Task, RelativeSource={RelativeSource Self}, Mode=TwoWay}">
-    <Grid Margin="0,16,0,-16">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#ffcccc"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontFamily" Value="LilyUPC"/>
+            <Setter Property="FontSize" Value="25"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#ffcccc"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontFamily" Value="LilyUPC"/>
+            <Setter Property="FontSize" Value="25"/>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="0,0,0,-20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="700"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="Task"/>
+        <Label Grid.Row="0" Content="TASK" FontSize="40" />
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -50,19 +77,14 @@
             <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
 
-            <Label Content="REQUIRED EFFORT TIME" Grid.Row="3" />
-            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding RequiredEffortTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
-
-            <Label Content="STATUS" Grid.Row="4"/>
-            <ComboBox IsEnabled="False" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3,0,0,12" 
+            <Label Content="STATUS" Grid.Row="3"/>
+            <ComboBox IsEnabled="False" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3,0,0,12" 
                 ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}" 
                 SelectedValue="{Binding Status, Mode=TwoWay, NotifyOnValidationError=true,
                 ValidatesOnExceptions=true}" VerticalAlignment="Bottom" Width="120"/>
 
-            <Label Content="CREATED DATE" Grid.Row="5" />
-            <DatePicker IsEnabled="False" Grid.Column="1" Grid.Row="5" SelectedDate="{Binding CreatedAt, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120" >
+            <Label Content="CREATED DATE" Grid.Row="4" />
+            <DatePicker IsEnabled="False" Grid.Column="1" Grid.Row="4" SelectedDate="{Binding CreatedAt, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  >
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="Text" Value="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
@@ -70,9 +92,8 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Label Content="BASELINE START DATE" Grid.Row="6" />
-            <DatePicker Grid.Column="1" Grid.Row="6" SelectedDate="{Binding BaselineStart, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
+            <Label Content="BASELINE START DATE" Grid.Row="5" />
+            <DatePicker Grid.Column="1" Grid.Row="5" SelectedDate="{Binding BaselineStart, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  >
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="Text" Value="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
@@ -80,9 +101,8 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Label Content="START DATE" Grid.Row="7" />
-            <DatePicker Grid.Column="1" Grid.Row="7" SelectedDate="{Binding Start, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
+            <Label Content="START DATE" Grid.Row="6" />
+            <DatePicker Grid.Column="1" Grid.Row="6" SelectedDate="{Binding Start, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" >
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="Text" Value="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
@@ -90,9 +110,8 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Label Content="FORECAST END DATE" Grid.Row="8" />
-            <DatePicker Grid.Column="1" Grid.Row="8" SelectedDate="{Binding ForecastEndDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
+            <Label Content="FORECAST END DATE" Grid.Row="7" />
+            <DatePicker Grid.Column="1" Grid.Row="7" SelectedDate="{Binding ForecastEndDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  >
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="Text" Value="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
@@ -100,9 +119,8 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Label Content="DEADLINE" Grid.Row="9" />
-            <DatePicker Grid.Column="1" Grid.Row="9" SelectedDate="{Binding Deadline, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
+            <Label Content="DEADLINE" Grid.Row="8" />
+            <DatePicker Grid.Column="1" Grid.Row="8" SelectedDate="{Binding Deadline, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" >
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="Text" Value="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
@@ -110,10 +128,9 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Label Content="COMPLETION DATE" Grid.Row="10" />
-            <DatePicker Grid.Column="1" Grid.Row="10" 
-            SelectedDate="{Binding Complete, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-            HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
+            <Label Content="COMPLETION DATE" Grid.Row="9" />
+            <DatePicker Grid.Column="1" Grid.Row="9" 
+            SelectedDate="{Binding Complete, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" >
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
                         <Setter Property="Text" Value="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
@@ -121,16 +138,16 @@
                 </DatePicker.Resources>
             </DatePicker>
 
-            <Label Content="DELIVERABLE" Grid.Row="11" />
-            <TextBox Grid.Column="1" Grid.Row="11" Text="{Binding Deliverable, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+            <Label Content="DELIVERABLE" Grid.Row="10" />
+            <TextBox Grid.Column="1" Grid.Row="10" Text="{Binding Deliverable, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
 
-            <Label Content="REMARKS" Grid.Row="12" />
-            <TextBox Grid.Column="1" Grid.Row="12" Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+            <Label Content="REMARKS" Grid.Row="11" />
+            <TextBox Grid.Column="1" Grid.Row="11" Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
 
-            <Label Content="ENGINEER" Grid.Row="13" />
-            <Grid  Grid.Column="1" Grid.Row="13">
+            <Label Content="ENGINEER" Grid.Row="12" />
+            <Grid  Grid.Column="1" Grid.Row="12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -149,8 +166,8 @@
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
             </Grid>
 
-            <Label Content="COMPLEXITY LEVEL" Grid.Row="14" />
-            <ComboBox Grid.Row="14" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3" 
+            <Label Content="COMPLEXITY LEVEL" Grid.Row="13" />
+            <ComboBox Grid.Row="13" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3" 
                 ItemsSource="{Binding Source={StaticResource EngineerExperieceCollectionKey}}" 
                 SelectedValue="{Binding ComplexityLevel, Mode=TwoWay, NotifyOnValidationError=true, 
                 ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>

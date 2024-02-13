@@ -21,14 +21,14 @@ internal class EngineerImplementation :IEngineer
     /// <exception cref="BO.BlAlreadyExistException">if the entity alredy exists</exception>
     public int Create(BO.Engineer boEngineer)
     {
-        if (boEngineer.ID <= 0 || boEngineer.Name == "" || boEngineer.Cost <= 0 || !Regex.IsMatch(boEngineer.Email, @"(@)(.+)$"))
+        if (boEngineer.ID < 200000000 || boEngineer.ID > 400000000 || boEngineer.Name == "" || boEngineer.Cost <= 0 || !Regex.IsMatch(boEngineer.Email, @"(@)(.+)$"))
             throw new BO.BlIllegalPropertyException("Illegal property");
-        if (boEngineer.CurrentTask != null)
+        if (boEngineer.CurrentTask != null && boEngineer.CurrentTask.ID != 0)
         {
             DO.Task currentTask = _dal.Task.Read(boEngineer.CurrentTask.ID) ??
                 throw new BO.BlIllegalPropertyException("Illegal property");
             if (currentTask.Alias != boEngineer.CurrentTask.Alias
-                ||(int)boEngineer.Level < (int)currentTask.ComplexityLevel)
+                || (int)boEngineer.Level < (int)currentTask.ComplexityLevel)
                 throw new BO.BlIllegalPropertyException("Illegal property");
             try
             {
