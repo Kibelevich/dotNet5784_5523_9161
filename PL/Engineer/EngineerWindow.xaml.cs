@@ -34,7 +34,7 @@ public partial class EngineerWindow : Window
     {
         InitializeComponent();
         Engineer = (ID == 0) ?
-            new BO.Engineer() { ID = 0, name = "", email = "", level = 0, cost = 0, currentTask = new BO.TaskInEngineer { ID = 0, alias = "" } } :
+            new BO.Engineer() { ID = 0, Name = "", Email = "", Level = 0, Cost = null, CurrentTask = new BO.TaskInEngineer { ID = 0, Alias = "" } } :
             s_bl.Engineer.Read(ID)!;
     }
 
@@ -43,10 +43,12 @@ public partial class EngineerWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+    public void BtnAddUpdate_Click(object sender, RoutedEventArgs e)
     {
         try
         {
+            if (Engineer.CurrentTask != null && Engineer.CurrentTask.ID < 0)
+                MessageBox.Show("Illegal property");
             if ((sender as Button)?.Content.ToString() == "ADD")
             {
                 s_bl.Engineer.Create(Engineer);

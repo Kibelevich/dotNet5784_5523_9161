@@ -7,22 +7,22 @@ namespace BO;
 public class Task
 {
     public int ID { get; init; }
-    public required string description{ get; set; }
-    public required string alias { get; set; }
-    public IEnumerable<TaskInList?> dependList { get; set; } = new List<TaskInList?>();
-    public MilestoneInTask? milestone { get; set; }
-    public TimeSpan requiredEffortTime { get; set; }
-    public Status? status { get; set; }
-    public DateTime createdAt { get; init; }
-    public DateTime? baselineStart { get; set; }
-    public DateTime? start { get; set; }
-    public DateTime? forecastEndDate { get; set; }
-    public DateTime deadline { get; init; }
-    public DateTime? complete { get; set; }
-    public string? deliverable { get; set; }
-    public string? remarks { get; set; }
-    public EngineerInTask? engineer { get; set; }
-    public EngineerExperiece? complexityLevel { get; set; }
+    public required string Description { get; set; }
+    public required string Alias { get; set; }
+    public IEnumerable<TaskInList?>? DependList { get; set; } = new List<TaskInList?>();
+    public MilestoneInTask? Milestone { get; set; }
+    public TimeSpan? RequiredEffortTime { get; set; }
+    public Status? Status { get; set; }
+    public DateTime CreatedAt { get; init; }
+    public DateTime? BaselineStart { get; set; }
+    public DateTime? Start { get; set; }
+    public DateTime? ForecastEndDate { get; set; }
+    public DateTime Deadline { get; init; }
+    public DateTime? Complete { get; set; }
+    public string? Deliverable { get; set; }
+    public string? Remarks { get; set; }
+    public EngineerInTask? Engineer { get; set; }
+    public EngineerExperiece ComplexityLevel { get; set; }
     public override string ToString() => Tools.ToStringProperty(this);
 
 }

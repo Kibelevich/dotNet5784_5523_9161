@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace PL.Task;
 
 /// <summary>
-/// Interaction logic for TaskWindow.xaml
+/// Interaction logic for taskWindow.xaml
 /// </summary>
 public partial class TaskWindow : Window
 {
@@ -13,7 +13,7 @@ public partial class TaskWindow : Window
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
     /// <summary>
-    ///  A logical entity of Task
+    ///  A logical entity of task
     /// </summary>
     public BO.Task Task
     {
@@ -22,13 +22,13 @@ public partial class TaskWindow : Window
     }
 
     /// <summary>
-    /// Dependency property of the Task 
+    /// Dependency property of the task 
     /// </summary>
     public static readonly DependencyProperty TaskProperty =
         DependencyProperty.Register("Task", typeof(BO.Task), typeof(TaskWindow), new PropertyMetadata(null));
 
     /// <summary>
-    /// Loading the Task
+    /// Loading the task
     /// </summary>
     public TaskWindow(int ID = 0)
     {
@@ -37,22 +37,22 @@ public partial class TaskWindow : Window
             new BO.Task()
             {
                 ID = 0,
-                description = "",
-                alias = "",
-                dependList = null,////////////////////////////////////////////////////////////////////
-                milestone = null,
-                requiredEffortTime = TimeSpan.Zero,
-                status = null,
-                createdAt = DateTime.MinValue,
-                baselineStart = null,
-                start = null,
-                forecastEndDate = null,
-                deadline = DateTime.MinValue,
-                complete = null,
-                deliverable = null,
-                remarks = null,
-                engineer = null,
-                complexityLevel = 0
+                Description = "",
+                Alias = "",
+                DependList = null,
+                Milestone = null,
+                RequiredEffortTime = null,
+                Status = null,
+                CreatedAt = DateTime.Now,
+                BaselineStart = null,
+                Start = null,
+                ForecastEndDate = null,
+                Deadline = DateTime.Now,
+                Complete = null,
+                Deliverable = null,
+                Remarks = null,
+                Engineer = null,
+                ComplexityLevel = 0
             } :
             s_bl.Task.Read(ID)!;
     }
@@ -62,19 +62,24 @@ public partial class TaskWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+    public void BtnAddUpdate_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            if ((sender as Button)?.Content.ToString() == "ADD")
-            {
-                s_bl.Task.Create(Task);
-                MessageBox.Show("The Task was successfully added");
-            }
+            if (Task.Engineer != null && (Task.Engineer.ID < 200000000 || Task.Engineer.ID > 400000000))
+                MessageBox.Show("Illegal property");
             else
             {
-                s_bl.Task.Update(Task);
-                MessageBox.Show("The Task has been updated successfully");
+                if ((sender as Button)?.Content.ToString() == "ADD")
+                {
+                    s_bl.Task.Create(Task);
+                    MessageBox.Show("The Task was successfully added");
+                }
+                else
+                {
+                    s_bl.Task.Update(Task);
+                    MessageBox.Show("The Task has been updated successfully");
+                }
             }
             Close();
         }

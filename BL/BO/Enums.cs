@@ -12,7 +12,7 @@ public enum EngineerExperiece
     Competent,
     Proficient,
     Expert,
-    All
+    None
 }
 
 /// <summary>
@@ -24,7 +24,7 @@ public enum Status
     Scheduled,
     OnTrack,
     InJeopardy,
-    Done, 
-    All
+    Done,
+    None
 }
 

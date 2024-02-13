@@ -1,6 +1,7 @@
 ﻿
 using BlApi;
 using DalApi;
+using System.Text.RegularExpressions;
 
 namespace BlImplementation;
 
@@ -20,13 +21,15 @@ internal class TaskImplementation : BlApi.ITask
     /// <exception cref="BO.BlIllegalPropertyException">if the properties are illegal</exception>
     public int Create(BO.Task boTask)
     {
-        if (boTask.alias == "")
-           throw new BO.BlIllegalPropertyException($"Illegal property");
-        DO.Task doTask = replaceBoToDo(boTask);
-        int id = _dal.Task.Create(doTask);
-        if (boTask.dependList == null)
+        if (boTask.Alias == "" || boTask.Start < boTask.CreatedAt || boTask.BaselineStart < boTask.CreatedAt
+            || boTask.BaselineStart > boTask.ForecastEndDate || boTask.Start > boTask.ForecastEndDate ||
+            boTask.Deadline < boTask.ForecastEndDate || boTask.Deadline < boTask.Complete)
+            throw new BO.BlIllegalPropertyException($"Illegal property");
+            DO.Task doTask = ReplaceBoToDo(boTask);
+        int id = _dal.Task.Create(doTask with { CreatedAt = DateTime.Now });
+        if (boTask.DependList == null)
             return id;
-        IEnumerable<int>  i = from BO.TaskInList task in boTask.dependList
+        IEnumerable<int>  i = from BO.TaskInList task in boTask.DependList
              select _dal.Dependency.Create(new DO.Dependency(0, id, task.ID));
         return id;
     }
@@ -66,7 +69,7 @@ internal class TaskImplementation : BlApi.ITask
         DO.Task? doTask = _dal.Task.Read(id);
         if (doTask == null)
             throw new BO.BlDoesNotExistException($"Task with ID={id} does not exist");
-        return replaceDoToBo(doTask);
+        return ReplaceDoToBo(doTask);
     }
 
     /// <summary>
@@ -78,11 +81,11 @@ internal class TaskImplementation : BlApi.ITask
     {
         if (filter != null)
             return (from DO.Task doTask in _dal.Task.ReadAll()
-                    let boTask = replaceDoToBo(doTask)
+                    let boTask = ReplaceDoToBo(doTask)
                     where filter(boTask)
                     select boTask);
         return (from DO.Task doTask in _dal.Task.ReadAll()
-                select replaceDoToBo(doTask));
+                select ReplaceDoToBo(doTask));
     }
 
     /// <summary>
@@ -93,11 +96,19 @@ internal class TaskImplementation : BlApi.ITask
     /// <exception cref="BO.BlDoesNotExistException">if object not found</exception>
     public void Update(BO.Task boTask)
     {
-        if (boTask.alias == "" || boTask.engineer != null &&
-            (_dal.Engineer.Read(boTask.engineer.ID) == null
-                || _dal.Engineer.Read(boTask.engineer.ID)!.name != boTask.engineer.name))
+        if (boTask.Alias == "" || boTask.Start < boTask.CreatedAt || boTask.BaselineStart < boTask.CreatedAt
+             || boTask.BaselineStart > boTask.ForecastEndDate || boTask.Start > boTask.ForecastEndDate ||
+             boTask.Deadline < boTask.ForecastEndDate || boTask.Deadline < boTask.Complete)
             throw new BO.BlIllegalPropertyException($"Illegal property");
-        DO.Task doTask = replaceBoToDo(boTask);
+        if (boTask.Engineer != null)
+        {
+            DO.Engineer engineer = _dal.Engineer.Read(boTask.Engineer.ID) ??
+                throw new BO.BlIllegalPropertyException("Illegal property");
+            if (engineer.Name != boTask.Engineer.Name
+                ||(int)boTask.ComplexityLevel < (int)engineer.Level)
+                throw new BO.BlIllegalPropertyException("Illegal property");
+        }
+            DO.Task doTask = ReplaceBoToDo(boTask);
         try
         {
             //_dal.Task.Delete(boTask.ID);
@@ -115,28 +126,25 @@ internal class TaskImplementation : BlApi.ITask
     /// </summary>
     /// <param name="boTask">the BL object to replace</param>
     /// <returns>the DAL object</returns>
-    DO.Task replaceBoToDo(BO.Task boTask)
+    DO.Task ReplaceBoToDo(BO.Task boTask)
     {
-        bool milestone = boTask.milestone == null ? false : true;
-        DO.EngineerExperiece? complexityLevel = null;
-        if (boTask.complexityLevel != null)
-            complexityLevel = (DO.EngineerExperiece)boTask.complexityLevel;
+        bool milestone = boTask.Milestone == null ? false : true;
         return new DO.Task
          (boTask.ID,
-          boTask.description,
-          boTask.alias,
+          boTask.Description,
+          boTask.Alias,
           milestone,
-          boTask.requiredEffortTime,
-          boTask.createdAt,
-          boTask.baselineStart,
-          boTask.start,
-          boTask.forecastEndDate,
-          boTask.deadline,
-          boTask.complete,
-          boTask.deliverable,
-          boTask.remarks,
-          boTask.engineer?.ID,
-          complexityLevel);
+          boTask.RequiredEffortTime,
+          boTask.CreatedAt,
+          boTask.BaselineStart,
+          boTask.Start,
+          boTask.ForecastEndDate,
+          boTask.Deadline,
+          boTask.Complete,
+          boTask.Deliverable,
+          boTask.Remarks,
+          boTask.Engineer?.ID,
+          (DO.EngineerExperiece)boTask.ComplexityLevel!);
     }
 
     /// <summary>
@@ -144,33 +152,30 @@ internal class TaskImplementation : BlApi.ITask
     /// </summary>
     /// <param name="doTask">the DAL object to replace</param>
     /// <returns>the BL object</returns>
-    BO.Task replaceDoToBo(DO.Task doTask)
+    BO.Task ReplaceDoToBo(DO.Task doTask)
     {
 
         IBl bl = BlApi.Factory.Get();
-        BO.EngineerExperiece? complexityLevel = null;
-        if (doTask.complexityLevel != null)
-            complexityLevel = (BO.EngineerExperiece)doTask.complexityLevel;
-        IEnumerable<BO.TaskInList?> taskInLists = dependList(doTask.ID);
+        IEnumerable<BO.TaskInList?> taskInLists = DependList(doTask.ID);
         return new BO.Task()
         {
             ID = doTask.ID,
-            description = doTask.description,
-            alias = doTask.alias,
-            dependList = taskInLists,
-            milestone = null,//calcMilestone(doTask.ID)
-            requiredEffortTime = doTask.requiredEffortTime,
-            status = calcStatus(doTask),
-            createdAt = doTask.createdAt,
-            baselineStart = doTask.baselineStart,
-            start = doTask.start,
-            forecastEndDate = doTask.forecastEndDate,
-            deadline = doTask.deadline,
-            complete = doTask.complete,
-            deliverable = doTask.deliverable,
-            remarks = doTask.remarks,
-            engineer = bl.EngineerInTask.Read(doTask.engineerId),
-            complexityLevel = complexityLevel
+            Description = doTask.Description,
+            Alias = doTask.Alias,
+            DependList = taskInLists,
+            Milestone = null,//calcMilestone(doTask.ID)
+            RequiredEffortTime = doTask.RequiredEffortTime,
+            Status = CalcStatus(doTask),
+            CreatedAt = doTask.CreatedAt,
+            BaselineStart = doTask.BaselineStart,
+            Start = doTask.Start,
+            ForecastEndDate = doTask.ForecastEndDate,
+            Deadline = doTask.Deadline,
+            Complete = doTask.Complete,
+            Deliverable = doTask.Deliverable,
+            Remarks = doTask.Remarks,
+            Engineer = doTask.EngineerId == 0 ? null : bl.EngineerInTask.Read(doTask.EngineerId),
+            ComplexityLevel = (BO.EngineerExperiece)doTask.ComplexityLevel
         };
     }
 
@@ -180,7 +185,7 @@ internal class TaskImplementation : BlApi.ITask
     /// </summary>
     /// <param name="ID">The id of the current task</param>
     /// <returns>The list of pending tasks</returns>
-    IEnumerable<BO.TaskInList?> dependList(int ID)
+    IEnumerable<BO.TaskInList?> DependList(int ID)
     {
         IBl bl = BlApi.Factory.Get();
         return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
@@ -214,14 +219,14 @@ internal class TaskImplementation : BlApi.ITask
     /// <param name="doTask">The task to calculate for</param>
     /// <returns>The task's status </returns>
     /// <exception cref="BO.BlDeadlinePassedException">If the dead line passed</exception>
-    BO.Status calcStatus(DO.Task doTask)
+    BO.Status CalcStatus(DO.Task doTask)
     {
         DateTime now= DateTime.Now;
-        if (doTask.complete < now) return (BO.Status)4;
-        if (doTask.deadline < now) throw new BO.BlDeadlinePassedException($"Deadline passed");
-        if (doTask.forecastEndDate < now && doTask.deadline > now) return (BO.Status)3;
-        if(doTask.start<now) return (BO.Status)2;
-        if (doTask.deadline < now) return (BO.Status)1;
+        if (doTask.Complete < now) return (BO.Status)4;
+        if (doTask.Deadline < now) throw new BO.BlDeadlinePassedException($"Deadline passed");
+        if (doTask.ForecastEndDate < now && doTask.Deadline > now) return (BO.Status)3;
+        if(doTask.Start<now) return (BO.Status)2;
+        if (doTask.Deadline < now) return (BO.Status)1;
         return 0;
     }
 

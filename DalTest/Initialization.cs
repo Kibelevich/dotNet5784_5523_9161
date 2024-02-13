@@ -12,7 +12,7 @@ public static class Initialization
     private static readonly Random s_rand = new Random();
 
     // inits the engineer's list with random instances
-    private static void createEngineer()
+    private static void CreateEngineer()
     {
         string[] engineerName =
         {
@@ -65,13 +65,13 @@ public static class Initialization
             while (s_dal!.Engineer.Read(_id) != null);
             string _email = $"{engineer.Split(' ')[0]}{_id % 1000}@gmail.com";
             int _level = _id % 5+1;
-            Engineer newEngineer = new(_id, engineer, _email, (EngineerExperiece)_level, 0);
+            Engineer newEngineer = new(_id, engineer, _email, (EngineerExperiece)_level, null);
             s_dal.Engineer!.Create(newEngineer);
         }
     }
 
     // inits the task's list with random instances
-    public static void createTask()
+    public static void CreateTask()
     {
         string[] descriptions = { "easy", "fun", "difficult", "challenging", "be careful", "good luck" };
         string[] aliases = { "add road", "built a shop", "painting", "help mother", "plan party" };
@@ -81,18 +81,23 @@ public static class Initialization
             string _description = descriptions[s_rand.Next(6)];
             string _alias = aliases[s_rand.Next(5)];
             TimeSpan span = new(s_rand.Next(300), s_rand.Next(24), s_rand.Next(60), s_rand.Next(60));
-            DateTime _createdAt = DateTime.Today - span;
-            DateTime _deadline = DateTime.Now.AddDays(s_rand.Next(500));
-            int _engineerId = engineers.ElementAt(s_rand.Next(40)).ID;
+            TimeSpan _requiredEffortTime = span / 2;
+            DateTime _createdAt = DateTime.Today;
+            DateTime? _start = s_rand.Next(3) > 1 ? DateTime.Today + span/10 : null;
+            DateTime? _forecastEndDate = _start == null ? null : _start + _requiredEffortTime;
+            DateTime _deadline = _createdAt + span;
+            DateTime _baselineStart = _createdAt + span / 20;
             int _complexityLevel = s_rand.Next(1, 6);
-            Task newTask = new(0, _description, _alias, false,span/2, _createdAt,null, null, null,
-                _deadline, null, null, null, _engineerId, (EngineerExperiece)_complexityLevel);
+            Engineer? engineer = engineers.FirstOrDefault(eng => (int)eng.Level == _complexityLevel);
+            int? _engineerId = engineer == null ? null : engineer.ID;
+            Task newTask = new(0, _description, _alias, false, _requiredEffortTime, _createdAt, _baselineStart, _start,
+                _forecastEndDate, _deadline, null, null, null, _engineerId, (EngineerExperiece)_complexityLevel);
             s_dal.Task!.Create(newTask);
         }
     }
 
     // inits the dependency's list with random instances
-    public static void createDependency()
+    public static void CreateDependency()
     {
         int _dependentTask, _dependsOnTask;
         for (int i = 0; i < 250; i++) {
@@ -111,9 +116,9 @@ public static class Initialization
     public static void Do()
     {
         s_dal = Factory.Get;
-        createEngineer();
-        createTask();
-        createDependency();
+        CreateEngineer();
+        CreateTask();
+        CreateDependency();
     }
 }
 

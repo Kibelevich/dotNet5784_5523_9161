@@ -22,15 +22,15 @@
             <Label Grid.Column="0" Content="select" HorizontalAlignment="Left" Margin="112,-5,0,0" VerticalAlignment="Top"/>
             <ComboBox SelectedValue="{Binding Level, Mode=TwoWay}" 
                       ItemsSource="{Binding Source={StaticResource EngineerExperieceCollectionKey }}" 
-                      Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="cbEngineerExperienceSelector_SelectionChanged"/>
+                      Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="CbEngineerExperienceSelector_SelectionChanged"/>
         </Grid>
-        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" MouseDoubleClick="lvUpdateEngineer_DoubleClick">
+        <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" MouseDoubleClick="LvUpdateEngineer_DoubleClick">
             <ListView.View >
                 <GridView>
                     <GridViewColumn />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Click="btnAddEngineer_Click" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        <Button Click="BtnAddEngineer_Click" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
     </Grid>
 </Window>

@@ -8,10 +8,10 @@ namespace BO;
 public class Engineer
 {
     public int ID { get; init; }
-    public required string name { get; set; }
-    public required string email { get; set; }
-    public EngineerExperiece level { get; set; }
-    public  double cost { get; set; }
-    public TaskInEngineer? currentTask { get; set; }
+    public required string Name { get; set; }
+    public required string Email { get; set; }
+    public EngineerExperiece Level { get; set; }
+    public  double? Cost { get; set; }
+    public TaskInEngineer? CurrentTask { get; set; }
     public override string ToString() => Tools.ToStringProperty(this);
 }

@@ -36,37 +36,32 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+                        
             <Label Content="ID" />
-            <Label Content="DESCRIPTION" Grid.Row="1"/>
-            <Label Content="ALIAS" Grid.Row="2" />
-            <Label Content="REQUIRED EFFORT TIME" Grid.Row="3" />
-            <Label Content="STATUS" Grid.Row="4"/>
-            <Label Content="CREATED DATE" Grid.Row="5" />
-            <Label Content="BASELINE START DATE" Grid.Row="6" />
-            <Label Content="START DATE" Grid.Row="7" />
-            <Label Content="FORECAST END DATE" Grid.Row="8" />
-            <Label Content="DEADLINE" Grid.Row="9" />
-            <Label Content="COMPLETION DATE" Grid.Row="10" />
-            <Label Content="DELIVERABLE" Grid.Row="11" />
-            <Label Content="REMARKS" Grid.Row="12" />
-            <Label Content="ENGINEER" Grid.Row="13" />
-            <Label Content="COMPLEXITY LEVEL" Grid.Row="14" />
             <TextBox Grid.Column="1" Text="{Binding ID, Mode=TwoWay,NotifyOnValidationError=true,ValidatesOnExceptions=true}" 
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"
                      IsEnabled="False"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding description, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="DESCRIPTION" Grid.Row="1"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Description, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
-            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="ALIAS" Grid.Row="2" />
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
-            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding requiredEffortTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="REQUIRED EFFORT TIME" Grid.Row="3" />
+            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding RequiredEffortTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
-            <!--<TextBox Grid.Column="1" Grid.Row="4" Text="{Binding status.Value, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>-->
-            <ComboBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3,0,0,12" 
+
+            <Label Content="STATUS" Grid.Row="4"/>
+            <ComboBox IsEnabled="False" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3,0,0,12" 
                 ItemsSource="{Binding Source={StaticResource StatusCollectionKey}}" 
-                SelectedValue="{Binding status, Mode=TwoWay, NotifyOnValidationError=true,
+                SelectedValue="{Binding Status, Mode=TwoWay, NotifyOnValidationError=true,
                 ValidatesOnExceptions=true}" VerticalAlignment="Bottom" Width="120"/>
-            <DatePicker Grid.Column="1" Grid.Row="5" Text="{Binding createdAt, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="CREATED DATE" Grid.Row="5" />
+            <DatePicker IsEnabled="False" Grid.Column="1" Grid.Row="5" SelectedDate="{Binding CreatedAt, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120" >
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
@@ -74,7 +69,9 @@
                     </Style>
                 </DatePicker.Resources>
             </DatePicker>
-            <DatePicker Grid.Column="1" Grid.Row="6" Text="{Binding baselineStart, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="BASELINE START DATE" Grid.Row="6" />
+            <DatePicker Grid.Column="1" Grid.Row="6" SelectedDate="{Binding BaselineStart, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
@@ -82,7 +79,9 @@
                     </Style>
                 </DatePicker.Resources>
             </DatePicker>
-            <DatePicker Grid.Column="1" Grid.Row="7" Text="{Binding start, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="START DATE" Grid.Row="7" />
+            <DatePicker Grid.Column="1" Grid.Row="7" SelectedDate="{Binding Start, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
@@ -90,7 +89,9 @@
                     </Style>
                 </DatePicker.Resources>
             </DatePicker>
-            <DatePicker Grid.Column="1" Grid.Row="8" Text="{Binding forecastEndDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="FORECAST END DATE" Grid.Row="8" />
+            <DatePicker Grid.Column="1" Grid.Row="8" SelectedDate="{Binding ForecastEndDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
@@ -98,7 +99,9 @@
                     </Style>
                 </DatePicker.Resources>
             </DatePicker>
-            <DatePicker Grid.Column="1" Grid.Row="9" Text="{Binding deadline, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="DEADLINE" Grid.Row="9" />
+            <DatePicker Grid.Column="1" Grid.Row="9" SelectedDate="{Binding Deadline, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
@@ -106,9 +109,10 @@
                     </Style>
                 </DatePicker.Resources>
             </DatePicker>
-            
+
+            <Label Content="COMPLETION DATE" Grid.Row="10" />
             <DatePicker Grid.Column="1" Grid.Row="10" 
-            SelectedDate="{Binding complete, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+            SelectedDate="{Binding Complete, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
             HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120">
                 <DatePicker.Resources>
                     <Style TargetType="DatePickerTextBox">
@@ -116,11 +120,16 @@
                     </Style>
                 </DatePicker.Resources>
             </DatePicker>
-            
-            <TextBox Grid.Column="1" Grid.Row="11" Text="{Binding deliverable, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="DELIVERABLE" Grid.Row="11" />
+            <TextBox Grid.Column="1" Grid.Row="11" Text="{Binding Deliverable, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
-            <TextBox Grid.Column="1" Grid.Row="12" Text="{Binding remarks, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+            <Label Content="REMARKS" Grid.Row="12" />
+            <TextBox Grid.Column="1" Grid.Row="12" Text="{Binding Remarks, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
+
+            <Label Content="ENGINEER" Grid.Row="13" />
             <Grid  Grid.Column="1" Grid.Row="13">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -130,22 +139,27 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                
                 <Label Content="ID" Grid.Row="0"/>
-                <Label Content="NAME" Grid.Row="1"/>
-                <TextBox Grid.Column="1" Text="{Binding engineer.ID, Mode=TwoWay,NotifyOnValidationError=true,ValidatesOnExceptions=true}" 
+                <TextBox Grid.Column="1" Text="{Binding Engineer.ID, Mode=TwoWay,NotifyOnValidationError=True,ValidatesOnExceptions=True}" 
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
-                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding engineer.name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
+
+                <Label Content="NAME" Grid.Row="1"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Engineer.Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
                      HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
             </Grid>
+
+            <Label Content="COMPLEXITY LEVEL" Grid.Row="14" />
             <ComboBox Grid.Row="14" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3" 
                 ItemsSource="{Binding Source={StaticResource EngineerExperieceCollectionKey}}" 
-                SelectedValue="{Binding complexityLevel, Mode=TwoWay, NotifyOnValidationError=true, 
+                SelectedValue="{Binding ComplexityLevel, Mode=TwoWay, NotifyOnValidationError=true, 
                 ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
 
         </Grid>
+
         <Button Grid.Row="2" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConvertIdToContentKey}}" 
             HorizontalAlignment="Left" Margin="3,0,0,0"  VerticalAlignment="Top" Padding="5" 
-            Click="btnAddUpdate_Click"/>
+            Click="BtnAddUpdate_Click"/>
 
     </Grid>
 </Window>

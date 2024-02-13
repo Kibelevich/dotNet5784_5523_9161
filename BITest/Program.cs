@@ -1,4 +1,4 @@
-﻿namespace BITest
+﻿namespace BlTest
 {
     internal class Program
     {
@@ -6,8 +6,7 @@
 
         static void Main(string[] args)
         {
-            BO.Engineer a = new BO.Engineer { email="hjk",ID= 123,name="sfgh",cost=123,level=(BO.EngineerExperiece)2, currentTask=null}; 
-            s_bl.Engineer.Create(a);
-                }
+
+        }
     }
 }

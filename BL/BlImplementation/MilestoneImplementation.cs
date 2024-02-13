@@ -22,7 +22,7 @@ internal class MilestoneImplementation : IMilestone
         DO.Task? doTask = _dal.Task.Read(id);
         if (doTask == null)
             throw new BO.BlDoesNotExistException($"Milestone with ID={id} does not exist");
-        return replaceTaskToMilestone(doTask);
+        return ReplaceTaskToMilestone(doTask);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ internal class MilestoneImplementation : IMilestone
     /// <returns>Collection of all objects</returns>
     public IEnumerable<BO.Milestone> ReadAll()
     {
-        return _dal.Task.ReadAll().Where(task => task != null && task.milestone).Select(task => replaceTaskToMilestone(task!));
+        return _dal.Task.ReadAll().Where(task => task != null && task.Milestone).Select(task => ReplaceTaskToMilestone(task!));
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ internal class MilestoneImplementation : IMilestone
             _dal.Task.Delete(milestone.ID);
             DO.Task updatedTask = doTask
                 with
-            { alias = milestone.alias, description = milestone.description, remarks = milestone.remarks };
+            { Alias = milestone.alias, Description = milestone.description, Remarks = milestone.remarks };
             int id = _dal.Task.Create(updatedTask);
         }
         catch (DO.DalDoesNotExistException ex)
@@ -78,22 +78,22 @@ internal class MilestoneImplementation : IMilestone
     /// </summary>
     /// <param name="task">the task object to replace</param>
     /// <returns>the milestone object</returns>
-    BO.Milestone replaceTaskToMilestone(DO.Task task)
+    BO.Milestone ReplaceTaskToMilestone(DO.Task task)
     {
-        IEnumerable<BO.TaskInList?> taskInLists = dependList(task.ID);
+        IEnumerable<BO.TaskInList?> taskInLists = DependList(task.ID);
         return new BO.Milestone()
         {
             ID = task.ID,
-            description = task.description,
-            alias = task.alias,
-            status = calcStatus(task),
-            createdAt = task.createdAt,
-            start = task.start,
-            forecastEndDate = task.forecastEndDate,
-            deadline = task.deadline,
-            complete = task.complete,
-            remarks = task.remarks,
-            completionPercentage = calcCompletionPercentage(taskInLists),
+            description = task.Description,
+            alias = task.Alias,
+            status = CalcStatus(task),
+            createdAt = task.CreatedAt,
+            start = task.Start,
+            forecastEndDate = task.ForecastEndDate,
+            deadline = task.Deadline,
+            complete = task.Complete,
+            remarks = task.Remarks,
+            completionPercentage = CalcCompletionPercentage(taskInLists),
             dependencies = taskInLists
         };
     }
@@ -103,14 +103,14 @@ internal class MilestoneImplementation : IMilestone
     /// <param name="doTask">The task for calculation</param>
     /// <returns></returns>
     /// <exception cref="BO.BlDeadlinePassedException">if the dead line passed</exception>
-    BO.Status calcStatus(DO.Task doTask)
+    BO.Status CalcStatus(DO.Task doTask)
     {
         DateTime now = DateTime.Now;
-        if (doTask.complete < now) return (BO.Status)4;
-        if (doTask.deadline < now) throw new BO.BlDeadlinePassedException($"Deadline passed");
-        if (doTask.forecastEndDate < now && doTask.deadline > now) return (BO.Status)3;
-        if (doTask.start < now) return (BO.Status)2;
-        if (doTask.deadline < now) return (BO.Status)1;
+        if (doTask.Complete < now) return (BO.Status)4;
+        if (doTask.Deadline < now) throw new BO.BlDeadlinePassedException($"Deadline passed");
+        if (doTask.ForecastEndDate < now && doTask.Deadline > now) return (BO.Status)3;
+        if (doTask.Start < now) return (BO.Status)2;
+        if (doTask.Deadline < now) return (BO.Status)1;
         return 0;
     }
 
@@ -119,7 +119,7 @@ internal class MilestoneImplementation : IMilestone
     /// </summary>
     /// <param name="ID">the task's id</param>
     /// <returns>the list of dependencies</returns>
-    IEnumerable<BO.TaskInList?> dependList(int ID)
+    IEnumerable<BO.TaskInList?> DependList(int ID)
     {
         return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
             .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.dependsOnTask));
@@ -130,7 +130,7 @@ internal class MilestoneImplementation : IMilestone
     /// </summary>
     /// <param name="tasksInList">dependenies' list</param>
     /// <returns>The completion percentage</returns>
-    int? calcCompletionPercentage(IEnumerable<BO.TaskInList?> tasksInList)
+    int? CalcCompletionPercentage(IEnumerable<BO.TaskInList?> tasksInList)
     {
         int tasksAmount = tasksInList.Count();
         int doneTasks = tasksInList.Count(t => t != null && t.status == (BO.Status)4);

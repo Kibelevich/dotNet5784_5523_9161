@@ -33,7 +33,7 @@ internal class TaskImplementation : ITask
         Task task = DataSource.Tasks.FirstOrDefault(ele => ele.ID == id)??
             throw new DalDoesNotExistException($"Task with ID={id} not exists");
         DataSource.Tasks.Remove(task);
-        task = task with { complete = DateTime.Now };
+        task = task with { Complete = DateTime.Now };
         DataSource.Tasks.Add(task);
     }
 

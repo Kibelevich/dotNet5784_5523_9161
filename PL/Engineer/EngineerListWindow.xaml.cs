@@ -14,7 +14,7 @@ public partial class EngineerListWindow : Window
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
     // Filtration engineer level
-    public BO.EngineerExperiece Level { get; set; } = BO.EngineerExperiece.All;
+    public BO.EngineerExperiece Level { get; set; } = BO.EngineerExperiece.None;
 
     /// <summary>
     ///  A logical list of engineers
@@ -46,9 +46,9 @@ public partial class EngineerListWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void cbEngineerExperienceSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void CbEngineerExperienceSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var temp = Level == BO.EngineerExperiece.All ?
+        var temp = Level == BO.EngineerExperiece.None ?
             s_bl?.EngineerInList.ReadAll() :
             s_bl?.EngineerInList.ReadAll(item => item.level == Level);
         EngineerList = temp == null ? new() : new(temp!);
@@ -59,7 +59,7 @@ public partial class EngineerListWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void btnAddEngineer_Click(object sender, RoutedEventArgs e)
+    private void BtnAddEngineer_Click(object sender, RoutedEventArgs e)
     {
         new EngineerWindow().ShowDialog();
         var temp = s_bl?.EngineerInList.ReadAll();
@@ -71,7 +71,7 @@ public partial class EngineerListWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void lvUpdateEngineer_DoubleClick(object sender, RoutedEventArgs e)
+    private void LvUpdateEngineer_DoubleClick(object sender, RoutedEventArgs e)
     {
         BO.EngineerInList? engineer = (sender as ListView)?.SelectedItem as BO.EngineerInList;
         if (engineer != null)

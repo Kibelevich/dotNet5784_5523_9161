@@ -21,6 +21,6 @@ internal class EngineerInTaskImplementation : IEngineerInTask
             return null;
         DO.Engineer? engineer = _dal.Engineer.Read((int)ID)??
             throw new BO.BlDoesNotExistException($"Engineer in this task does not exists");
-            return new BO.EngineerInTask() { ID=engineer.ID, name= engineer.name };
+            return new BO.EngineerInTask() { ID=engineer.ID, Name= engineer.Name };
     }
 }

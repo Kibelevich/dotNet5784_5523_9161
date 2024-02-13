@@ -23,8 +23,8 @@ internal class EngineerInListImplementation : IEngineerInList
                    let boEngineerInList = new BO.EngineerInList()
                    {
                        ID = doEngineer.ID,
-                       name = doEngineer.name,
-                       level = (BO.EngineerExperiece) doEngineer.level
+                       name = doEngineer.Name,
+                       level = (BO.EngineerExperiece) doEngineer.Level
                    }
                    where filter(boEngineerInList)
                    select boEngineerInList;
@@ -33,8 +33,8 @@ internal class EngineerInListImplementation : IEngineerInList
                select new BO.EngineerInList()
                {
                    ID = doEngineer.ID,
-                   name = doEngineer.name,
-                   level = (BO.EngineerExperiece)doEngineer.level
+                   name = doEngineer.Name,
+                   level = (BO.EngineerExperiece)doEngineer.Level
                };
     }
 }

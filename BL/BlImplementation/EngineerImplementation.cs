@@ -21,24 +21,26 @@ internal class EngineerImplementation :IEngineer
     /// <exception cref="BO.BlAlreadyExistException">if the entity alredy exists</exception>
     public int Create(BO.Engineer boEngineer)
     {
-        if (boEngineer.ID <= 0 || boEngineer.name == "" || boEngineer.cost < 0 || !Regex.IsMatch(boEngineer.email, @"(@)(.+)$"))
-            throw new BO.BlIllegalPropertyException($"Illegal property");
-        if (boEngineer.currentTask != null)
+        if (boEngineer.ID <= 0 || boEngineer.Name == "" || boEngineer.Cost <= 0 || !Regex.IsMatch(boEngineer.Email, @"(@)(.+)$"))
+            throw new BO.BlIllegalPropertyException("Illegal property");
+        if (boEngineer.CurrentTask != null)
         {
-            if (_dal.Task.Read(boEngineer.currentTask.ID) == null
-                || _dal.Task.Read(boEngineer.currentTask.ID)!.alias != boEngineer.currentTask.alias)
-                throw new BO.BlIllegalPropertyException($"Illegal property");
+            DO.Task currentTask = _dal.Task.Read(boEngineer.CurrentTask.ID) ??
+                throw new BO.BlIllegalPropertyException("Illegal property");
+            if (currentTask.Alias != boEngineer.CurrentTask.Alias
+                ||(int)boEngineer.Level < (int)currentTask.ComplexityLevel)
+                throw new BO.BlIllegalPropertyException("Illegal property");
             try
             {
-                DO.Task taskToUpdate = _dal.Task.Read(boEngineer.currentTask.ID)! with { engineerId = boEngineer.ID };
+                DO.Task taskToUpdate = currentTask with { EngineerId = boEngineer.ID };
                 _dal.Task.Update(taskToUpdate);
             }
             catch (DO.DalDoesNotExistException ex)
             {
-                throw new BO.BlDoesNotExistException($"Task with ID={boEngineer.currentTask.ID} does not exists", ex);
+                throw new BO.BlDoesNotExistException($"Task with ID={boEngineer.CurrentTask.ID} does not exists", ex);
             }
         }
-        DO.Engineer doEngineer = replaceBoToDo(boEngineer);
+        DO.Engineer doEngineer = ReplaceBoToDo(boEngineer);
         try
         {
             int id = _dal.Engineer.Create(doEngineer);
@@ -61,7 +63,7 @@ internal class EngineerImplementation :IEngineer
         DO.Engineer? doEngineer = _dal.Engineer.Read(id);
         if (doEngineer == null)
             throw new BO.BlDoesNotExistException($"Engineer with ID={id} does not exist");
-        IEnumerable<DO.Task?> tasks = _dal.Task.ReadAll((t) => t.engineerId == id);
+        IEnumerable<DO.Task?> tasks = _dal.Task.ReadAll((t) => t.EngineerId == id);
         if (tasks == null)
             try
             {
@@ -85,7 +87,7 @@ internal class EngineerImplementation :IEngineer
         DO.Engineer? doEngineer = _dal.Engineer.Read(id);
         if (doEngineer == null)
             throw new BO.BlDoesNotExistException($"Engineer with ID={id} does not exist");
-        return replaceDoToBo(doEngineer);
+        return ReplaceDoToBo(doEngineer);
     }
 
     /// <summary>
@@ -98,12 +100,12 @@ internal class EngineerImplementation :IEngineer
         if (filter != null)
         {
             return from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
-                   let boEngineer = replaceDoToBo(doEngineer)
+                   let boEngineer = ReplaceDoToBo(doEngineer)
                    where filter(boEngineer)
                    select boEngineer;
         }
         return from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
-               select replaceDoToBo(doEngineer);
+               select ReplaceDoToBo(doEngineer);
     }
 
     /// <summary>
@@ -114,24 +116,26 @@ internal class EngineerImplementation :IEngineer
     /// <exception cref="BO.BlDoesNotExistException">if object not found</exception>
     public void Update(BO.Engineer boEngineer)
     {
-        if (boEngineer.ID <= 0 || boEngineer.name == "" || boEngineer.cost < 0 || !Regex.IsMatch(boEngineer.email, @"(@)(.+)$"))
-            throw new BO.BlIllegalPropertyException($"Illegal property");
-        if(boEngineer.currentTask != null)
+        if (boEngineer.ID <= 0 || boEngineer.Name == "" || boEngineer.Cost <= 0 || !Regex.IsMatch(boEngineer.Email, @"(@)(.+)$"))
+            throw new BO.BlIllegalPropertyException("Illegal property");
+        if (boEngineer.CurrentTask != null)
         {
-            if (_dal.Task.Read(boEngineer.currentTask.ID) == null
-                || _dal.Task.Read(boEngineer.currentTask.ID)!.alias != boEngineer.currentTask.alias)
-                    throw new BO.BlIllegalPropertyException($"Illegal property");
+            DO.Task currentTask = _dal.Task.Read(boEngineer.CurrentTask.ID) ??
+                throw new BO.BlIllegalPropertyException("Illegal property");
+            if (currentTask.Alias != boEngineer.CurrentTask.Alias
+                ||  (int)boEngineer.Level < (int)currentTask.ComplexityLevel)
+                throw new BO.BlIllegalPropertyException("Illegal property");
             try
             {
-                DO.Task taskToUpdate = _dal.Task.Read(boEngineer.currentTask.ID)! with { engineerId = boEngineer.ID };
+                DO.Task taskToUpdate = currentTask with { EngineerId = boEngineer.ID };
                 _dal.Task.Update(taskToUpdate);
             }
             catch (DO.DalDoesNotExistException ex)
             {
-                throw new BO.BlDoesNotExistException($"Task with ID={boEngineer.currentTask.ID} does not exists", ex);
+                throw new BO.BlDoesNotExistException($"Task with ID={boEngineer.CurrentTask.ID} does not exists", ex);
             }
         }
-        DO.Engineer doEngineer = replaceBoToDo(boEngineer);
+        DO.Engineer doEngineer = ReplaceBoToDo(boEngineer);
         try
         {
             _dal.Engineer.Update(doEngineer);
@@ -148,20 +152,20 @@ internal class EngineerImplementation :IEngineer
     /// </summary>
     /// <param name="doEngineer">the DAL object to replace</param>
     /// <returns>the BL object</returns>
-    BO.Engineer replaceDoToBo(DO.Engineer doEngineer)
+    BO.Engineer ReplaceDoToBo(DO.Engineer doEngineer)
     {
-        DO.Task? doCTask = _dal.Task.Read(task => task.engineerId == doEngineer.ID);
+        DO.Task? doCTask = _dal.Task.Read(task => task.EngineerId == doEngineer.ID);
         BO.TaskInEngineer? boCTask = null;
         if (doCTask != null)
-            boCTask = new BO.TaskInEngineer() { ID = doCTask.ID, alias = doCTask.alias };
+            boCTask = new BO.TaskInEngineer() { ID = doCTask.ID, Alias = doCTask.Alias };
         return new BO.Engineer()
         {
             ID = doEngineer.ID,
-            name = doEngineer.name,
-            email = doEngineer.email,
-            level = (BO.EngineerExperiece)doEngineer.level,
-            cost = doEngineer.cost,
-            currentTask = boCTask
+            Name = doEngineer.Name,
+            Email = doEngineer.Email,
+            Level = (BO.EngineerExperiece)doEngineer.Level,
+            Cost = doEngineer.Cost,
+            CurrentTask = boCTask
         };
     }
     /// <summary>
@@ -169,10 +173,10 @@ internal class EngineerImplementation :IEngineer
     /// </summary>
     /// <param name="boEngineer">the BL object to replace</param>
     /// <returns>the DAL object</returns>
-    DO.Engineer replaceBoToDo(BO.Engineer boEngineer)
+    DO.Engineer ReplaceBoToDo(BO.Engineer boEngineer)
     {
         return new DO.Engineer
-        (boEngineer.ID, boEngineer.name, boEngineer.email, (DO.EngineerExperiece)boEngineer.level, boEngineer.cost);
+        (boEngineer.ID, boEngineer.Name, boEngineer.Email, (DO.EngineerExperiece)boEngineer.Level, boEngineer.Cost);
     }
 
 }

@@ -13,7 +13,7 @@ internal class Program
     /// <summary>
     /// Crud functions for engineer
     /// </summary>
-    private static void createEngineer()
+    private static void CreateEngineer()
     {
         try
         {
@@ -40,7 +40,7 @@ internal class Program
         }
     }
 
-    private static void readEngineer()
+    private static void ReadEngineer()
     {
         int _id;
         Console.WriteLine("Enter engineer's ID");
@@ -48,14 +48,14 @@ internal class Program
         Console.WriteLine(s_dal.Engineer!.Read(_id));
     }
 
-    private static void readAllEngineers()
+    private static void ReadAllEngineers()
     {
         s_dal.Engineer!.ReadAll(eng => eng.ID > 0)!
               .ToList<Engineer>().ForEach(ele =>
               Console.WriteLine(ele));
     }
 
-    private static void updateEngineer()
+    private static void UpdateEngineer()
     {
         try
         {
@@ -65,7 +65,6 @@ internal class Program
             double _cost;
             Console.WriteLine("Enter id");
             int.TryParse(Console.ReadLine()!, out _id);
-
             Engineer eng = s_dal.Engineer!.Read(_id) ??
                throw new Exception($"Engineer with ID={_id} not exists");
             Console.WriteLine(eng);
@@ -74,10 +73,10 @@ internal class Program
             _email = Console.ReadLine()!;
             EngineerExperiece.TryParse(Console.ReadLine(), out _level);
             double.TryParse(Console.ReadLine()!, out _cost);
-            if (_name == "") _name = eng.name;
-            if (_email == "") _email = eng.email;
-            if (_level == 0) _level = eng.level;
-            if (_cost == 0) _cost = eng.cost;
+            if (_name == "") _name = eng.Name;
+            if (_email == "") _email = eng.Email;
+            if (_level == 0) _level = eng.Level;
+            if (_cost == 0) _cost = Convert.ToDouble(eng.Cost);
             Engineer newEngineer = new(_id, _name, _email, _level, _cost);
             s_dal.Engineer!.Update(newEngineer);
         }
@@ -91,7 +90,7 @@ internal class Program
         }
     }
 
-    private static void deleteEngineer()
+    private static void DeleteEngineer()
     {
         try
         {
@@ -112,7 +111,7 @@ internal class Program
     }
 
     // Submenu for engineer
-    private static void crudEngineer()
+    private static void CrudEngineer()
     {
         string choice;
         choice = Console.ReadLine()!;
@@ -122,33 +121,33 @@ internal class Program
             {
                 case "1":
                     {
-                        createEngineer();
+                        CreateEngineer();
                         break;
                     }
                 case "2":
                     {
-                        readEngineer();
+                        ReadEngineer();
                         break;
                     }
                 case "3":
                     {
-                        readAllEngineers();
+                        ReadAllEngineers();
                         break;
                     }
                 case "4":
                     {
-                        updateEngineer();
+                        UpdateEngineer();
                         break;
                     }
                 case "5":
                     {
-                        deleteEngineer();
+                        DeleteEngineer();
                         break;
                     }
                 default:
                     break;
             }
-            crudMenu("engineer");
+            CrudMenu("engineer");
             choice = Console.ReadLine()!;
         } while (choice != "0");
     }
@@ -156,7 +155,7 @@ internal class Program
     /// <summary>
     /// Crud functions for task
     /// </summary>
-    private static int createTask()
+    private static int CreateTask()
     {
         EngineerExperiece _complexityLevel;
         int _engineerId;
@@ -178,7 +177,7 @@ internal class Program
             _deadline, null, _deliverable, _remarks, _engineerId, _complexityLevel);
         return s_dal.Task!.Create(newTask);
     }
-    private static void readTask()
+    private static void ReadTask()
     {
         int _id;
         Console.WriteLine("Enter task's ID");
@@ -186,14 +185,14 @@ internal class Program
         Console.WriteLine(s_dal.Task!.Read(_id));
     }
 
-    private static void readAllTask()
+    private static void ReadAllTask()
     {
         s_dal.Task!.ReadAll(task => task.ID > 50)!
                .ToList<DO.Task>().ForEach(ele =>
                    Console.WriteLine(ele));
     }
 
-    private static void updateTask()
+    private static void UpdateTask()
     {
         try
         {
@@ -202,7 +201,7 @@ internal class Program
             string? _description, _alias, _remarks, _deliverable;
             bool _milestone;
             DateTime _deadline, _createdAt, _complete, _start, _forecastEndDate, _baselineStart;
-            TimeSpan _requiredEffortTime=TimeSpan.Zero;
+            TimeSpan _requiredEffortTime = TimeSpan.Zero;
             Console.WriteLine("Enter ID");
             int.TryParse(Console.ReadLine()!, out ID);
             Task task = s_dal.Task!.Read(ID) ??
@@ -223,24 +222,24 @@ internal class Program
             _remarks = Console.ReadLine();
             int.TryParse(Console.ReadLine()!, out _engineerId);
             EngineerExperiece.TryParse(Console.ReadLine()!, out _complexityLevel);
-            if (_description == "") _description = task.description!;
-            if (_alias == "") _alias = task.alias!;
-            if (_requiredEffortTime == TimeSpan.Zero)
-                _requiredEffortTime = task.requiredEffortTime;
+            if (_description == "") _description = task.Description!;
+            if (_alias == "") _alias = task.Alias!;
+            //if (_requiredEffortTime == TimeSpan.Zero)
+            //    _requiredEffortTime = task.requiredEffortTime;
             if (_baselineStart == DateTime.MinValue)
-                _baselineStart = Convert.ToDateTime(task.baselineStart);
+                _baselineStart = Convert.ToDateTime(task.BaselineStart);
             if (_start == DateTime.MinValue)
-                _start = Convert.ToDateTime(task.start);
+                _start = Convert.ToDateTime(task.Start);
             if (_forecastEndDate == DateTime.MinValue)
-                _forecastEndDate = Convert.ToDateTime(task.forecastEndDate);
+                _forecastEndDate = Convert.ToDateTime(task.ForecastEndDate);
             if (_deadline == DateTime.MinValue)
-                _deadline = task.deadline;
+                _deadline = task.Deadline;
             if (_complete == DateTime.MinValue)
-                _complete = Convert.ToDateTime(task.complete);
-            if (_deliverable == "") _deliverable = task.deliverable!;
-            if (_remarks == "") _remarks = task.remarks!;
-            if (_engineerId == 0) _engineerId = Convert.ToInt32(task.engineerId);
-            if (_complexityLevel == 0) _complexityLevel = (EngineerExperiece)task.complexityLevel!;
+                _complete = Convert.ToDateTime(task.Complete);
+            if (_deliverable == "") _deliverable = task.Deliverable!;
+            if (_remarks == "") _remarks = task.Remarks!;
+            if (_engineerId == 0) _engineerId = Convert.ToInt32(task.EngineerId);
+            if (_complexityLevel == 0) _complexityLevel = (EngineerExperiece)task.ComplexityLevel!;
             Task newTask = new(ID, _description!, _alias!, _milestone,_requiredEffortTime, _createdAt,_baselineStart,
                 _start, _forecastEndDate, _deadline, _complete, _deliverable, _remarks, _engineerId, _complexityLevel);
             s_dal.Task!.Update(newTask);
@@ -255,7 +254,7 @@ internal class Program
         }
     }
 
-    private static void deleteTask()
+    private static void DeleteTask()
     {
         try
         {
@@ -275,7 +274,7 @@ internal class Program
         }
     }
     // Submenu for task
-    private static void crudTask()
+    private static void CrudTask()
     {
         string choice;
         choice = Console.ReadLine()!;
@@ -285,33 +284,33 @@ internal class Program
             {
                 case "1":
                     {
-                        createTask();
+                        CreateTask();
                         break;
                     }
                 case "2":
                     {
-                        readTask();
+                        ReadTask();
                         break;
                     }
                 case "3":
                     {
-                        readAllTask();
+                        ReadAllTask();
                         break;
                     }
                 case "4":
                     {
-                        updateTask();
+                        UpdateTask();
                         break;
                     }
                 case "5":
                     {
-                        deleteTask();
+                        DeleteTask();
                         break;
                     }
                 default:
                     break;
             }
-            crudMenu("task");
+            CrudMenu("task");
             choice = Console.ReadLine()!;
         } while (choice != "0");
     }
@@ -319,7 +318,7 @@ internal class Program
     /// <summary>
     /// Crud functions for dependency
     /// </summary>
-    private static int createDependency()
+    private static int CreateDependency()
     {
         int _dependsOnTask, _dependentTask;
         Console.WriteLine("Enter, pending task, previous task");
@@ -328,7 +327,7 @@ internal class Program
         Dependency newDependency = new(0, _dependentTask, _dependsOnTask);
         return s_dal.Dependency!.Create(newDependency);
     }
-    private static void readDependency()
+    private static void ReadDependency()
     {
         int _id;
         Console.WriteLine("Enter dependency's ID");
@@ -336,14 +335,14 @@ internal class Program
         Console.WriteLine(s_dal.Dependency!.Read( d=>d.ID==_id));
     }
 
-    private static void readAllDependencies()
+    private static void ReadAllDependencies()
     {
         s_dal.Dependency!.ReadAll(dep => dep.ID > 100)!
                 .ToList<Dependency>().ForEach(ele =>
                 Console.WriteLine(ele));
     }
 
-    private static void updateDependency()
+    private static void UpdateDependency()
     {
         try
         {
@@ -371,7 +370,7 @@ internal class Program
         }
     }
 
-    private static void deleteDependency()
+    private static void DeleteDependency()
     {
         try
         {
@@ -390,7 +389,7 @@ internal class Program
         }
     }
     // Submenu for dependency
-    private static void crudDependency()
+    private static void CrudDependency()
     {
         string choice;
         choice = Console.ReadLine()!;
@@ -400,46 +399,46 @@ internal class Program
             {
                 case "1":
                     {
-                        createDependency();
+                        CreateDependency();
                         break;
                     }
                 case "2":
                     {
-                        readDependency();
+                        ReadDependency();
                         break;
                     }
                 case "3":
                     {
-                        readAllDependencies();
+                        ReadAllDependencies();
                         break;
                     }
                 case "4":
                     {
-                        updateDependency();
+                        UpdateDependency();
                         break;
                     }
                 case "5":
                     {
-                        deleteDependency();
+                        DeleteDependency();
                         break;
                     }
                 default:
                     break;
             }
-            crudMenu("dependency");
+            CrudMenu("dependency");
             choice = Console.ReadLine()!;
         } while (choice != "0");
     }
 
     // Prints the entity's options 
-    private static void crudMenu(string entity)
+    private static void CrudMenu(string entity)
     {
         Console.WriteLine($"Choose:\n 0 to exit\n 1 to create a new {entity}\n 2 to read the {entity}\n" +
         $" 3 to read all\n 4 to update the {entity}\n 5 to delete the {entity}\n");
     }
 
     // Main menu - entity selection 
-    private static void mainMenu()
+    private static void MainMenu()
     {
         Console.WriteLine("Choose:\n 0 to exit\n 1 to engineer\n 2 to task\n 3 to dependency\n");
         string choice;
@@ -451,20 +450,20 @@ internal class Program
                 case "1":
 
                     {
-                        crudMenu("engineer");
-                        crudEngineer();
+                        CrudMenu("engineer");
+                        CrudEngineer();
                         break;
                     }
                 case "2":
                     {
-                        crudMenu("task");
-                        crudTask();
+                        CrudMenu("task");
+                        CrudTask();
                         break;
                     }
                 case "3":
                     {
-                        crudMenu("dependency");
-                        crudDependency();
+                        CrudMenu("dependency");
+                        CrudDependency();
                         break;
                     }
             }
@@ -477,7 +476,7 @@ internal class Program
         try
         {
             Initialization.Do();
-            mainMenu();
+            MainMenu();
         }
         catch (NullReferenceException e)
         {

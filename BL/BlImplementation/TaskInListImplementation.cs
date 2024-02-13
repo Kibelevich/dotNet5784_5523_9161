@@ -24,9 +24,9 @@ internal class TaskInListImplementation : ITaskInList
         return new BO.TaskInList()
         {
             ID = task.ID,
-            description = task.description,
-            alias = task.alias,
-            status = calcStatus(task)
+            description = task.Description,
+            alias = task.Alias,
+            status = CalcStatus(task)
         };
     }
 
@@ -43,9 +43,9 @@ internal class TaskInListImplementation : ITaskInList
                    let boTaskInList = new BO.TaskInList()
                    {
                        ID = doTask.ID,
-                       description = doTask.description,
-                       alias = doTask.alias,
-                       status = calcStatus(doTask),
+                       description = doTask.Description,
+                       alias = doTask.Alias,
+                       status = CalcStatus(doTask),
                    }
                    where filter(boTaskInList)
                    select boTaskInList;
@@ -54,9 +54,9 @@ internal class TaskInListImplementation : ITaskInList
                select new BO.TaskInList()
                {
                    ID = doTask.ID,
-                   description = doTask.description,
-                   alias = doTask.alias,
-                   status = calcStatus(doTask),
+                   description = doTask.Description,
+                   alias = doTask.Alias,
+                   status = CalcStatus(doTask),
                };
     }
 
@@ -66,14 +66,13 @@ internal class TaskInListImplementation : ITaskInList
     /// <param name="doTask">The task to calculate for</param>
     /// <returns>The task's status </returns>
     /// <exception cref="BO.BlDeadlinePassedException">If the dead line passed</exception>
-    BO.Status calcStatus(DO.Task doTask)
+    BO.Status CalcStatus(DO.Task doTask)
     {
         DateTime now = DateTime.Now;
-        if (doTask.complete < now) return (BO.Status)4;
-        if (doTask.deadline < now) throw new BO.BlDeadlinePassedException($"Deadline passed");
-        if (doTask.forecastEndDate < now && doTask.deadline > now) return (BO.Status)3;
-        if (doTask.start < now) return (BO.Status)2;
-        if (doTask.deadline < now) return (BO.Status)1;
+        if (doTask.Complete < now) return (BO.Status)4;
+        if (doTask.ForecastEndDate < now && doTask.Deadline > now) return (BO.Status)3;
+        if (doTask.Start < now) return (BO.Status)2;
+        if (doTask.Deadline < now) return (BO.Status)1;
         return 0;
     }
 }

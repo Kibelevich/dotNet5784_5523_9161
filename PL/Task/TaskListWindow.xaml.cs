@@ -14,7 +14,7 @@ public partial class TaskListWindow : Window
     static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
     // Filtration Task level
-    public BO.Status Status { get; set; } = BO.Status.All;
+    public BO.Status Status { get; set; } = BO.Status.None;
 
     /// <summary>
     ///  A logical list of tasks
@@ -37,18 +37,24 @@ public partial class TaskListWindow : Window
     public TaskListWindow()
     {
         InitializeComponent();
-        var temp = s_bl?.TaskInList.ReadAll();
-        TaskList = temp == null ? new() : new(temp!);
+        //try
+        //{
+            var temp = s_bl?.TaskInList.ReadAll();
+            TaskList = temp == null ? new() : new(temp!);
+        //}catch(BO.BlDeadlinePassedException ex)
+        //{
+        //    MessageBox.Show(ex.Message);
+        //}
     }
 
     /// <summary>
-    /// Filter the Tasks by the selection level
+    /// Filter the tasks by the selection level
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void cbStatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void CbStatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var temp = Status == BO.Status.All ?
+        var temp = Status == BO.Status.None ?
             s_bl?.TaskInList.ReadAll() :
             s_bl?.TaskInList.ReadAll(item =>
             item.status == Status);
@@ -60,7 +66,7 @@ public partial class TaskListWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void btnAddTask_Click(object sender, RoutedEventArgs e)
+    private void BtnAddTask_Click(object sender, RoutedEventArgs e)
     {
         new TaskWindow().ShowDialog();
         var temp = s_bl?.TaskInList.ReadAll();
@@ -72,7 +78,7 @@ public partial class TaskListWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void lvUpdateTask_DoubleClick(object sender, RoutedEventArgs e)
+    private void LvUpdateTask_DoubleClick(object sender, RoutedEventArgs e)
     {
         BO.TaskInList? Task = (sender as ListView)?.SelectedItem as BO.TaskInList;
         if (Task != null)

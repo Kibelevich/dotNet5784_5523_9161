@@ -37,7 +37,7 @@ internal class TaskImplementation : ITask
         Task task = Tasks.FirstOrDefault(ele => ele.ID == id) ??
             throw new DalDoesNotExistException($"Task with ID={id} not exists");
         Tasks.Remove(task);
-        task = task with { complete = DateTime.Now };
+        task = task with { Complete = DateTime.Now };
         Tasks.Add(task);
         XMLTools.SaveListToXMLSerializer(Tasks, taskFile);
     }
@@ -63,7 +63,7 @@ internal class TaskImplementation : ITask
     public Task? Read(Func<Task, bool> filter)
     {
         List<Task> Tasks = XMLTools.LoadListFromXMLSerializer<Task>(taskFile);
-        return Tasks.First(filter);
+        return Tasks.FirstOrDefault(filter);
     }
 
     /// <summary>
