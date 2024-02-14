@@ -55,7 +55,7 @@ internal class TaskImplementation : BlApi.ITask
         DO.Task? doTask = _dal.Task.Read(id);
         if (doTask == null)
             throw new BO.BlDoesNotExistException($"Task with ID={id} does not exist");
-        IEnumerable<DO.Dependency?> dependencies = _dal.Dependency.ReadAll((d) => d.dependsOnTask == id);
+        IEnumerable<DO.Dependency?> dependencies = _dal.Dependency.ReadAll((d) => d.DependsOnTask == id);
         if (dependencies == null)
             try
             {
@@ -199,8 +199,8 @@ internal class TaskImplementation : BlApi.ITask
     IEnumerable<BO.TaskInList?> DependList(int ID)
     {
         IBl bl = BlApi.Factory.Get();
-        return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
-            .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.dependsOnTask));
+        return _dal.Dependency.ReadAll(depend => depend.DependentTask == ID)
+            .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.DependsOnTask));
     }
 
     //IEnumerable<BO.MilestoneInList?> calcMilestone(IEnumerable<BO.TaskInList?> dependTask)

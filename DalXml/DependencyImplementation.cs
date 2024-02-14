@@ -18,15 +18,15 @@ internal class DependencyImplementation : IDependency
     /// </summary>
     /// <param name="dependency">The dependency to get</param>
     /// <returns>The dependency from xml </returns>
-    static Dependency? getDependency(XElement? dependency)
+    static Dependency? GetDependency(XElement? dependency)
     {
         if (dependency == null)
             return null;
         return dependency.ToIntNullable("ID") is null ? null : new Dependency()
         {
             ID = (int)dependency.Element("ID")!,
-            dependentTask = (int)dependency.Element("dependentTask")!,
-            dependsOnTask = (int)dependency.Element("dependsOnTask")!,
+            DependentTask = (int)dependency.Element("dependentTask")!,
+            DependsOnTask = (int)dependency.Element("dependsOnTask")!,
         };
     }
 
@@ -36,14 +36,14 @@ internal class DependencyImplementation : IDependency
     /// <param name="dependency">The dependency to create</param>
     /// <param name="id">Dependency's id</param>
     /// <returns>Dependencies of type Xelement</returns>
-    static IEnumerable<XElement> createDependencyElement(Dependency dependency, int? id = null)
+    static IEnumerable<XElement> CreateDependencyElement(Dependency dependency, int? id = null)
     {
         id = id is not null ? id : dependency.ID;
         yield return new XElement("ID", id);
-        if (dependency.dependentTask is not null)
-            yield return new XElement("dependentTask", dependency.dependentTask);
-        if (dependency.dependsOnTask is not null)
-            yield return new XElement("dependsOnTask", dependency.dependsOnTask);
+        if (dependency.DependentTask is not null)
+            yield return new XElement("dependentTask", dependency.DependentTask);
+        if (dependency.DependsOnTask is not null)
+            yield return new XElement("dependsOnTask", dependency.DependsOnTask);
 
     }
 
@@ -57,7 +57,7 @@ internal class DependencyImplementation : IDependency
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
         int id = Config.NextIdD;
         Dependency depend = item with { ID = id };
-        XElement e = new XElement("dependency", createDependencyElement(depend));
+        XElement e = new XElement("dependency", CreateDependencyElement(depend));
         Dependencies.Add(e);
         XMLTools.SaveListToXMLElement(Dependencies, dependencyFile);
         return id;
@@ -100,7 +100,7 @@ internal class DependencyImplementation : IDependency
     public Dependency? Read(int id)
     {
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
-        return getDependency(Dependencies.Elements()
+        return GetDependency(Dependencies.Elements()
             .FirstOrDefault(ele => ele.ToIntNullable("ID") == id));
     }
 
@@ -113,9 +113,9 @@ internal class DependencyImplementation : IDependency
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
         if (filter != null)
             return Dependencies.Elements()
-                .Where(xd => filter(getDependency(xd)!))
-                .Select(getDependency)!;
-        return Dependencies.Elements().Select(getDependency)!;
+                .Where(xd => filter(GetDependency(xd)!))
+                .Select(GetDependency)!;
+        return Dependencies.Elements().Select(GetDependency)!;
     }
 
     /// <summary>
@@ -130,7 +130,7 @@ internal class DependencyImplementation : IDependency
             FirstOrDefault(depend => depend.ToIntNullable("ID") == item.ID) ??
             throw new DalDoesNotExistException($"Dependency with ID={item.ID} not exists"))
             .Remove();
-        XElement e = new XElement("dependency", createDependencyElement(item));
+        XElement e = new XElement("dependency", CreateDependencyElement(item));
         Dependencies.Add(e);
         XMLTools.SaveListToXMLElement(Dependencies, dependencyFile);
     }
@@ -143,7 +143,7 @@ internal class DependencyImplementation : IDependency
     public Dependency? Read(Func<Dependency, bool> filter)
     {
         XElement Dependencies = XMLTools.LoadListFromXMLElement(dependencyFile);
-        return getDependency(Dependencies.Elements()
-                .FirstOrDefault(xd => filter(getDependency(xd)!)));
+        return GetDependency(Dependencies.Elements()
+                .FirstOrDefault(xd => filter(GetDependency(xd)!)));
     }
 }

@@ -25,7 +25,7 @@ internal class MilestoneInTaskImplementation : IMilestoneInTask
         return new BO.MilestoneInTask()
         {
             ID = milestone.ID,
-            alias = milestone.alias
+            Alias = milestone.Alias
         };
     }
 }

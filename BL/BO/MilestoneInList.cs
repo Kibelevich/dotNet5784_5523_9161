@@ -7,10 +7,10 @@ namespace BO;
 public class MilestoneInList
 {
     public int ID { get; init; }
-    public required string description { get; set; }
-    public required string alias { get; set; }
-    public Status? status { get; set; }
-    public int? completionPercentage { get; set; }
+    public required string Description { get; set; }
+    public required string Alias { get; set; }
+    public Status? Status { get; set; }
+    public int? CompletionPercentage { get; set; }
     public override string ToString() => Tools.ToStringProperty(this);
 
 }

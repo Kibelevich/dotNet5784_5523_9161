@@ -57,7 +57,7 @@ public partial class TaskListWindow : Window
         var temp = Status == BO.Status.None ?
             s_bl?.TaskInList.ReadAll() :
             s_bl?.TaskInList.ReadAll(item =>
-            item.status == Status);
+            item.Status == Status);
         TaskList = temp == null ? new() : new(temp!);
     }
 

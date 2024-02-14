@@ -355,8 +355,8 @@ internal class Program
             Console.WriteLine(s_dal.Dependency!.Read(ID));
             int.TryParse(Console.ReadLine()!, out _dependentTask);
             int.TryParse(Console.ReadLine()!, out _dependsOnTask);
-            if (_dependentTask == 0) _dependentTask = Convert.ToInt32(depend.dependentTask);
-            if (_dependsOnTask == 0) _dependsOnTask = Convert.ToInt32(depend.dependsOnTask);
+            if (_dependentTask == 0) _dependentTask = Convert.ToInt32(depend.DependentTask);
+            if (_dependsOnTask == 0) _dependsOnTask = Convert.ToInt32(depend.DependsOnTask);
             Dependency newDependency = new(ID, _dependentTask, _dependsOnTask);
             s_dal.Dependency!.Update(newDependency);
         }

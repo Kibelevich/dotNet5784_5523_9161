@@ -5,12 +5,12 @@ namespace DO;
 /// An entity that describes dependencies between tasks
 /// </summary>
 /// <param name="ID">A unique identifier for the dependency</param>
-/// <param name="dependentTask">ID number of pending task</param>
-/// <param name="dependsOnTask">Previous assignment ID number</param>
+/// <param name="DependentTask">ID number of pending task</param>
+/// <param name="DependsOnTask">Previous assignment ID number</param>
 public record Dependency(
     int ID,
-    int? dependentTask,
-    int? dependsOnTask
+    int? DependentTask,
+    int? DependsOnTask
 )
 
 {
@@ -21,7 +21,7 @@ public record Dependency(
     // ToString function
     public override string ToString()
     {
-        return "ID: " + ID + "  pending task: " + dependentTask + "  previous task: " + dependsOnTask + "\n";
+        return "ID: " + ID + "  pending task: " + DependentTask + "  previous task: " + DependsOnTask + "\n";
     }
 }
 

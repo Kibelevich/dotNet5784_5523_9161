@@ -22,10 +22,10 @@ internal class MilestoneInListImplementation : IMilestoneInList
         return new BO.MilestoneInList()
         {
             ID = milestone.ID,
-            description = milestone.description,
-            alias = milestone.alias,
-            status = milestone.status,  
-            completionPercentage = milestone.completionPercentage
+            Description = milestone.Description,
+            Alias = milestone.Alias,
+            Status = milestone.Status,  
+            CompletionPercentage = milestone.CompletionPercentage
         };
     }
 }

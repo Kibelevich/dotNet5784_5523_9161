@@ -82,8 +82,8 @@ internal class DependencyImplementation : IDependency
     public bool isDepend(int _dependentTask, int _dependsOnTask)
     {
         return DataSource.Dependencies.
-            Any(dependency => dependency.dependentTask == _dependentTask 
-            && dependency.dependsOnTask == _dependsOnTask);
+            Any(dependency => dependency.DependentTask == _dependentTask 
+            && dependency.DependsOnTask == _dependsOnTask);
     }
 
     /// <summary>

@@ -25,9 +25,9 @@ internal class TaskInListImplementation : ITaskInList
         return new BO.TaskInList()
         {
             ID = task.ID,
-            description = task.Description,
-            alias = task.Alias,
-            status = CalcStatus(task)
+            Description = task.Description,
+            Alias = task.Alias,
+            Status = CalcStatus(task)
         };
     }
 
@@ -44,9 +44,9 @@ internal class TaskInListImplementation : ITaskInList
                    let boTaskInList = new BO.TaskInList()
                    {
                        ID = doTask.ID,
-                       description = doTask.Description,
-                       alias = doTask.Alias,
-                       status = CalcStatus(doTask),
+                       Description = doTask.Description,
+                       Alias = doTask.Alias,
+                       Status = CalcStatus(doTask),
                    }
                    where filter(boTaskInList)
                    orderby boTaskInList.ID
@@ -57,9 +57,9 @@ internal class TaskInListImplementation : ITaskInList
                select new BO.TaskInList()
                {
                    ID = doTask.ID,
-                   description = doTask.Description,
-                   alias = doTask.Alias,
-                   status = CalcStatus(doTask),
+                   Description = doTask.Description,
+                   Alias = doTask.Alias,
+                   Status = CalcStatus(doTask),
                };
     }
 

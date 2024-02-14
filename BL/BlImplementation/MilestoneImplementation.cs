@@ -55,7 +55,7 @@ internal class MilestoneImplementation : IMilestone
     /// <exception cref="BO.BlDoesNotExistException">if object not found</exception>
     public void Update(BO.Milestone milestone)
     {
-        if (milestone.alias == "")
+        if (milestone.Alias == "")
             throw new BO.BlIllegalPropertyException($"Invalid property");
         DO.Task doTask = _dal.Task.Read(milestone.ID) ??
                         throw new BO.BlDoesNotExistException($"Milestone with ID={milestone.ID} does not exists");
@@ -64,7 +64,7 @@ internal class MilestoneImplementation : IMilestone
             _dal.Task.Delete(milestone.ID);
             DO.Task updatedTask = doTask
                 with
-            { Alias = milestone.alias, Description = milestone.description, Remarks = milestone.remarks };
+            { Alias = milestone.Alias, Description = milestone.Description, Remarks = milestone.Remarks };
             int id = _dal.Task.Create(updatedTask);
         }
         catch (DO.DalDoesNotExistException ex)
@@ -84,17 +84,17 @@ internal class MilestoneImplementation : IMilestone
         return new BO.Milestone()
         {
             ID = task.ID,
-            description = task.Description,
-            alias = task.Alias,
-            status = CalcStatus(task),
-            createdAt = task.CreatedAt,
-            start = task.Start,
-            forecastEndDate = task.ForecastEndDate,
-            deadline = task.Deadline,
-            complete = task.Complete,
-            remarks = task.Remarks,
-            completionPercentage = CalcCompletionPercentage(taskInLists),
-            dependencies = taskInLists
+            Description = task.Description,
+            Alias = task.Alias,
+            Status = CalcStatus(task),
+            CreatedAt = task.CreatedAt,
+            Start = task.Start,
+            ForecastEndDate = task.ForecastEndDate,
+            Deadline = task.Deadline,
+            Complete = task.Complete,
+            Remarks = task.Remarks,
+            CompletionPercentage = CalcCompletionPercentage(taskInLists),
+            Dependencies = taskInLists
         };
     }
     /// <summary>
@@ -120,8 +120,8 @@ internal class MilestoneImplementation : IMilestone
     /// <returns>the list of dependencies</returns>
     IEnumerable<BO.TaskInList?> DependList(int ID)
     {
-        return _dal.Dependency.ReadAll(depend => depend.dependentTask == ID)
-            .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.dependsOnTask));
+        return _dal.Dependency.ReadAll(depend => depend.DependentTask == ID)
+            .Select(depend => depend == null ? null : bl.TaskInList.Read(depend.DependsOnTask));
     }
 
     /// <summary>
@@ -132,7 +132,7 @@ internal class MilestoneImplementation : IMilestone
     int? CalcCompletionPercentage(IEnumerable<BO.TaskInList?> tasksInList)
     {
         int tasksAmount = tasksInList.Count();
-        int doneTasks = tasksInList.Count(t => t != null && t.status == (BO.Status)4);
+        int doneTasks = tasksInList.Count(t => t != null && t.Status == (BO.Status)4);
         return (100 * doneTasks) / tasksAmount;
     }
 
@@ -144,22 +144,22 @@ internal class MilestoneImplementation : IMilestone
     public void CreateSchedual(DateTime startProject, DateTime endProject)
     {
         CreateMilestones();
-        calcTimes(startProject, endProject);
+        CalcTimes(startProject, endProject);
     }
 
     void CreateMilestones()
     {
         int nextId = 1;
-        _dal.Task.ReadAll(task => _dal.Dependency.ReadAll(depend => depend.dependentTask == task.ID) == null)
+        _dal.Task.ReadAll(task => _dal.Dependency.ReadAll(depend => depend.DependentTask == task.ID) == null)
             .Where(task => task != null).Select(task => CreateStartMilestone(task!.ID));
         IEnumerable<(int? key, IEnumerable<DO.Dependency> dependencies)> list =
             (from dependency in _dal.Dependency.ReadAll()
-             group dependency by dependency.dependentTask into dependGroup
+             group dependency by dependency.DependentTask into dependGroup
              orderby dependGroup.Key
              select (dependGroup.Key, dependGroup.Select(depend => depend)));
         IEnumerable<int> milestoneIDs = list
             .Select(task => CreateMilestone(task.key, task.dependencies, nextId++));
-        _dal.Task.ReadAll(task => _dal.Dependency.ReadAll(depend => depend.dependsOnTask == task.ID) == null)
+        _dal.Task.ReadAll(task => _dal.Dependency.ReadAll(depend => depend.DependsOnTask == task.ID) == null)
             .Where(task => task != null).Select(task => CreateEndMilestone(task!.ID));
     }
 
@@ -167,7 +167,7 @@ internal class MilestoneImplementation : IMilestone
     {
         int? id;
         id = (from milestone in bl.Milestone.ReadAll()
-              where milestone.dependencies.Any(depend1 => depend1 != null ? dependencies.Any(depend2 => depend2.dependsOnTask == depend1.ID) : false)
+              where milestone.Dependencies.Any(depend1 => depend1 != null ? dependencies.Any(depend2 => depend2.DependsOnTask == depend1.ID) : false)
               select milestone.ID).FirstOrDefault();
         if (id == null)
         {
@@ -176,9 +176,9 @@ internal class MilestoneImplementation : IMilestone
                 DateTime.MinValue, "", "", null, 0));
         }
         IEnumerable<int> dependIDs = from DO.Dependency dependTask in dependencies
-                                     select _dal.Dependency.Create(dependTask with { dependentTask = id });
+                                     select _dal.Dependency.Create(dependTask with { DependentTask = id });
         var i = from DO.Dependency dependTask in dependencies
-                where dependTask.dependentTask == key
+                where dependTask.DependentTask == key
                 select DeleteDependency(dependTask.ID);
         _dal.Dependency.Create(new DO.Dependency(0, key, id));
         return (int)id;
@@ -186,7 +186,7 @@ internal class MilestoneImplementation : IMilestone
 
     int CreateStartMilestone(int taskID)
     {
-        if (bl.Milestone.Read(milestone => milestone.alias == "START") == null)
+        if (bl.Milestone.Read(milestone => milestone.Alias == "START") == null)
             _dal.Task.Create(new DO.Task(0, "Start milestone", "START", true,
                TimeSpan.Zero, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue,
                DateTime.MinValue, "", "", null, 0));
@@ -197,7 +197,7 @@ internal class MilestoneImplementation : IMilestone
     int CreateEndMilestone(int taskID)
     {
         int id;
-        BO.Milestone? endMilestone = bl.Milestone.Read(milestone => milestone.alias == "END");
+        BO.Milestone? endMilestone = bl.Milestone.Read(milestone => milestone.Alias == "END");
         if (endMilestone == null)
             id = _dal.Task.Create(new DO.Task(0, "End milestone", "END", true,
                 TimeSpan.Zero, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue,
@@ -214,35 +214,35 @@ internal class MilestoneImplementation : IMilestone
         return id;
     }
 
-    void calcTimes(DateTime startProject, DateTime endProject)
+    void CalcTimes(DateTime startProject, DateTime endProject)
     {
         BO.Milestone firstMilestone = bl.Milestone.ReadAll().First();
         bl.Milestone.Update(new BO.Milestone()
         {
             ID = firstMilestone.ID,
-            alias = firstMilestone.alias,
-            description = firstMilestone.description,
-            status = firstMilestone.status,
-            createdAt = firstMilestone.createdAt,
-            baselineStart = firstMilestone.baselineStart,
-            start = firstMilestone.start,
-            forecastEndDate = firstMilestone.forecastEndDate,
-            deadline = endProject,
-            complete = firstMilestone.complete,
-            completionPercentage = firstMilestone.completionPercentage,
-            remarks = firstMilestone.remarks,
-            dependencies = firstMilestone.dependencies
+            Alias = firstMilestone.Alias,
+            Description = firstMilestone.Description,
+            Status = firstMilestone.Status,
+            CreatedAt = firstMilestone.CreatedAt,
+            BaselineStart = firstMilestone.BaselineStart,
+            Start = firstMilestone.Start,
+            ForecastEndDate = firstMilestone.ForecastEndDate,
+            Deadline = endProject,
+            Complete = firstMilestone.Complete,
+            CompletionPercentage = firstMilestone.CompletionPercentage,
+            Remarks = firstMilestone.Remarks,
+            Dependencies = firstMilestone.Dependencies
         });
         IEnumerable<BO.Milestone> milestonses = bl.Milestone.ReadAll().Reverse();
         var i = from milestone in milestonses
-                where milestone.alias != "START"
-                let minTime = milestone.deadline - milestone.dependencies
+                where milestone.Alias != "START"
+                let minTime = milestone.Deadline - milestone.Dependencies
                     .Max(depend => depend != null ? _dal.Task.Read(depend.ID)!.RequiredEffortTime : TimeSpan.Zero)
-                select (milestone.dependencies.Select(depend =>
+                select (milestone.Dependencies.Select(depend =>
                 {
                     DO.Task? task = depend == null ? null : _dal.Task.Read(depend.ID);
                     if (task != null)
-                        _dal.Task.Update(task with { Deadline = milestone.deadline });
+                        _dal.Task.Update(task with { Deadline = milestone.Deadline });
                     return task;
                 }));
     }
