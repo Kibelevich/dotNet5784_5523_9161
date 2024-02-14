@@ -55,7 +55,7 @@ internal class TaskImplementation : ITask
     /// <returns>The object that met the condition</returns>
     public Task? Read(Func<Task, bool> filter)
     {
-        return DataSource.Tasks.First(filter);
+        return DataSource.Tasks.FirstOrDefault(filter);
     }
 
     /// <summary>

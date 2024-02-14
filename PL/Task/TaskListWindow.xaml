@@ -12,10 +12,11 @@
         <Style TargetType="Button">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Background" Value="#ffcccc"/>
-            <Setter Property="Width" Value="150"/>
-            <Setter Property="Height" Value="60"/>
-            <Setter Property="FontFamily" Value="LilyUPC"/>
-            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontFamily" Value="Aharoni"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Margin" Value="0, 8, 0, 8"/>
         </Style>
     </Window.Resources>
     
@@ -32,10 +33,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!-- filter selection  -->
-            <Label Grid.Column="0" Content="select" HorizontalAlignment="Left" Margin="112,-5,0,0" VerticalAlignment="Top"/>
+            <Label Grid.Column="0" Content="SELECT STATUS" FontFamily="Aharoni" FontSize="15" HorizontalAlignment="Left" Margin="112,-5,0,0" VerticalAlignment="Center"/>
             <ComboBox SelectedValue="{Binding Status, Mode=TwoWay}" 
                       ItemsSource="{Binding Source={StaticResource StatusCollectionKey }}" 
-                      Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="CbStatusSelector_SelectionChanged"/>
+                      Grid.Column="1" HorizontalAlignment="Left" Width="300" SelectionChanged="CbStatusSelector_SelectionChanged"/>
         </Grid>
         
         <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding TaskList}" MouseDoubleClick="LvUpdateTask_DoubleClick">
@@ -46,7 +47,7 @@
             </ListView.View>
         </ListView>
         
-        <Button Click="BtnAddTask_Click" Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        <Button Click="BtnAddTask_Click" Content="Add" Grid.Row="2"/>
         
     </Grid>
 </Window>

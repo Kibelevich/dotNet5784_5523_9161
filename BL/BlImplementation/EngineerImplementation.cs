@@ -21,17 +21,22 @@ internal class EngineerImplementation :IEngineer
     /// <exception cref="BO.BlAlreadyExistException">if the entity alredy exists</exception>
     public int Create(BO.Engineer boEngineer)
     {
-        if (boEngineer.ID < 200000000 || boEngineer.ID > 400000000 || boEngineer.Name == "" || boEngineer.Cost <= 0 || !Regex.IsMatch(boEngineer.Email, @"(@)(.+)$"))
-            throw new BO.BlIllegalPropertyException("Illegal property");
-        if (boEngineer.CurrentTask != null && boEngineer.CurrentTask.ID != 0)
-        {
+
+        if (boEngineer.Name == "" || boEngineer.Email == "" || boEngineer.Level == 0 )
+            throw new BO.BlIllegalPropertyException("Missing data");
+        if (boEngineer.ID < 200000000 || boEngineer.ID > 400000000 || boEngineer.Cost <= 0 || !Regex.IsMatch(boEngineer.Email, @"(@)(.+)$"))
+            throw new BO.BlIllegalPropertyException("Invalid property");
+        if ( boEngineer.CurrentTask!.ID != 0)
+        { 
             DO.Task currentTask = _dal.Task.Read(boEngineer.CurrentTask.ID) ??
-                throw new BO.BlIllegalPropertyException("Illegal property");
-            if (currentTask.Alias != boEngineer.CurrentTask.Alias
-                || (int)boEngineer.Level < (int)currentTask.ComplexityLevel)
-                throw new BO.BlIllegalPropertyException("Illegal property");
+                throw new BO.BlIllegalPropertyException("The task did not found");
+            if (currentTask.Alias != boEngineer.CurrentTask.Alias)
+                throw new BO.BlIllegalPropertyException("The task did not found");
+            if ((int)boEngineer.Level < (int)currentTask.ComplexityLevel)
+                throw new BO.BlIllegalPropertyException("The task is not suitable for this engineer");
             try
             {
+                // Update the ID of an engineer that belongs to the current task
                 DO.Task taskToUpdate = currentTask with { EngineerId = boEngineer.ID };
                 _dal.Task.Update(taskToUpdate);
             }
@@ -43,8 +48,7 @@ internal class EngineerImplementation :IEngineer
         DO.Engineer doEngineer = ReplaceBoToDo(boEngineer);
         try
         {
-            int id = _dal.Engineer.Create(doEngineer);
-            return id;
+            return _dal.Engineer.Create(doEngineer);
         }
         catch (DO.DalAlreadyExistException ex)
         {
@@ -116,17 +120,21 @@ internal class EngineerImplementation :IEngineer
     /// <exception cref="BO.BlDoesNotExistException">if object not found</exception>
     public void Update(BO.Engineer boEngineer)
     {
-        if (boEngineer.ID <= 0 || boEngineer.Name == "" || boEngineer.Cost <= 0 || !Regex.IsMatch(boEngineer.Email, @"(@)(.+)$"))
-            throw new BO.BlIllegalPropertyException("Illegal property");
-        if (boEngineer.CurrentTask != null)
+        if (boEngineer.Name == "" || boEngineer.Email == "" || boEngineer.Level == 0)
+            throw new BO.BlIllegalPropertyException("Missing data");
+        if (boEngineer.ID < 200000000 || boEngineer.ID > 400000000 || boEngineer.Cost <= 0 || !Regex.IsMatch(boEngineer.Email, @"(@)(.+)$"))
+            throw new BO.BlIllegalPropertyException("Invalid property");
+        if ( boEngineer.CurrentTask!.ID != 0)
         {
             DO.Task currentTask = _dal.Task.Read(boEngineer.CurrentTask.ID) ??
-                throw new BO.BlIllegalPropertyException("Illegal property");
-            if (currentTask.Alias != boEngineer.CurrentTask.Alias
-                ||  (int)boEngineer.Level < (int)currentTask.ComplexityLevel)
-                throw new BO.BlIllegalPropertyException("Illegal property");
+                throw new BO.BlIllegalPropertyException("The task did not found");
+            if (currentTask.Alias != boEngineer.CurrentTask.Alias)
+                throw new BO.BlIllegalPropertyException("The task did not found");
+            if ((int)boEngineer.Level < (int)currentTask.ComplexityLevel)
+                throw new BO.BlIllegalPropertyException("The task is not suitable for this engineer");
             try
             {
+                // Update the ID of an engineer that belongs to the current task
                 DO.Task taskToUpdate = currentTask with { EngineerId = boEngineer.ID };
                 _dal.Task.Update(taskToUpdate);
             }
@@ -146,7 +154,6 @@ internal class EngineerImplementation :IEngineer
         }
     }
 
-
     /// <summary>
     /// Replace the entity from DAL object to BL object
     /// </summary>
@@ -155,7 +162,7 @@ internal class EngineerImplementation :IEngineer
     BO.Engineer ReplaceDoToBo(DO.Engineer doEngineer)
     {
         DO.Task? doCTask = _dal.Task.Read(task => task.EngineerId == doEngineer.ID);
-        BO.TaskInEngineer? boCTask = null;
+        BO.TaskInEngineer? boCTask = new BO.TaskInEngineer() { ID = 0, Alias = "" };
         if (doCTask != null)
             boCTask = new BO.TaskInEngineer() { ID = doCTask.ID, Alias = doCTask.Alias };
         return new BO.Engineer()
@@ -168,6 +175,7 @@ internal class EngineerImplementation :IEngineer
             CurrentTask = boCTask
         };
     }
+
     /// <summary>
     /// Replace the entity from BL object to DAL object
     /// </summary>
@@ -178,6 +186,5 @@ internal class EngineerImplementation :IEngineer
         return new DO.Engineer
         (boEngineer.ID, boEngineer.Name, boEngineer.Email, (DO.EngineerExperiece)boEngineer.Level, boEngineer.Cost);
     }
-
 }
 

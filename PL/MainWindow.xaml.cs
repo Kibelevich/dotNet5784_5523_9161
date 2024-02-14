@@ -23,7 +23,7 @@ public partial class MainWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void btnEngineers_Click(object sender, RoutedEventArgs e)
+    private void BtnEngineers_Click(object sender, RoutedEventArgs e)
     {
         new EngineerListWindow().Show();
     }
@@ -33,12 +33,12 @@ public partial class MainWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void btnTasks_Click(object sender, RoutedEventArgs e)
+    private void BtnTasks_Click(object sender, RoutedEventArgs e)
     {
         new TaskListWindow().Show();
     }
 
-    private void btnInitDB_Click(object sender, RoutedEventArgs e)
+    private void BtnInitDB_Click(object sender, RoutedEventArgs e)
     {
         MessageBoxResult result = MessageBox.Show("Are you sure you want to initialize the data?", "Init DB", MessageBoxButton.YesNo);
         if(result == MessageBoxResult.Yes)

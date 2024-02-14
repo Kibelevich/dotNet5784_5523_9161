@@ -11,19 +11,21 @@
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/> 
             <Setter Property="Background" Value="#ffcccc"/>
             <Setter Property="Width" Value="90"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="FontFamily" Value="LilyUPC"/>
-            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontFamily" Value="Aharoni"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="70, 0, 0, 20"/>
         </Style>
         <Style TargetType="Label">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#ffcccc"/>
-            <Setter Property="Width" Value="200"/>
+            <Setter Property="Width" Value="250"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="FontFamily" Value="LilyUPC"/>
-            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontFamily" Value="Aharoni"/>
+            <Setter Property="FontSize" Value="20"/>
         </Style>
         <Style TargetType="DatePicker">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -148,8 +150,6 @@
         </Grid>
 
         <Button Grid.Row="2" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConvertIdToContentKey}}" 
-            HorizontalAlignment="Left" Margin="3,0,0,0"  VerticalAlignment="Top" Padding="5" 
-            Click="BtnAddUpdate_Click"/>
-
+            Padding="5" Click="BtnAddUpdate_Click"/>
     </Grid>
 </Window>

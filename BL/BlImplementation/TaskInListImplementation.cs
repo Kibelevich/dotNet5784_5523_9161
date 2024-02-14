@@ -1,4 +1,5 @@
 ﻿using BlApi;
+
 namespace BlImplementation;
 
 /// <summary>
@@ -48,9 +49,11 @@ internal class TaskInListImplementation : ITaskInList
                        status = CalcStatus(doTask),
                    }
                    where filter(boTaskInList)
+                   orderby boTaskInList.ID
                    select boTaskInList;
         }
         return from DO.Task doTask in _dal.Task.ReadAll()
+               orderby doTask.ID
                select new BO.TaskInList()
                {
                    ID = doTask.ID,

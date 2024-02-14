@@ -47,19 +47,22 @@ public partial class EngineerWindow : Window
     {
         try
         {
-            if (Engineer.CurrentTask != null && Engineer.CurrentTask.ID < 0)
-                MessageBox.Show("Illegal property");
-            if ((sender as Button)?.Content.ToString() == "ADD")
-            {
-                s_bl.Engineer.Create(Engineer);
-                MessageBox.Show("The engineer was successfully added");
-            }
+            if ( Engineer.CurrentTask!.ID < 0)
+                MessageBox.Show("Invalid property");
             else
             {
-                s_bl.Engineer.Update(Engineer);
-                MessageBox.Show("The engineer has been updated successfully");
+                if ((sender as Button)?.Content.ToString() == "ADD")
+                {
+                    s_bl.Engineer.Create(Engineer);
+                    MessageBox.Show("The engineer was successfully added");
+                }
+                else
+                {
+                    s_bl.Engineer.Update(Engineer);
+                    MessageBox.Show("The engineer has been updated successfully");
+                }
+                Close();
             }
-            Close();
         }
         catch (BO.BlAlreadyExistException ex)
         { MessageBox.Show(ex.Message); }

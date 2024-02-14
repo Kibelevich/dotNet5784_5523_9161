@@ -50,7 +50,7 @@ public partial class EngineerListWindow : Window
     {
         var temp = Level == BO.EngineerExperiece.None ?
             s_bl?.EngineerInList.ReadAll() :
-            s_bl?.EngineerInList.ReadAll(item => item.level == Level);
+            s_bl?.EngineerInList.ReadAll(item => item.Level == Level);
         EngineerList = temp == null ? new() : new(temp!);
     }
 

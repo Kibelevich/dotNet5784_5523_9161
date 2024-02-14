@@ -51,7 +51,7 @@ public partial class TaskWindow : Window
                 Complete = null,
                 Deliverable = null,
                 Remarks = null,
-                Engineer = null,
+                Engineer = new BO.EngineerInTask() { ID = 0, Name = "" },
                 ComplexityLevel = 0
             } :
             s_bl.Task.Read(ID)!;
@@ -66,8 +66,8 @@ public partial class TaskWindow : Window
     {
         try
         {
-            if (Task.Engineer != null && (Task.Engineer.ID < 200000000 || Task.Engineer.ID > 400000000))
-                MessageBox.Show("Illegal property");
+            if ( Task.Engineer!.ID != 0 && (Task.Engineer.ID < 200000000 || Task.Engineer.ID > 400000000))
+                MessageBox.Show("Invalid property");
             else
             {
                 if ((sender as Button)?.Content.ToString() == "ADD")
@@ -79,9 +79,10 @@ public partial class TaskWindow : Window
                 {
                     s_bl.Task.Update(Task);
                     MessageBox.Show("The Task has been updated successfully");
-                }
+                } 
+                Close();
             }
-            Close();
+
         }
         catch (BO.BlAlreadyExistException ex)
         { MessageBox.Show(ex.Message); }

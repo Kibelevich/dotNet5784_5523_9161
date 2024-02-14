@@ -12,10 +12,11 @@
         <Style TargetType="Button">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Background" Value="#ffcccc"/>
-            <Setter Property="Width" Value="150"/>
-            <Setter Property="Height" Value="60"/>
-            <Setter Property="FontFamily" Value="LilyUPC"/>
-            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontFamily" Value="Aharoni"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Margin" Value="0, 8, 0, 8"/>
         </Style>
     </Window.Resources>
     
@@ -31,10 +32,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!-- filter selection  -->
-            <Label Grid.Column="0" Content="select" HorizontalAlignment="Left" Margin="112,-5,0,0" VerticalAlignment="Top"/>
+            <Label Grid.Column="0" Content="SELECT EXPERIENCE" FontFamily="Aharoni" FontSize="15" HorizontalAlignment="Left" Margin="112,-5,0,0" VerticalAlignment="Top"/>
             <ComboBox SelectedValue="{Binding Level, Mode=TwoWay}" 
                       ItemsSource="{Binding Source={StaticResource EngineerExperieceCollectionKey }}" 
-                      Grid.Column="1" HorizontalAlignment="Left" Width="400" SelectionChanged="CbEngineerExperienceSelector_SelectionChanged"/>
+                      Grid.Column="1" HorizontalAlignment="Left" Width="300" SelectionChanged="CbEngineerExperienceSelector_SelectionChanged"/>
         </Grid>
         <ListView Margin="5" Grid.Row="1" ItemsSource="{Binding EngineerList}" MouseDoubleClick="LvUpdateEngineer_DoubleClick">
             <ListView.View >

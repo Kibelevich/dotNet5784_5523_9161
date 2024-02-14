@@ -1,7 +1,6 @@
 ﻿
 using BlApi;
 using DalApi;
-using System.Text.RegularExpressions;
 
 namespace BlImplementation;
 
@@ -18,14 +17,25 @@ internal class TaskImplementation : BlApi.ITask
     /// </summary>
     /// <param name="boTask">the object to add</param>
     /// <returns>the object's id</returns>
-    /// <exception cref="BO.BlIllegalPropertyException">if the properties are illegal</exception>
+    /// <exception cref="BO.BlIllegalPropertyException">if the properties are invalid</exception>
     public int Create(BO.Task boTask)
     {
-        if (boTask.Alias == "" || boTask.Start < boTask.CreatedAt || boTask.BaselineStart < boTask.CreatedAt
-            || boTask.BaselineStart > boTask.ForecastEndDate || boTask.Start > boTask.ForecastEndDate ||
-            boTask.Deadline < boTask.ForecastEndDate || boTask.Deadline < boTask.Complete)
-            throw new BO.BlIllegalPropertyException($"Illegal property");
-            DO.Task doTask = ReplaceBoToDo(boTask);
+        if (boTask.Alias == "" || boTask.Description == "" || boTask.ComplexityLevel == 0)
+            throw new BO.BlIllegalPropertyException("Missing data");
+        if ( boTask.Start < boTask.CreatedAt || boTask.BaselineStart < boTask.CreatedAt
+             || boTask.BaselineStart > boTask.ForecastEndDate || boTask.Start > boTask.ForecastEndDate ||
+             boTask.Deadline < boTask.ForecastEndDate || boTask.Deadline < boTask.Complete)
+            throw new BO.BlIllegalPropertyException("Invalid dates");
+        if (boTask.Engineer!.ID != 0)
+        {
+            DO.Engineer engineer = _dal.Engineer.Read(boTask.Engineer.ID) ??
+                throw new BO.BlIllegalPropertyException("The engineer did not found");
+            if (engineer.Name != boTask.Engineer.Name)
+                throw new BO.BlIllegalPropertyException("The engineer did not found");
+            if ((int)boTask.ComplexityLevel > (int)engineer.Level)
+                throw new BO.BlIllegalPropertyException("The engineer is not suitable for this task");
+        }
+        DO.Task doTask = ReplaceBoToDo(boTask);
         int id = _dal.Task.Create(doTask with { CreatedAt = DateTime.Now });
         if (boTask.DependList == null)
             return id;
@@ -80,12 +90,12 @@ internal class TaskImplementation : BlApi.ITask
     public IEnumerable<BO.Task?> ReadAll(Func<BO.Task, bool>? filter = null)
     {
         if (filter != null)
-            return (from DO.Task doTask in _dal.Task.ReadAll()
-                    let boTask = ReplaceDoToBo(doTask)
-                    where filter(boTask)
-                    select boTask);
-        return (from DO.Task doTask in _dal.Task.ReadAll()
-                select ReplaceDoToBo(doTask));
+            return from DO.Task doTask in _dal.Task.ReadAll()
+                   let boTask = ReplaceDoToBo(doTask)
+                   where filter(boTask)
+                   select boTask;
+        return from DO.Task doTask in _dal.Task.ReadAll()
+               select ReplaceDoToBo(doTask);
     }
 
     /// <summary>
@@ -96,19 +106,22 @@ internal class TaskImplementation : BlApi.ITask
     /// <exception cref="BO.BlDoesNotExistException">if object not found</exception>
     public void Update(BO.Task boTask)
     {
-        if (boTask.Alias == "" || boTask.Start < boTask.CreatedAt || boTask.BaselineStart < boTask.CreatedAt
+        if (boTask.Alias == "" || boTask.Description == "" || boTask.ComplexityLevel == 0)
+            throw new BO.BlIllegalPropertyException("Missing data");
+        if (boTask.Start < boTask.CreatedAt || boTask.BaselineStart < boTask.CreatedAt
              || boTask.BaselineStart > boTask.ForecastEndDate || boTask.Start > boTask.ForecastEndDate ||
              boTask.Deadline < boTask.ForecastEndDate || boTask.Deadline < boTask.Complete)
-            throw new BO.BlIllegalPropertyException($"Illegal property");
-        if (boTask.Engineer != null)
+            throw new BO.BlIllegalPropertyException("Invalid dates");
+        if (boTask.Engineer!.ID != 0)
         {
             DO.Engineer engineer = _dal.Engineer.Read(boTask.Engineer.ID) ??
-                throw new BO.BlIllegalPropertyException("Illegal property");
-            if (engineer.Name != boTask.Engineer.Name
-                ||(int)boTask.ComplexityLevel < (int)engineer.Level)
-                throw new BO.BlIllegalPropertyException("Illegal property");
+                throw new BO.BlIllegalPropertyException("The engineer did not found");
+            if (engineer.Name != boTask.Engineer.Name)
+                throw new BO.BlIllegalPropertyException("The engineer did not found");
+            if ((int)boTask.ComplexityLevel > (int)engineer.Level)
+                throw new BO.BlIllegalPropertyException("The engineer is not suitable for this task");
         }
-            DO.Task doTask = ReplaceBoToDo(boTask);
+        DO.Task doTask = ReplaceBoToDo(boTask);
         try
         {
             _dal.Task.Update(doTask);
@@ -172,7 +185,7 @@ internal class TaskImplementation : BlApi.ITask
             Complete = doTask.Complete,
             Deliverable = doTask.Deliverable,
             Remarks = doTask.Remarks,
-            Engineer = doTask.EngineerId == 0 ? null : bl.EngineerInTask.Read(doTask.EngineerId),
+            Engineer = doTask.EngineerId == 0 ? new BO.EngineerInTask() { ID = 0, Name = "" } : bl.EngineerInTask.Read(doTask.EngineerId),
             ComplexityLevel = (BO.EngineerExperiece)doTask.ComplexityLevel
         };
     }

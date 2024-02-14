@@ -23,18 +23,20 @@ internal class EngineerInListImplementation : IEngineerInList
                    let boEngineerInList = new BO.EngineerInList()
                    {
                        ID = doEngineer.ID,
-                       name = doEngineer.Name,
-                       level = (BO.EngineerExperiece) doEngineer.Level
+                       Name = doEngineer.Name,
+                       Level = (BO.EngineerExperiece) doEngineer.Level
                    }
                    where filter(boEngineerInList)
+                   orderby boEngineerInList.ID
                    select boEngineerInList;
         }
         return from DO.Engineer doEngineer in _dal.Engineer.ReadAll()
+               orderby doEngineer.ID
                select new BO.EngineerInList()
                {
                    ID = doEngineer.ID,
-                   name = doEngineer.Name,
-                   level = (BO.EngineerExperiece)doEngineer.Level
+                   Name = doEngineer.Name,
+                   Level = (BO.EngineerExperiece)doEngineer.Level
                };
     }
 }

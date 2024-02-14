@@ -5,25 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Engineer"
         mc:Ignorable="d"
-        Title="EngineerWindow" Height="700" Width="800"
+        Title="EngineerWindow" Height="700" Width="700"
         DataContext="{Binding Engineer, RelativeSource={RelativeSource Self}, Mode=TwoWay}">
 
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Background" Value="#ffcccc"/>
             <Setter Property="Width" Value="90"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="FontFamily" Value="LilyUPC"/>
-            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontFamily" Value="Aharoni"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="50, 0, 0, 0"/>
         </Style>
         <Style TargetType="Label">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#ffcccc"/>
-            <Setter Property="Width" Value="200"/>
+            <Setter Property="Width" Value="250"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="FontFamily" Value="LilyUPC"/>
-            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontFamily" Value="Aharoni"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="NaN"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="FontSize" Value="15"/>
         </Style>
     </Window.Resources>
 
@@ -33,7 +43,7 @@
             <RowDefinition Height="500"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="ENGINEER" FontSize="40"/>
+        <Label Grid.Row="0" Content="ENGINEER" FontSize="30"/>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -50,26 +60,22 @@
 
             <Label Content="ID" />
             <TextBox Grid.Column="1" Text="{Binding ID, Mode=TwoWay,NotifyOnValidationError=true,ValidatesOnExceptions=true}" 
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"
                      IsEnabled="{Binding ID, Mode=OneTime, Converter={StaticResource ConvertIdToIsEnabledKey}}"/>
 
             <Label Content="NAME" Grid.Row="1"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
             <Label Content="EMAIL" Grid.Row="2" />
-            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
             <Label Content="LEVEL" Grid.Row="3" />
-            <ComboBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Height="NaN" Margin="3" 
+            <ComboBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="3" 
                 ItemsSource="{Binding Source={StaticResource EngineerExperieceCollectionKey}}" 
                 SelectedValue="{Binding Level, Mode=TwoWay, NotifyOnValidationError=true, 
-                ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="150" FontSize="15"/>
 
             <Label Content="COST" Grid.Row="4"/>
-            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
+            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Cost, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
             <Label Content="CURRENT TASK" Grid.Row="5" />
             <Grid  Grid.Column="1" Grid.Row="5">
@@ -81,17 +87,16 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                
                 <Label Content="ID"/>
+                <TextBox Grid.Column="1" Text="{Binding CurrentTask.ID, Mode=TwoWay,NotifyOnValidationError=true,ValidatesOnExceptions=true}"/>
+                
                 <Label Content="ALIAS" Grid.Row="1"/>
-                <TextBox Grid.Column="1" Text="{Binding CurrentTask.ID, Mode=TwoWay,NotifyOnValidationError=true,ValidatesOnExceptions=true}" 
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
-                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentTask.Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"  
-                     HorizontalAlignment="Left" Height="NaN" Margin="3" VerticalAlignment="Center" Width="120"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding CurrentTask.Alias, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
             </Grid>
         </Grid>
         <Button Grid.Row="2" Content="{Binding ID, Mode=OneTime, Converter={StaticResource ConvertIdToContentKey}}" 
-            HorizontalAlignment="Left" Margin="3,0,0,0"  VerticalAlignment="Top" Padding="5" 
+            HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" 
             Click="BtnAddUpdate_Click"/>    
-
     </Grid>
 </Window>
